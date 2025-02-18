@@ -10,17 +10,35 @@ import SwiftUI
 struct ClothesListView: View {
     
     @ObservedObject var viewModel: ClothesListViewModel
-    //@StateObject private var navigation = NavigationViewModel()
     
     var body: some View {
-        ZStack {
-            Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack {
+            List {
+                ForEach(viewModel.clothesByCategory.keys.sorted(by: { $0.rawValue < $1.rawValue }), id: \.self) { category in
+                    
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text(category.localized)
+                            .font(.custom("OpenSans-SemiBold",  size: 22))
+                            .foregroundColor(.black)
+                        
+                        ScrollView(.horizontal) {
+                            HStack {
+                                ForEach(viewModel.clothesByCategory[category] ?? [], id: \.id) { clothe in
+                                    ClotheRowView(clothe: clothe)
+                                }
+                            }
+                        }
+                    }
+                }
+                .listRowSeparator(.hidden)
+            }
+            .background(Color.white)
+            .listStyle(PlainListStyle())
         }
         .onAppear() {
             Task {
                 await viewModel.fetchClothes()
             }
-            
         }
     }
     

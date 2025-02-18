@@ -23,7 +23,6 @@ struct Picture: Decodable {
     
     let url: String
     let description: String
-    
 }
 
 enum ClotheCategory: String, Decodable {

@@ -10,7 +10,7 @@ import Foundation
 @MainActor
 class ClothesListViewModel: ObservableObject {
     
-    @Published var clothes: [Clothe] = []
+    @Published var clothesByCategory: [ClotheCategory: [Clothe]] = [:]
     @Published var messageAlert: String = ""
     
     private let apiService: APIService
@@ -24,22 +24,16 @@ class ClothesListViewModel: ObservableObject {
         self.messageAlert = ""
         let result = await apiService.clothesList()
         switch result {
-        case .success(let clothesList):
-            self.clothes = clothesList
-            filterAndSort()
+        case .success(let clothes):
+            self.clothesByCategory = Dictionary(grouping: clothes, by: { $0.category })
             return
-            
         case .failure(let error):
             messageAlert = error.message
             return
         }
     }
     
-    private func filterAndSort() {
-        for (_, clothes) in clothes.enumerated() {
-            print(clothes.category.localized)
-        }
-    }
+    
     
     
 }
