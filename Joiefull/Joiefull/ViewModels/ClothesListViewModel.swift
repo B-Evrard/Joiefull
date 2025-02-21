@@ -25,7 +25,7 @@ class ClothesListViewModel: ObservableObject {
         let result = await apiService.clothesList()
         switch result {
         case .success(let clothes):
-            self.clothesByCategory = Dictionary(grouping: clothes, by: { $0.category })
+            self.clothesByCategory = Dictionary(grouping: clothes) { $0.category }
             return
         case .failure(let error):
             messageAlert = error.message

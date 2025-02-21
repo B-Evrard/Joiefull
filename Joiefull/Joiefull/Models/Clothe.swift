@@ -25,7 +25,7 @@ struct Picture: Decodable {
     let description: String
 }
 
-enum ClotheCategory: String, Decodable {
+enum ClotheCategory: String, Decodable, Comparable {
     
     case accessories = "ACCESSORIES"
     case bottoms = "BOTTOMS"
@@ -45,6 +45,20 @@ enum ClotheCategory: String, Decodable {
 
     var localized: String {
         return NSLocalizedString(self.rawValue, comment: "")
+    }
+    
+    private var sortOrder: Int {
+        switch self {
+        case .tops: return 0
+        case .bottoms: return 1
+        case .shoes: return 2
+        case .accessories: return 3
+        case .unknown: return 4
+        }
+    }
+    
+    static func < (lhs: ClotheCategory, rhs: ClotheCategory) -> Bool {
+        return lhs.sortOrder < rhs.sortOrder
     }
     
 }
