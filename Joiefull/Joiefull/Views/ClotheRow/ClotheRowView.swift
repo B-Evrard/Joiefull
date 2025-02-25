@@ -17,6 +17,12 @@ struct ClotheRowView: View {
     let starWidth: CGFloat
     let starHeight: CGFloat
     
+    let notationWidth: CGFloat = 51
+    let notationHeight: CGFloat = 27
+    let fontSizeNotation: CGFloat = 14
+    let heartWidth: CGFloat = 14
+    let heartHeight: CGFloat = 12
+    
     var body: some View {
         VStack {
             ZStack {
@@ -37,42 +43,18 @@ struct ClotheRowView: View {
                             .scaledToFit()
                             .frame(width: pictureWidth, height: pictureHeight)
                             .foregroundColor(.gray)
-                        
+                            
                     @unknown default:
                         EmptyView()
                     }
                 }
                 .overlay(
-                    notationView(likes: clothe.likes),
+                    NotationView(likes: clothe.likes, width: notationWidth, height: notationHeight, fontSize: fontSizeNotation, heartWidth: heartWidth, heartHeight: heartHeight),
                     alignment: .bottomTrailing
                 )
-            }
-            VStack  {
-                HStack {
-                    Text(clothe.name)
-                        .font(.custom("OpenSans-SemiBold",  size: fontSize))
-                        .lineLimit(1)
-                        .truncationMode(.tail)
-                    Spacer()
-                    Image(systemName: "star.fill")
-                        .resizable()
-                        .frame(width: starWidth, height: starHeight)
-                        .foregroundColor(Color("OrangeJoiefull"))
-                    Text("4.3")
-                        .font(.custom("OpenSans-Regular", size: fontSize))
-                }
-                
-                HStack {
-                    Text(clothe.price.formattedPrice())
-                        .font(.custom("OpenSans-Regular", size: fontSize))
-                    Spacer()
-                    Text(clothe.original_price.formattedPrice())
-                        .font(.custom("OpenSans-Regular", size: fontSize))
-                        .strikethrough(true)
-                }
                 
             }
-            
+            InfosView(clothe: clothe, fontSize: fontSize, starWidth: starWidth, starHeight: starHeight)
         }
         .frame(width: pictureWidth)
         

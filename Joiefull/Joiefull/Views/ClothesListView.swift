@@ -20,7 +20,7 @@ struct ClothesListView: View {
                     NavigationStack {
                         createCatalog()
                     }
-                    .frame(width: selectedClothe != nil ? 734 : nil)
+                    .frame(width: selectedClothe != nil ? 754 : nil)
                     .frame(maxWidth: selectedClothe == nil ? .infinity : nil)
                     
                     // Partie détail
@@ -28,34 +28,17 @@ struct ClothesListView: View {
                         Divider()
                         
                         NavigationStack {
-                            ClotheDetailView(clothe: clothe)
+                            ClotheDetailIpadView(viewModel: ClotheDetailViewModel(clothe: clothe))
                         }
                         .frame(minWidth: 0, maxWidth: .infinity)
                     }
                 }
-            
-//            NavigationSplitView {
-//                createCatalog()
-//                    .navigationSplitViewColumnWidth(734)
-//                
-//            } detail: {
-//                Group {
-//                    if let clothe = selectedClothe {
-//                        ClotheDetailView(clothe: clothe)
-//                    } else {
-//                        Text("Sélectionnez un vêtement")
-//                            .font(.title)
-//                            .foregroundColor(.gray)
-//                    }
-//                }
-//                
-//            }
         } else {
             NavigationStack {
                 createCatalog()
                     .navigationDestination(isPresented: $isShowingDetail) {
                         if let clothe = selectedClothe {
-                            ClotheDetailView(clothe: clothe)
+                            ClotheDetailPhoneView(viewModel: ClotheDetailViewModel(clothe: clothe))
                         }
                     }
             }
@@ -69,7 +52,7 @@ struct ClothesListView: View {
                 
                 VStack(alignment: .leading, spacing: 8) {
                     Text(category.localized)
-                        .font(.custom("OpenSans-SemiBold",  size: 22))
+                        .font(.system(size: 22, weight: .semibold))
                         .foregroundColor(.black)
                     
                     ScrollView(.horizontal) {

@@ -17,6 +17,17 @@ struct Clothe: Decodable {
     let price: Double
     let original_price: Double
     
+    
+    var rating: Int {
+        get { ClotheNotesStorage.shared.getNote(for: id).rating }
+        set { ClotheNotesStorage.shared.updateNote(for: id, rating: newValue, comment: comment) }
+    }
+    
+    var comment: String {
+        get { ClotheNotesStorage.shared.getNote(for: id).comment }
+        set { ClotheNotesStorage.shared.updateNote(for: id, rating: rating, comment: newValue) }
+    }
+    
 }
 
 struct Picture: Decodable {
@@ -42,7 +53,7 @@ enum ClotheCategory: String, Decodable, Comparable {
         default: self = .unknown
         }
     }
-
+    
     var localized: String {
         return NSLocalizedString(self.rawValue, comment: "")
     }

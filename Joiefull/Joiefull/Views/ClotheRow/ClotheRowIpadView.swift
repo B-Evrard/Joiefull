@@ -12,6 +12,6 @@ struct ClotheRowIpadView: View {
     let clothe: Clothe
 
     var body: some View {
-        ClotheRowView(clothe: clothe, pictureWidth: 234, pictureHeight: 256, fontSize: 18, starWidth: 16, starHeight: 16)
+        ClotheRowView(clothe: clothe, pictureWidth: 222, pictureHeight: 255, fontSize: 18, starWidth: 16, starHeight: 16)
     }
 }
