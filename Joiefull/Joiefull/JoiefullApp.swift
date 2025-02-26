@@ -11,7 +11,7 @@ import SwiftUI
 struct JoiefullApp: App {
     var body: some Scene {
         WindowGroup {
-            ClothesListView(viewModel: ClothesListViewModel(apiService: APIClient()))
+            CatalogView(viewModel: ClothesListViewModel(apiService: APIClient()))
         }
     }
 }

@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-final class ClotheDetailParamPhone: ClotheDetailParam {
+final class ClotheDetailParamPhone: DisplayParam {
     
     static let pictureWidth: CGFloat = 361
     static let pictureHeight: CGFloat = 431

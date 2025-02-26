@@ -10,53 +10,41 @@ import SwiftUI
 struct ClotheRowView: View {
     
     let clothe: Clothe
+    let param: DisplayParam.Type
     
-    let pictureWidth: CGFloat
-    let pictureHeight: CGFloat
-    let fontSize: CGFloat
-    let starWidth: CGFloat
-    let starHeight: CGFloat
-    
-    let notationWidth: CGFloat = 51
-    let notationHeight: CGFloat = 27
-    let fontSizeNotation: CGFloat = 14
-    let heartWidth: CGFloat = 14
-    let heartHeight: CGFloat = 12
     
     var body: some View {
         VStack {
-            ZStack {
-                AsyncImage(url: URL(string: clothe.picture.url)) { phase in
-                    switch phase {
-                    case .empty:
-                        ProgressView()
-                    case .success(let image):
-                        image
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: pictureWidth, height: pictureHeight)
-                            .clipShape(RoundedRectangle(cornerRadius: 15))
-                        
-                    case .failure:
-                        Image(systemName: "photo")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: pictureWidth, height: pictureHeight)
-                            .foregroundColor(.gray)
-                            
-                    @unknown default:
-                        EmptyView()
-                    }
-                }
-                .overlay(
-                    NotationView(likes: clothe.likes, width: notationWidth, height: notationHeight, fontSize: fontSizeNotation, heartWidth: heartWidth, heartHeight: heartHeight),
-                    alignment: .bottomTrailing
-                )
-                
-            }
-            InfosView(clothe: clothe, fontSize: fontSize, starWidth: starWidth, starHeight: starHeight)
+            PictureView(
+                clothe: clothe,
+                pictureWidth: param.pictureWidth,
+                pictureHeight: param.pictureHeight,
+                notationWidth: param.notationWidth,
+                notationHeight: param.notationHeight,
+                fontSizeNotation: param.fontSizeNotation,
+                heartWidth: param.heartWidth,
+                heartHeight: param.heartHeight
+            )
+            .frame(width: param.pictureWidth)
+            
+            InfosView(clothe: clothe, fontSize: param.fontSize, starWidth: param.starWidth, starHeight: param.starHeight)
+            
         }
-        .frame(width: pictureWidth)
-        
+        .frame(width: param.pictureWidth)
     }
+}
+
+
+#Preview {
+    let category: ClotheCategory = .bottoms
+    let clothe = Clothe(
+        id: 1,
+        picture: Picture(url: "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/Cr-ez-une-interface-dynamique-et-accessible-avec-SwiftUI/main/img/bottoms/1.jpg", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"), name: "Jean pourjkhkjkjhkhkhkhkjh femme",
+        category: category,
+        likes: 100,
+        price: 44.99,
+        original_price: 59.99
+    )
+    
+    ClotheRowView(clothe: clothe, param: ClotheRowParamIpad.self)
 }

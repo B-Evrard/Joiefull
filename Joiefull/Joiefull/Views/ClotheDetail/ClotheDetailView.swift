@@ -11,7 +11,7 @@ struct ClotheDetailView: View {
     
     @ObservedObject var viewModel: ClotheDetailViewModel
     
-    let param: ClotheDetailParam.Type
+    let param: DisplayParam.Type
     
     var body: some View {
         VStack {

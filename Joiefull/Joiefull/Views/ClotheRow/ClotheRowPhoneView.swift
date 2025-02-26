@@ -12,7 +12,7 @@ struct ClotheRowPhoneView: View {
     let clothe: Clothe
     
     var body: some View {
-        ClotheRowView(clothe: clothe, pictureWidth: 198, pictureHeight: 198, fontSize: 14, starWidth: 12, starHeight: 12)
+        ClotheRowView(clothe: clothe, param: ClotheRowParamIpad.self)
     }
     
 }

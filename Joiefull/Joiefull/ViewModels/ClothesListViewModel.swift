@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 @MainActor
 class ClothesListViewModel: ObservableObject {
@@ -14,7 +15,6 @@ class ClothesListViewModel: ObservableObject {
     @Published var messageAlert: String = ""
     
     private let apiService: APIService
-    
     
     init(apiService: APIService) {
         self.apiService = apiService
