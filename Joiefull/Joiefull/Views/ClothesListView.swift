@@ -16,14 +16,13 @@ struct ClothesListView: View {
     var body: some View {
         if UIDevice.current.userInterfaceIdiom == .pad {
             HStack(spacing: 0) {
-                    // Partie catalogue qui s'adapte
+                    
                     NavigationStack {
                         createCatalog()
                     }
                     .frame(width: selectedClothe != nil ? 754 : nil)
                     .frame(maxWidth: selectedClothe == nil ? .infinity : nil)
                     
-                    // Partie détail
                     if let clothe = selectedClothe {
                         Divider()
                         

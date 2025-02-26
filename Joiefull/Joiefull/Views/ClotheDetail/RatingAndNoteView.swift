@@ -51,7 +51,6 @@ struct RatingAndNoteView: View {
                         .allowsHitTesting(false)
                 }
             }
-            
         }
     }
 }
