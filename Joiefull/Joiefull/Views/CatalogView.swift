@@ -11,23 +11,64 @@ struct CatalogView: View {
     
     @ObservedObject var viewModel: ClothesListViewModel
     
+    @State private var selectedClothe: Clothe?
+    @State private var isShowingDetail = false
+    
+    
     var body: some View {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            HStack(spacing: 0) {
+                NavigationStack {
+                    createCatalog()
+                }
+                .frame(width: selectedClothe != nil ? 730 : nil)
+                .frame(maxWidth: selectedClothe == nil ? .infinity : nil)
+                
+                if let clothe = selectedClothe {
+                    NavigationStack {
+                        ClotheDetailView(viewModel: ClotheDetailViewModel(clothe: clothe), param: DisplayParamFactory.clotheDetailParam)
+                    }
+                    //.frame(width: DisplayParamFactory.clotheDetailParam.pictureWidth)
+                }
+            }
+        } else {
+            NavigationStack {
+                createCatalog()
+                    .navigationDestination(isPresented: $isShowingDetail) {
+                        if let clothe = selectedClothe {
+                            ClotheDetailView(viewModel: ClotheDetailViewModel(clothe: clothe), param: DisplayParamFactory.clotheDetailParam)
+                        }
+                    }
+                
+                
+            }
+        }
+    }
+    
+    @ViewBuilder
+    func createCatalog() -> some View {
         List {
-            ForEach(viewModel.clothesByCategory.keys.sorted(), id: \.self) { category in
+             ForEach(viewModel.clothesByCategory.keys.sorted(), id: \.self) { category in
                 VStack(alignment: .leading, spacing: 8) {
                     Text(category.localized)
                         .font(.system(size: 22, weight: .semibold))
                         .foregroundColor(.black)
                     
                     ScrollView(.horizontal) {
-                        LazyHGrid(rows: [GridItem(.fixed(354))], spacing: 15 )  {
+                        LazyHGrid(rows: [GridItem(.fixed(DisplayParamFactory.clotheRowParam.rowHeight))], spacing: 15 )  {
                             ForEach(viewModel.clothesByCategory[category] ?? [], id: \.id) { clothe in
-                                ClotheRowIpadView(clothe: clothe)
-                                    .frame(width: 222)
+                                ClotheRowView(clothe: clothe, param: DisplayParamFactory.clotheRowParam)
+                                    .frame(width: DisplayParamFactory.clotheRowParam.pictureWidth)
+                                    .onTapGesture {
+                                        selectedClothe = clothe
+                                        isShowingDetail = true
+                                    }
+                                
                             }
                         }
                     }
                 }
+                .listRowSeparator(.hidden)
             }
         }
         .onAppear {
@@ -35,38 +76,26 @@ struct CatalogView: View {
                 await viewModel.fetchClothes()
             }
         }
+        .onOpenURL { incomingURL in
+                    print("App was opened via URL: \(incomingURL)")
+                handleDeepLink(url: incomingURL)
+                }
+
         .background(Color.white)
         .listStyle(PlainListStyle())
     }
     
-    @ViewBuilder
-    func createClotheImageView(for clothe: Clothe) -> some View {
-        AsyncImage(url: URL(string: clothe.picture.url)) { phase in
-            switch phase {
-            case .empty:
-                ProgressView()
-            case .success(let image):
-                image
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 222, height: 255)
-                    .clipShape(RoundedRectangle(cornerRadius: 15))
+    private func handleDeepLink(url: URL) {
+        guard url.scheme == "joiefull",
+              url.host == "clothe",
+              let idString = url.pathComponents.last,
+              let id = Int(idString) else { return }
 
-            case .failure:
-                Image(systemName: "photo")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 222, height: 255)
-                    .foregroundColor(.gray)
-
-            @unknown default:
-                EmptyView()
-            }
+        if let clothe = viewModel.clothesByCategory.values.flatMap({ $0 }).first(where: { $0.id == id }) {
+            selectedClothe = clothe
+            isShowingDetail = true
         }
     }
-    
-    
-    
 }
 
 #Preview {

@@ -9,16 +9,17 @@ import Foundation
 import SwiftUI
 
 extension View {
-    func placeholder <Content: View>(
-        when shouldShow: Bool,
-        alignment: Alignment = .leading,
-        @ViewBuilder builder: () -> Content
-    ) -> some View {
-        ZStack(alignment: alignment) {
-            builder()
-                .opacity(shouldShow ? 1 : 0)
-            
+    @ViewBuilder
+    func tappable(_ isTappable: Bool, action: @escaping () -> Void) -> some View {
+        if isTappable {
+            self.onTapGesture {
+                action()
+            }
+        } else {
             self
         }
     }
+    
 }
+
+

@@ -10,59 +10,37 @@ import SwiftUI
 struct ClotheDetailView: View {
     
     @ObservedObject var viewModel: ClotheDetailViewModel
-    
     let param: DisplayParam.Type
     
     var body: some View {
         VStack {
-            AsyncImage(url: URL(string: viewModel.clothe.picture.url)) { phase in
-                switch phase {
-                case .empty:
-                    ProgressView()
-                case .success(let image):
-                    image
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: param.pictureWidth, height: param.pictureHeight)
-                        .clipShape(RoundedRectangle(cornerRadius: 15))
-                    
-                case .failure:
-                    Image(systemName: "photo")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: param.pictureWidth, height: param.pictureHeight)
-                        .foregroundColor(.gray)
-                    
-                @unknown default:
-                    EmptyView()
-                }
-            }
-            .overlay(
-                NotationView(
-                    likes: viewModel.clothe.likes,
-                    width: param.notationWidth,
-                    height: param.notationHeight,
-                    fontSize: param.fontSizeNotation,
-                    heartWidth: param.heartWidth,
-                    heartHeight: param.heartHeight
-                ),
-                alignment: .bottomTrailing
+            
+            PictureView(
+                clothe: viewModel.clothe,
+                pictureWidth: param.pictureWidth,
+                pictureHeight: param.pictureHeight,
+                notationWidth: param.notationWidth,
+                notationHeight: param.notationHeight,
+                fontSizeNotation: param.fontSizeNotation,
+                heartWidth: param.heartWidth,
+                heartHeight: param.heartHeight,
+                isDetail: true
             )
             .padding(.bottom, 10)
             
             InfosView(
                 clothe: viewModel.clothe ,
-                fontSize: param.fontSize,
-                starWidth: param.starWidth,
-                starHeight: param.starHeight
+                fontSize: DisplayParamFactory.clotheDetailParam.fontSize,
+                starWidth: DisplayParamFactory.clotheDetailParam.starWidth,
+                starHeight: DisplayParamFactory.clotheDetailParam.starHeight
             )
             .padding(.bottom, 10)
             
             DescriptionView(
                 clothe: viewModel.clothe,
-                fontSize: param.fontSizeDescription,
-                starWidth: param.starWidth,
-                starHeight: param.starHeight
+                fontSize: DisplayParamFactory.clotheDetailParam.fontSizeDescription,
+                starWidth: DisplayParamFactory.clotheDetailParam.starWidth,
+                starHeight: DisplayParamFactory.clotheDetailParam.starHeight
             )
             .padding(.bottom, 20)
             
@@ -70,19 +48,15 @@ struct ClotheDetailView: View {
                 user: User.mock,
                 rating: $viewModel.clothe.rating,
                 comment: $viewModel.clothe.comment,
-                fontSize: param.fontSizeDescription,
-                starNotationWidth: param.starNotationWidth,
-                starNotationHeight: param.starNotationHeight
+                fontSize: DisplayParamFactory.clotheDetailParam.fontSizeDescription,
+                starNotationWidth: DisplayParamFactory.clotheDetailParam.starNotationWidth,
+                starNotationHeight: DisplayParamFactory.clotheDetailParam.starNotationHeight
             )
             .frame(maxWidth: .infinity, alignment: .leading)
             
             Spacer()
         }
-        .frame(width: param.pictureWidth)
-        
-        
-        
-            
+        .frame(width: DisplayParamFactory.clotheDetailParam.pictureWidth)
         
     }
         
@@ -102,7 +76,7 @@ struct ClotheDetailView: View {
     
     let viewModel=ClotheDetailViewModel(clothe: clothe)
     
-    ClotheDetailView(viewModel: viewModel, param: ClotheDetailParamIpad.self)
+    ClotheDetailView(viewModel: viewModel,param: DisplayParamFactory.clotheDetailParam)
 }
 
 

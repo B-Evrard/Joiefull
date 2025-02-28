@@ -23,7 +23,8 @@ struct ClotheRowView: View {
                 notationHeight: param.notationHeight,
                 fontSizeNotation: param.fontSizeNotation,
                 heartWidth: param.heartWidth,
-                heartHeight: param.heartHeight
+                heartHeight: param.heartHeight,
+                isDetail: false
             )
             .frame(width: param.pictureWidth)
             
