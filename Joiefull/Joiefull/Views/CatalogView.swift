@@ -14,7 +14,6 @@ struct CatalogView: View {
     @State private var selectedClothe: Clothe?
     @State private var isShowingDetail = false
     
-    
     var body: some View {
         if UIDevice.current.userInterfaceIdiom == .pad {
             HStack(spacing: 0) {
@@ -25,12 +24,31 @@ struct CatalogView: View {
                 .frame(maxWidth: selectedClothe == nil ? .infinity : nil)
                 
                 if let clothe = selectedClothe {
-                    NavigationStack {
-                        ClotheDetailView(viewModel: ClotheDetailViewModel(clothe: clothe), param: DisplayParamFactory.clotheDetailParam)
-                    }
-                    //.frame(width: DisplayParamFactory.clotheDetailParam.pictureWidth)
+                    
+                        NavigationStack {
+                            ZStack (alignment: .topLeading) {
+                                ClotheDetailView(viewModel: ClotheDetailViewModel(clothe: clothe), param: DisplayParamFactory.clotheDetailParam)
+                                Button(action: {
+                                        withAnimation {
+                                            selectedClothe = nil  // ✅ Réinitialise la sélection
+                                        }
+                                    }) {
+                                        Image(systemName: "chevron.left")
+                                            .font(.title)
+                                            .foregroundColor(.black)
+                                            .padding()
+                                            .background(Circle().fill(Color.white.opacity(0.5)))
+                                            .shadow(radius: 3)
+                                    }
+                                    .padding(10)
+                            }
+                            
+                        }
+                    
+                    
                 }
             }
+            
         } else {
             NavigationStack {
                 createCatalog()

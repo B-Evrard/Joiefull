@@ -41,24 +41,23 @@ struct PictureView: View {
                         if isDetail {
                             ShareLink(
                                 item: URL(string: "joiefull://clothe/\(clothe.id)")!,
-                                    message: Text("Regarde ce vêtement !")
+                                    message: Text("Regarde ce vêtement !"),
+                                    preview: SharePreview(
+                                        clothe.name,
+                                            image: image
+                                        )
                                 ) {
                                     Image(systemName: "square.and.arrow.up")
                                     .resizable()
-                                    .frame(width: 18, height: 18)
+                                    .frame(width: 18, height: 25)
                                     .foregroundColor(Color.black)
-                                                    
+                                    .padding()
+                                    .background(Circle().fill(Color.white).opacity(0.5))
+                                    .shadow(radius: 3)
                                 }
                                 .padding(10)
                         }
                     }
-                        
-                        
-                   
-                    
-                    
-                    
-                    
                 case .failure:
                     Image(systemName: "photo")
                         .resizable()
@@ -80,8 +79,6 @@ struct PictureView: View {
                     heartHeight: heartHeight
                 ),
                 alignment: .bottomTrailing
-                
-                    
             )
             
         }
@@ -103,7 +100,7 @@ struct PictureView: View {
         
         var body: some View {
             ZStack {
-                Color.black.ignoresSafeArea()
+                Color.white.ignoresSafeArea()
                 AsyncImage(url: URL(string: imageURL)) { phase in
                     switch phase {
                     case .empty:
@@ -162,7 +159,7 @@ struct PictureView: View {
                         Button(action: { dismiss() }) {
                             Image(systemName: "xmark.circle.fill")
                                 .font(.largeTitle)
-                                .foregroundColor(.white)
+                                .foregroundColor(.gray)
                                 .padding()
                         }
                     }
@@ -173,3 +170,28 @@ struct PictureView: View {
     }
 }
 
+#Preview {
+    let category: ClotheCategory = .bottoms
+    let clothe = Clothe(
+        id: 1,
+        picture: Picture(url: "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/Cr-ez-une-interface-dynamique-et-accessible-avec-SwiftUI/main/img/bottoms/1.jpg", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"), name: "Jean pourjkhkjkjhkhkhkhkjh femme",
+        category: category,
+        likes: 100,
+        price: 44.99,
+        original_price: 59.99
+    )
+    let param = DisplayParamFactory.self
+    
+    PictureView(
+        clothe: clothe,
+        pictureWidth: param.clotheDetailParam.pictureWidth,
+        pictureHeight: param.clotheDetailParam.pictureHeight,
+        notationWidth: param.clotheDetailParam.notationWidth,
+        notationHeight: param.clotheDetailParam.notationHeight,
+        fontSizeNotation: param.clotheDetailParam.fontSizeNotation,
+        heartWidth: param.clotheDetailParam.heartWidth,
+        heartHeight: param.clotheDetailParam.heartHeight,
+        isDetail: true
+    )
+    
+}

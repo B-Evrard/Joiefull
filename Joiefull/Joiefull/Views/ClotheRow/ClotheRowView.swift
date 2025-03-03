@@ -27,8 +27,12 @@ struct ClotheRowView: View {
                 isDetail: false
             )
             .frame(width: param.pictureWidth)
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("\(clothe.name) mis en favori \(clothe.likes) fois")
             
             InfosView(clothe: clothe, fontSize: param.fontSize, starWidth: param.starWidth, starHeight: param.starHeight)
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("\(clothe.name) mis en favori \(clothe.likes) fois")
             
         }
         .frame(width: param.pictureWidth)

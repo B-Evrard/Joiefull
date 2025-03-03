@@ -27,7 +27,7 @@ struct InfosView: View {
                     .resizable()
                     .frame(width: starWidth, height: starHeight)
                     .foregroundColor(Color("OrangeJoiefull"))
-                Text("4.3")
+                Text(clothe.rate)
                     .font(.system(size: fontSize))
                     
             }

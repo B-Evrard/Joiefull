@@ -28,6 +28,11 @@ struct Clothe: Decodable {
         set { ClotheNotesStorage.shared.updateNote(for: id, rating: rating, comment: newValue) }
     }
     
+    var rate: String {
+        let randomNumber = Double.random(in: 0...5)
+        return String(format: "%.2f", randomNumber)
+    }
+        
 }
 
 struct Picture: Decodable {
