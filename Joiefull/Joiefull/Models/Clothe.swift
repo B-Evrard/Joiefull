@@ -28,10 +28,48 @@ struct Clothe: Decodable {
         set { ClotheNotesStorage.shared.updateNote(for: id, rating: rating, comment: newValue) }
     }
     
-    var rate: String {
-        let randomNumber = Double.random(in: 0...5)
-        return String(format: "%.2f", randomNumber)
+    // To simulate an average note not provided by the API
+    var rate: Double {
+        get {
+            if let savedRate = UserDefaults.standard.value(forKey: "savedRate_\(id)") as? Double {
+                return savedRate
+            } else {
+                let newRate = Double.random(in: 0...5)
+                UserDefaults.standard.set(newRate, forKey: "savedRate_\(id)")
+                return newRate
+            }
+        }
     }
+    
+    
+    // MARK: - Accessibility
+    var accessibilityPicture: String {
+        return "\(name) mis en favori \(likes) fois avec une moyenne de \(rate.formattedRate()). Son prix est de \(price.formattedPrice()) " +
+        "et sont ancien prix est de \(original_price.formattedPrice())"
+    }
+    
+    var accessibilityDescription: String {
+        return "\(picture.description)"
+    }
+    
+    var accessibilityRatingInfos: String {
+        if (rating == 0) {
+            return "Vous n'avez pas encore noté cette pièce"
+        }
+        else {
+            return "Vous avez noté cette pièce \(rating) sur 5"
+        }
+    }
+    
+    var accessibilityComment: String {
+        if (comment.isEmpty) {
+            return "Partagez ici vos impressions sur cette pièce"
+        }
+        else {
+            return comment
+        }
+    }
+
         
 }
 

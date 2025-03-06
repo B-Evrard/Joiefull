@@ -11,57 +11,88 @@ struct ClotheDetailView: View {
     
     @ObservedObject var viewModel: ClotheDetailViewModel
     let param: DisplayParam.Type
-    
+    @Environment(\.dynamicTypeSize) var dynamicTypeSize
+
     var body: some View {
+        let isTextLarge = dynamicTypeSize > .large
+        if isTextLarge {
+            ScrollView {
+                createDetail()
+            }
+        } else {
+            createDetail()
+        }
+    }
+        
+    @ViewBuilder
+    func createDetail() -> some View {
         VStack {
             
-            PictureView(
-                clothe: viewModel.clothe,
-                pictureWidth: param.pictureWidth,
-                pictureHeight: param.pictureHeight,
-                notationWidth: param.notationWidth,
-                notationHeight: param.notationHeight,
-                fontSizeNotation: param.fontSizeNotation,
-                heartWidth: param.heartWidth,
-                heartHeight: param.heartHeight,
-                isDetail: true
-            )
-            .padding(.bottom, 10)
-            
-            InfosView(
-                clothe: viewModel.clothe ,
-                fontSize: DisplayParamFactory.clotheDetailParam.fontSize,
-                starWidth: DisplayParamFactory.clotheDetailParam.starWidth,
-                starHeight: DisplayParamFactory.clotheDetailParam.starHeight
-            )
-            .padding(.bottom, 10)
-            
-            DescriptionView(
-                clothe: viewModel.clothe,
-                fontSize: DisplayParamFactory.clotheDetailParam.fontSizeDescription,
-                starWidth: DisplayParamFactory.clotheDetailParam.starWidth,
-                starHeight: DisplayParamFactory.clotheDetailParam.starHeight
-            )
+            ZStack (alignment: .topTrailing) {
+                VStack {
+                    PictureView(
+                        clothe: viewModel.clothe,
+                        pictureWidth: param.pictureWidth,
+                        pictureHeight: param.pictureHeight,
+                        notationWidth: param.notationWidth,
+                        notationHeight: param.notationHeight,
+                        fontSizeNotation: param.fontSizeNotation,
+                        heartWidth: param.heartWidth,
+                        heartHeight: param.heartHeight,
+                        isDetail: true
+                    )
+                    .padding(.bottom, 10)
+                    
+                    InfosView(
+                        clothe: viewModel.clothe ,
+                        fontSize: DisplayParamFactory.clotheDetailParam.fontSize,
+                        starWidth: DisplayParamFactory.clotheDetailParam.starWidth,
+                        starHeight: DisplayParamFactory.clotheDetailParam.starHeight
+                    )
+                    .accessibilityScaledFrame(width: param.pictureWidth)
+                    .padding(.bottom, 10)
+                }
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(viewModel.clothe.accessibilityPicture)
+                .accessibilityHint("Toucher 2 fois pour agrandir l'image")
+                
+                ShareLink(
+                    item: URL(string: "joiefull://clothe/\(viewModel.clothe.id)")!,
+                        message: Text("Regarde ce vêtement !"),
+                        preview: SharePreview(
+                            viewModel.clothe.name,
+                            image: Image("Icon")
+                        )
+                    ) {
+                        Image(systemName: "square.and.arrow.up")
+                        .resizable()
+                        .frame(width: 18, height: 25)
+                        .foregroundColor(Color.black)
+                        .padding()
+                        .background(Circle().fill(Color.white).opacity(0.5))
+                        .shadow(radius: 3)
+                    }
+                    .padding(10)
+                    .accessibilityLabel("Partager l'article")
+            }
+        
+            DescriptionView(clothe: viewModel.clothe)
+            .accessibilityScaledFrame(width: param.pictureWidth)
             .padding(.bottom, 20)
             
             RatingAndNoteView(
                 user: User.mock,
-                rating: $viewModel.clothe.rating,
-                comment: $viewModel.clothe.comment,
-                fontSize: DisplayParamFactory.clotheDetailParam.fontSizeDescription,
-                starNotationWidth: DisplayParamFactory.clotheDetailParam.starNotationWidth,
-                starNotationHeight: DisplayParamFactory.clotheDetailParam.starNotationHeight
+                viewModel: viewModel
             )
+            .accessibilityScaledFrame(width: param.pictureWidth)
             .frame(maxWidth: .infinity, alignment: .leading)
-            
+
             Spacer()
         }
-        .frame(width: DisplayParamFactory.clotheDetailParam.pictureWidth)
-        
+        .accessibilityScaledFrame(width: DisplayParamFactory.clotheDetailParam.pictureWidth)
     }
-        
 }
-
+        
 #Preview {
     
     let category: ClotheCategory = .bottoms

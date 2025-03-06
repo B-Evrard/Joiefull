@@ -10,17 +10,16 @@ struct DescriptionView: View {
     
     let clothe: Clothe
     
-    let fontSize: CGFloat
-    let starWidth: CGFloat
-    let starHeight: CGFloat
-    
     var body: some View {
         
         Text(clothe.picture.description)
-        .font(.system(size: fontSize))
+            .font(Font.system(size: UIFontMetrics.default.scaledValue(for: DisplayParamFactory.clotheDetailParam.fontSize)))
+        .dynamicTypeSize(.xSmall ... .accessibility3)
         .lineLimit(3)
         .truncationMode(.tail)
         .multilineTextAlignment(.leading)
-        .frame(maxWidth: .infinity, alignment: .leading) 
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(clothe.accessibilityDescription)
     }
 }

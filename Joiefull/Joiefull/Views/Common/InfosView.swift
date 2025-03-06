@@ -15,11 +15,14 @@ struct InfosView: View {
     let starWidth: CGFloat
     let starHeight: CGFloat
     
+    @ScaledMetric var fontSize2: CGFloat = 18
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 3) {
             HStack {
                 Text(clothe.name)
-                    .font(.system(size: fontSize, weight: .semibold))
+                    .font(Font.system(size: fontSize2, weight: .semibold))
+                    .dynamicTypeSize(...DynamicTypeSize.accessibility1)
                     .lineLimit(1)
                     .truncationMode(.tail)
                 Spacer()
@@ -27,19 +30,23 @@ struct InfosView: View {
                     .resizable()
                     .frame(width: starWidth, height: starHeight)
                     .foregroundColor(Color("OrangeJoiefull"))
-                Text(clothe.rate)
-                    .font(.system(size: fontSize))
+                Text(clothe.rate.formattedRate())
+                    .font(Font.system(size: fontSize2))
+                    .limitedDynamicTypeSize()
                     
             }
             HStack {
                 Text(clothe.price.formattedPrice())
-                    .font(.system(size: fontSize))
+                    .font(Font.system(size: fontSize2))
+                    .limitedDynamicTypeSize()
                 Spacer()
                 Text(clothe.original_price.formattedPrice())
-                    .font(.system(size: fontSize))
+                    .font(Font.system(size: fontSize2))
+                    .limitedDynamicTypeSize()
                     .strikethrough(true)
             }
         }
+        
         
     }
 }

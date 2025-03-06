@@ -10,13 +10,7 @@ import SwiftUI
 struct RatingAndNoteView: View {
     
     let user: User
-    @Binding var rating: Int
-    @Binding var comment: String
-    
-    let fontSize: CGFloat
-    let starNotationWidth: CGFloat
-    let starNotationHeight: CGFloat
-    
+    @ObservedObject var viewModel: ClotheDetailViewModel
     @State private var isEditing: Bool = false
     
     var body: some View {
@@ -27,30 +21,38 @@ struct RatingAndNoteView: View {
                     .frame(width: 42.91, height: 39)
                     .clipShape(Circle())
                 
-                RatingView(rating: $rating,starNotationWidth: starNotationWidth ,starNotationHeight: starNotationHeight)
-                
-                
+                RatingView(
+                    rating: $viewModel.clothe.rating,
+                    starNotationWidth: DisplayParamFactory.clotheDetailParam.starNotationWidth ,
+                    starNotationHeight: DisplayParamFactory.clotheDetailParam.starNotationHeight
+                )
             }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(viewModel.clothe.accessibilityRatingInfos)
             
             ZStack(alignment: .topLeading) {
                 
-                TextEditor(text: $comment)
-                    .frame(height: 50)
+                TextEditor(text: $viewModel.clothe.comment)
+                    .accessibilityScaledFrame(width:DisplayParamFactory.clotheDetailParam.pictureWidth, height: 50)
                     .padding(8)
                     .background(RoundedRectangle(cornerRadius: 10)
                         .stroke(Color.gray.opacity(0.5), lineWidth: 1))
-                    .font(.system(size: fontSize))
+                    .font(Font.system(size: UIFontMetrics.default.scaledValue(for: DisplayParamFactory.clotheDetailParam.fontSize)))
+                    .dynamicTypeSize(.xSmall ... .accessibility3)
                 
-                if (comment.isEmpty) {
+                if (viewModel.clothe.comment.isEmpty) {
                     Text("Partagez ici vos impressions sur cette pièce")
                         .foregroundColor(Color(.systemGray2))
                         .padding(.top, 15)
                         .padding(.leading, 15)
                         .opacity(50)
-                        .font(.system(size: fontSize))
+                        .font(Font.system(size: UIFontMetrics.default.scaledValue(for: DisplayParamFactory.clotheDetailParam.fontSize)))
+                        .dynamicTypeSize(.xSmall ... .accessibility3)
                         .allowsHitTesting(false)
                 }
             }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(viewModel.clothe.accessibilityComment)
         }
     }
 }

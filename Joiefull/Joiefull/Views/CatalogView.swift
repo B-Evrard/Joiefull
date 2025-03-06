@@ -9,6 +9,8 @@ import SwiftUI
 
 struct CatalogView: View {
     
+    @Environment(\.sizeCategory) var sizeCategory
+    
     @ObservedObject var viewModel: ClothesListViewModel
     
     @State private var selectedClothe: Clothe?
@@ -20,7 +22,7 @@ struct CatalogView: View {
                 NavigationStack {
                     createCatalog()
                 }
-                .frame(width: selectedClothe != nil ? 730 : nil)
+                .frame(width: selectedClothe != nil ? calculWidth(730): nil)
                 .frame(maxWidth: selectedClothe == nil ? .infinity : nil)
                 
                 if let clothe = selectedClothe {
@@ -30,7 +32,7 @@ struct CatalogView: View {
                                 ClotheDetailView(viewModel: ClotheDetailViewModel(clothe: clothe), param: DisplayParamFactory.clotheDetailParam)
                                 Button(action: {
                                         withAnimation {
-                                            selectedClothe = nil  // ✅ Réinitialise la sélection
+                                            selectedClothe = nil
                                         }
                                     }) {
                                         Image(systemName: "chevron.left")
@@ -69,21 +71,24 @@ struct CatalogView: View {
              ForEach(viewModel.clothesByCategory.keys.sorted(), id: \.self) { category in
                 VStack(alignment: .leading, spacing: 8) {
                     Text(category.localized)
-                        .font(.system(size: 22, weight: .semibold))
+                        .font(Font.system(size: UIFontMetrics.default.scaledValue(for: 22), weight: .semibold))
+                        .dynamicTypeSize(.xSmall ... .accessibility3)
                         .foregroundColor(.black)
+                        .accessibilityElement(children: .ignore)
+                        .accessibilityLabel("Catégories de vetements \(category.localized)" )
                     
                     ScrollView(.horizontal) {
-                        LazyHGrid(rows: [GridItem(.fixed(DisplayParamFactory.clotheRowParam.rowHeight))], spacing: 15 )  {
+                        LazyHGrid(rows: [GridItem(.adaptive(minimum: DisplayParamFactory.clotheRowParam.rowHeight.scaledFont()))], spacing: 15) {
                             ForEach(viewModel.clothesByCategory[category] ?? [], id: \.id) { clothe in
                                 ClotheRowView(clothe: clothe, param: DisplayParamFactory.clotheRowParam)
-                                    .frame(width: DisplayParamFactory.clotheRowParam.pictureWidth)
+                                    .aspectRatio(contentMode: .fit)
                                     .onTapGesture {
                                         selectedClothe = clothe
                                         isShowingDetail = true
                                     }
-                                
-                            }
+                                }
                         }
+                        
                     }
                 }
                 .listRowSeparator(.hidden)
@@ -113,6 +118,13 @@ struct CatalogView: View {
             selectedClothe = clothe
             isShowingDetail = true
         }
+    }
+    
+    private func calculWidth(_ catalogWidth: CGFloat) -> CGFloat {
+        let screenWidth = UIScreen.main.bounds.width
+        let detailWidth = screenWidth - CGFloat(720)
+        let diff = detailWidth.scaledFont() - detailWidth
+        return catalogWidth - diff
     }
 }
 

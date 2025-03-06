@@ -23,14 +23,14 @@ struct RatingView: View {
                     if (number > rating) {
                         Image(systemName: "star")
                             .resizable()
-                            .frame(width: starNotationWidth, height: starNotationHeight)
+                            .accessibilityScaledFrame(width: starNotationWidth, height: starNotationHeight)
                             .foregroundStyle(Color.gray)
                             
                     }
                     else {
                         Image(systemName: "star.fill")
                             .resizable()
-                            .frame(width: starNotationWidth, height: starNotationHeight)
+                            .accessibilityScaledFrame(width: starNotationWidth, height: starNotationHeight)
                             .foregroundStyle(Color.yellow)
                     }
                 }

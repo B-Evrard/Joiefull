@@ -26,16 +26,13 @@ struct ClotheRowView: View {
                 heartHeight: param.heartHeight,
                 isDetail: false
             )
-            .frame(width: param.pictureWidth)
-            .accessibilityElement(children: .combine)
-            .accessibilityLabel("\(clothe.name) mis en favori \(clothe.likes) fois")
-            
+            .accessibilityScaledFrame(width: param.pictureWidth)
             InfosView(clothe: clothe, fontSize: param.fontSize, starWidth: param.starWidth, starHeight: param.starHeight)
-            .accessibilityElement(children: .combine)
-            .accessibilityLabel("\(clothe.name) mis en favori \(clothe.likes) fois")
-            
         }
-        .frame(width: param.pictureWidth)
+        .accessibilityScaledFrame(width: param.pictureWidth)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(clothe.accessibilityPicture)
+        .accessibilityHint("Toucher 2 fois rapidement pour afficher le détail")
     }
 }
 

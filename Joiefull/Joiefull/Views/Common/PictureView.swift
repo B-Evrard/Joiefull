@@ -29,35 +29,14 @@ struct PictureView: View {
                 case .empty:
                     ProgressView()
                 case .success(let image):
-                    ZStack (alignment: .topTrailing) {
-                        image
+                      image
                             .resizable()
                             .scaledToFill()
-                            .frame(width: pictureWidth, height: pictureHeight)
+                            .accessibilityScaledFrame(width: pictureWidth, height: pictureHeight)
                             .clipShape(RoundedRectangle(cornerRadius: 15))
                             .tappable(isDetail) {
                                 isShowingFullScreen = true
                             }
-                        if isDetail {
-                            ShareLink(
-                                item: URL(string: "joiefull://clothe/\(clothe.id)")!,
-                                    message: Text("Regarde ce vêtement !"),
-                                    preview: SharePreview(
-                                        clothe.name,
-                                            image: image
-                                        )
-                                ) {
-                                    Image(systemName: "square.and.arrow.up")
-                                    .resizable()
-                                    .frame(width: 18, height: 25)
-                                    .foregroundColor(Color.black)
-                                    .padding()
-                                    .background(Circle().fill(Color.white).opacity(0.5))
-                                    .shadow(radius: 3)
-                                }
-                                .padding(10)
-                        }
-                    }
                 case .failure:
                     Image(systemName: "photo")
                         .resizable()
@@ -83,7 +62,7 @@ struct PictureView: View {
             
         }
         .sheet(isPresented: $isShowingFullScreen) {
-            FullScreenImageView(imageURL: clothe.picture.url)
+            FullScreenImageView(imageURL: clothe.picture.url, description: clothe.accessibilityDescription)
         }
         
     }
@@ -96,6 +75,7 @@ struct PictureView: View {
         @State private var lastOffset: CGSize = .zero
         
         let imageURL: String
+        let description: String
         @Environment(\.dismiss) var dismiss
         
         var body: some View {
@@ -152,6 +132,8 @@ struct PictureView: View {
                         EmptyView()
                     }
                 }
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(description)
                 
                 VStack {
                     HStack {
@@ -165,6 +147,7 @@ struct PictureView: View {
                     }
                     Spacer()
                 }
+                
             }
         }
     }

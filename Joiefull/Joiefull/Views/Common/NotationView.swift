@@ -20,16 +20,19 @@ struct NotationView: View {
         HStack{
             Image(systemName: "heart")
                 .resizable()
-                .frame(width: heartWidth, height: heartHeight)
+                .accessibilityScaledFrame(width: heartWidth, height: heartHeight)
             
             Text("\(likes)")
-                .font(.system(size: fontSize))
+                .font(Font.system(size: UIFontMetrics.default.scaledValue(for: fontSize)))
+                .dynamicTypeSize(.xSmall ... .accessibility3)
                 .foregroundColor(.black)
         }
-        .frame(width: width, height: height)
+        .accessibilityScaledFrame(width: width, height: height)
         .background(Color.white)
         .cornerRadius(50)
         .offset(x: -10, y: -10)
+        .accessibilityElement(children: .combine)
+        .accessibilityHidden(true)
     }
 }
 
