@@ -1,0 +1,68 @@
+
+//
+//  infosView.swift
+//  Joiefull
+//
+//  Created by Bruno Evrard on 24/02/2025.
+//
+
+import SwiftUI
+struct InfosView: View {
+    
+    let clothe: Clothe
+    
+    let fontSize: CGFloat
+    let starWidth: CGFloat
+    let starHeight: CGFloat
+    
+    @ScaledMetric var fontSize2: CGFloat = 18
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 3) {
+            HStack {
+                Text(clothe.name)
+                    .font(Font.system(size: fontSize2, weight: .semibold))
+                    .dynamicTypeSize(...DynamicTypeSize.accessibility1)
+                    .lineLimit(1)
+                    .truncationMode(.tail)
+                Spacer()
+                Image(systemName: "star.fill")
+                    .resizable()
+                    .frame(width: starWidth, height: starHeight)
+                    .foregroundColor(Color("OrangeJoiefull"))
+                Text(clothe.rate.formattedRate())
+                    .font(Font.system(size: fontSize2))
+                    .limitedDynamicTypeSize()
+                    
+            }
+            HStack {
+                Text(clothe.price.formattedPrice())
+                    .font(Font.system(size: fontSize2))
+                    .limitedDynamicTypeSize()
+                Spacer()
+                Text(clothe.original_price.formattedPrice())
+                    .font(Font.system(size: fontSize2))
+                    .limitedDynamicTypeSize()
+                    .strikethrough(true)
+            }
+        }
+        
+        
+    }
+}
+
+#Preview {
+    
+    let category: ClotheCategory = .bottoms
+    let clothe = Clothe(
+        id: 1,
+        picture: Picture(url: "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/Cr-ez-une-interface-dynamique-et-accessible-avec-SwiftUI/main/img/bottoms/1.jpg", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"), name: "Jean pourjkhkjkjhkhkhkhkjh femme",
+        category: category,
+        likes: 100,
+        price: 44.99,
+        original_price: 59.99
+    )
+    
+    InfosView(clothe: clothe, fontSize: 14, starWidth: 12, starHeight: 12)
+}
+    

@@ -2,10 +2,27 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>UIAppFonts</key>
+	<key>CFBundleURLTypes</key>
 	<array>
-		<string>OpenSans-Regular.ttf</string>
-		<string>OpenSans-SemiBold.ttf</string>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>bruno.Joiefull</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>joiefull</string>
+			</array>
+		</dict>
 	</array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>joiefull</string>
+	</array>
+	<key>UILaunchScreen</key>
+	<dict>
+		<key>UIColorName</key>
+		<string>JoieFullColor</string>
+		<key>UIImageName</key>
+		<string>LaunchScreen</string>
+	</dict>
 </dict>
 </plist>
