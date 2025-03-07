@@ -9,28 +9,28 @@
 import Foundation
 
 protocol DisplayParam {
+ 
+    // MARK: Common
+    static var isIpad: Bool { get }
     
-    
-    // Common
     static var pictureWidth: CGFloat { get }
     static var pictureHeight: CGFloat { get }
-    static var fontSize: CGFloat { get }
     static var starWidth: CGFloat { get }
     static var starHeight: CGFloat { get }
     
     static var notationWidth: CGFloat { get }
     static var notationHeight: CGFloat { get }
-    static var fontSizeNotation: CGFloat { get }
     static var heartWidth: CGFloat { get }
     static var heartHeight: CGFloat { get }
     
-    // Row
+    // MARK: Row
     static var rowHeight: CGFloat { get }
     
-    // Detail
-    static var fontSizeDescription: CGFloat { get }
+    // MARK: Detail
+    static var isDetail: Bool { get }
     static var starNotationWidth: CGFloat { get }
     static var starNotationHeight: CGFloat { get }
+    
     
 }
 

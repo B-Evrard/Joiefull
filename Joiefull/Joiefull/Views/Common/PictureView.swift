@@ -9,17 +9,7 @@ import SwiftUI
 struct PictureView: View {
     
     let clothe: Clothe
-    
-    let pictureWidth: CGFloat
-    let pictureHeight: CGFloat
-    let notationWidth: CGFloat
-    let notationHeight: CGFloat
-    let fontSizeNotation: CGFloat
-    let heartWidth: CGFloat
-    let heartHeight: CGFloat
-    
-    let isDetail: Bool
-    
+    let displayParam : DisplayParam.Type
     @State private var isShowingFullScreen = false
     
     var body: some View {
@@ -32,16 +22,16 @@ struct PictureView: View {
                       image
                             .resizable()
                             .scaledToFill()
-                            .accessibilityScaledFrame(width: pictureWidth, height: pictureHeight)
+                            .accessibilityScaledFrame(width: displayParam.pictureWidth, height: displayParam.pictureHeight)
                             .clipShape(RoundedRectangle(cornerRadius: 15))
-                            .tappable(isDetail) {
+                            .tappable(displayParam.isDetail) {
                                 isShowingFullScreen = true
                             }
                 case .failure:
                     Image(systemName: "photo")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: pictureWidth, height: pictureHeight)
+                        .frame(width: displayParam.pictureWidth, height: displayParam.pictureHeight)
                         .foregroundColor(.gray)
                     
                 @unknown default:
@@ -51,11 +41,7 @@ struct PictureView: View {
             .overlay(
                 NotationView(
                     likes: clothe.likes,
-                    width: notationWidth,
-                    height: notationHeight,
-                    fontSize: fontSizeNotation,
-                    heartWidth: heartWidth,
-                    heartHeight: heartHeight
+                    displayParam: displayParam
                 ),
                 alignment: .bottomTrailing
             )
@@ -163,18 +149,9 @@ struct PictureView: View {
         price: 44.99,
         original_price: 59.99
     )
-    let param = DisplayParamFactory.self
-    
     PictureView(
         clothe: clothe,
-        pictureWidth: param.clotheDetailParam.pictureWidth,
-        pictureHeight: param.clotheDetailParam.pictureHeight,
-        notationWidth: param.clotheDetailParam.notationWidth,
-        notationHeight: param.clotheDetailParam.notationHeight,
-        fontSizeNotation: param.clotheDetailParam.fontSizeNotation,
-        heartWidth: param.clotheDetailParam.heartWidth,
-        heartHeight: param.clotheDetailParam.heartHeight,
-        isDetail: true
+        displayParam: DisplayParamFactory.clotheDetailParam
     )
     
 }

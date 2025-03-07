@@ -11,7 +11,7 @@ struct CatalogView: View {
     
     @Environment(\.sizeCategory) var sizeCategory
     
-    @ObservedObject var viewModel: ClothesListViewModel
+    @ObservedObject var viewModel: CatalogViewModel
     
     @State private var selectedClothe: Clothe?
     @State private var isShowingDetail = false
@@ -27,27 +27,25 @@ struct CatalogView: View {
                 
                 if let clothe = selectedClothe {
                     
-                        NavigationStack {
-                            ZStack (alignment: .topLeading) {
-                                ClotheDetailView(viewModel: ClotheDetailViewModel(clothe: clothe), param: DisplayParamFactory.clotheDetailParam)
-                                Button(action: {
-                                        withAnimation {
-                                            selectedClothe = nil
-                                        }
-                                    }) {
-                                        Image(systemName: "chevron.left")
-                                            .font(.title)
-                                            .foregroundColor(.black)
-                                            .padding()
-                                            .background(Circle().fill(Color.white.opacity(0.5)))
-                                            .shadow(radius: 3)
-                                    }
-                                    .padding(10)
+                    NavigationStack {
+                        ZStack (alignment: .topLeading) {
+                            ClotheDetailView(viewModel: ClotheDetailViewModel(clothe: clothe), param: DisplayParamFactory.clotheDetailParam)
+                            Button(action: {
+                                withAnimation {
+                                    selectedClothe = nil
+                                }
+                            }) {
+                                Image(systemName: "chevron.left")
+                                    .font(.title)
+                                    .foregroundColor(.black)
+                                    .padding()
+                                    .background(Circle().fill(Color.white.opacity(0.5)))
+                                    .shadow(radius: 3)
                             }
-                            
+                            .padding(10)
                         }
-                    
-                    
+                        
+                    }
                 }
             }
             
@@ -67,45 +65,70 @@ struct CatalogView: View {
     
     @ViewBuilder
     func createCatalog() -> some View {
-        List {
-             ForEach(viewModel.clothesByCategory.keys.sorted(), id: \.self) { category in
-                VStack(alignment: .leading, spacing: 8) {
-                    Text(category.localized)
-                        .font(Font.system(size: UIFontMetrics.default.scaledValue(for: 22), weight: .semibold))
-                        .dynamicTypeSize(.xSmall ... .accessibility3)
-                        .foregroundColor(.black)
-                        .accessibilityElement(children: .ignore)
-                        .accessibilityLabel("Catégories de vetements \(category.localized)" )
-                    
-                    ScrollView(.horizontal) {
-                        LazyHGrid(rows: [GridItem(.adaptive(minimum: DisplayParamFactory.clotheRowParam.rowHeight.scaledFont()))], spacing: 15) {
-                            ForEach(viewModel.clothesByCategory[category] ?? [], id: \.id) { clothe in
-                                ClotheRowView(clothe: clothe, param: DisplayParamFactory.clotheRowParam)
-                                    .aspectRatio(contentMode: .fit)
-                                    .onTapGesture {
-                                        selectedClothe = clothe
-                                        isShowingDetail = true
-                                    }
-                                }
+        VStack {
+            HStack {
+                Image(systemName: "magnifyingglass")
+                TextField("Rechercher un vêtement...", text: $viewModel.search)
+                    .font(.body)
+                    .limitedDynamicTypeSize()
+                    .autocorrectionDisabled(true)
+                    .textFieldStyle(PlainTextFieldStyle())
+                    .onChange(of: viewModel.search) {
+                        Task {
+                            await viewModel.fetchClothes()
                         }
-                        
                     }
+                Button {
+                    viewModel.search.removeAll()
+                } label: {
+                    Image(systemName: "x.circle")
+                        .foregroundColor(viewModel.search.isEmpty ? Color.gray : Color.black)
                 }
-                .listRowSeparator(.hidden)
+                
             }
-        }
-        .onAppear {
-            Task {
-                await viewModel.fetchClothes()
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("Zone de recherche des vêtements" )
+            .accessibilityHint(.init("Tapez votre recherche ici"))
+            .padding()
+            List {
+                ForEach(viewModel.clothesByCategory.keys.sorted(), id: \.self) { category in
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text(category.localized)
+                            .font(.title2.weight(.semibold))
+                            .limitedDynamicTypeSize()
+                            .foregroundColor(.black)
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityLabel("Catégories de vetements \(category.localized)" )
+                        
+                        ScrollView(.horizontal) {
+                            LazyHGrid(rows: [GridItem(.adaptive(minimum: DisplayParamFactory.clotheRowParam.rowHeight.scaledFont()))], spacing: 15) {
+                                ForEach(viewModel.clothesByCategory[category] ?? [], id: \.id) { clothe in
+                                    ClotheRowView(clothe: clothe, param: DisplayParamFactory.clotheRowParam)
+                                        .aspectRatio(contentMode: .fit)
+                                        .onTapGesture {
+                                            selectedClothe = clothe
+                                            isShowingDetail = true
+                                        }
+                                }
+                            }
+                            
+                        }
+                    }
+                    .listRowSeparator(.hidden)
+                }
             }
-        }
-        .onOpenURL { incomingURL in
-                    print("App was opened via URL: \(incomingURL)")
+            .onAppear {
+                Task {
+                    await viewModel.fetchClothes()
+                }
+            }
+            .onOpenURL { incomingURL in
+                print("App was opened via URL: \(incomingURL)")
                 handleDeepLink(url: incomingURL)
-                }
-
-        .background(Color.white)
-        .listStyle(PlainListStyle())
+            }
+            .background(Color.white)
+            .listStyle(PlainListStyle())
+        }
     }
     
     private func handleDeepLink(url: URL) {
@@ -113,7 +136,7 @@ struct CatalogView: View {
               url.host == "clothe",
               let idString = url.pathComponents.last,
               let id = Int(idString) else { return }
-
+        
         if let clothe = viewModel.clothesByCategory.values.flatMap({ $0 }).first(where: { $0.id == id }) {
             selectedClothe = clothe
             isShowingDetail = true
@@ -129,6 +152,6 @@ struct CatalogView: View {
 }
 
 #Preview {
-    let viewModel = ClothesListViewModel(apiService: APIClient())
+    let viewModel = CatalogViewModel(apiService: APIClient())
     CatalogView(viewModel: viewModel)
 }

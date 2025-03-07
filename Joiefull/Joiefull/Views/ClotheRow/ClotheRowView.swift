@@ -17,17 +17,13 @@ struct ClotheRowView: View {
         VStack {
             PictureView(
                 clothe: clothe,
-                pictureWidth: param.pictureWidth,
-                pictureHeight: param.pictureHeight,
-                notationWidth: param.notationWidth,
-                notationHeight: param.notationHeight,
-                fontSizeNotation: param.fontSizeNotation,
-                heartWidth: param.heartWidth,
-                heartHeight: param.heartHeight,
-                isDetail: false
+                displayParam: param
             )
             .accessibilityScaledFrame(width: param.pictureWidth)
-            InfosView(clothe: clothe, fontSize: param.fontSize, starWidth: param.starWidth, starHeight: param.starHeight)
+            InfosView(
+                clothe: clothe,
+                displayParam: param
+            )
         }
         .accessibilityScaledFrame(width: param.pictureWidth)
         .accessibilityElement(children: .ignore)

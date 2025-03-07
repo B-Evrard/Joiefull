@@ -22,18 +22,16 @@ extension View {
     }
     
     func accessibilityScaledFrame(width: CGFloat? = nil, height: CGFloat? = nil, alignment: Alignment = .center) -> some View {
-        let screenWidth = UIScreen.main.bounds.width-40
+        let screenWidth = UIScreen.main.bounds.width-30
         let scaledWidth = width != nil ? width!.scaledFont() : width
         let limitedWidth = scaledWidth != nil ? min(scaledWidth!, screenWidth) : nil
         let scaledHeight = height?.scaledFont()
         return self.frame(width: limitedWidth, height: scaledHeight, alignment: alignment)
     }
     
-    func limitedDynamicTypeSize(upTo size: DynamicTypeSize = .small) -> some View {
+    func limitedDynamicTypeSize(upTo size: DynamicTypeSize = .accessibility3) -> some View {
             self.dynamicTypeSize(...size)
     }
-
-    
 }
 
 // MARK: CGFloat Extensions

@@ -10,38 +10,51 @@ import SwiftUI
 struct InfosView: View {
     
     let clothe: Clothe
+    let displayParam : DisplayParam.Type
     
-    let fontSize: CGFloat
-    let starWidth: CGFloat
-    let starHeight: CGFloat
-    
-    @ScaledMetric var fontSize2: CGFloat = 18
+    var dynamicFont: Font {
+        if displayParam.self.isIpad {
+            return displayParam.isDetail ? .title3.weight(.semibold) : .body.weight(.semibold)
+        } else {
+            return displayParam.isDetail ? .body.weight(.semibold) : .subheadline.weight(.semibold)
+        }
+    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 3) {
             HStack {
                 Text(clothe.name)
-                    .font(Font.system(size: fontSize2, weight: .semibold))
-                    .dynamicTypeSize(...DynamicTypeSize.accessibility1)
+                    .font(dynamicFont)
+                    .limitedDynamicTypeSize()
                     .lineLimit(1)
                     .truncationMode(.tail)
+
                 Spacer()
                 Image(systemName: "star.fill")
                     .resizable()
-                    .frame(width: starWidth, height: starHeight)
+                    .frame(width: displayParam.starWidth, height: displayParam.starHeight)
                     .foregroundColor(Color("OrangeJoiefull"))
                 Text(clothe.rate.formattedRate())
-                    .font(Font.system(size: fontSize2))
+                    .font(displayParam.isIpad ?
+                          (displayParam.isDetail ? .title3 : .body) :
+                            (displayParam.isDetail ? .body : .footnote)
+                    )
                     .limitedDynamicTypeSize()
                     
             }
             HStack {
                 Text(clothe.price.formattedPrice())
-                    .font(Font.system(size: fontSize2))
+                    .font(displayParam.isIpad ?
+                          (displayParam.isDetail ? .title3 : .body) :
+                            (displayParam.isDetail ? .body : .footnote)
+                    )
                     .limitedDynamicTypeSize()
                 Spacer()
                 Text(clothe.original_price.formattedPrice())
-                    .font(Font.system(size: fontSize2))
+                    .font(displayParam.isIpad ?
+                          (displayParam.isDetail ? .title3 : .body) :
+                            (displayParam.isDetail ? .body : .footnote)
+                    )
                     .limitedDynamicTypeSize()
                     .strikethrough(true)
             }
@@ -63,6 +76,6 @@ struct InfosView: View {
         original_price: 59.99
     )
     
-    InfosView(clothe: clothe, fontSize: 14, starWidth: 12, starHeight: 12)
+    InfosView(clothe: clothe, displayParam: DisplayParamFactory.clotheDetailParam)
 }
     
