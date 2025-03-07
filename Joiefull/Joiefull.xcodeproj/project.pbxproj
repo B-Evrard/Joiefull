@@ -37,6 +37,14 @@
 			);
 			target = FE03EBE22D5DEA58008E9DF5 /* Joiefull */;
 		};
+		FE44E20B2D7B409400B91DB4 /* Exceptions for "Joiefull" folder in "JoiefullTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+				"Preview Content/Preview Assets.xcassets",
+			);
+			target = FE03EBF22D5DEA59008E9DF5 /* JoiefullTests */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -44,6 +52,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				FE09D7A02D61F68F005CBD65 /* Exceptions for "Joiefull" folder in "Joiefull" target */,
+				FE44E20B2D7B409400B91DB4 /* Exceptions for "Joiefull" folder in "JoiefullTests" target */,
 			);
 			path = Joiefull;
 			sourceTree = "<group>";
@@ -144,6 +153,7 @@
 				FE03EBF52D5DEA59008E9DF5 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
+				FE03EBE52D5DEA58008E9DF5 /* Joiefull */,
 				FE03EBF62D5DEA59008E9DF5 /* JoiefullTests */,
 			);
 			name = JoiefullTests;

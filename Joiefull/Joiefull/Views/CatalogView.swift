@@ -126,6 +126,9 @@ struct CatalogView: View {
                 print("App was opened via URL: \(incomingURL)")
                 handleDeepLink(url: incomingURL)
             }
+            .alert(viewModel.messageAlert, isPresented: $viewModel.showAlert  ) {
+                Button("OK") { }
+            }
             .background(Color.white)
             .listStyle(PlainListStyle())
         }

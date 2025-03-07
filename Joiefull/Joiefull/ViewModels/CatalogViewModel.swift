@@ -8,19 +8,30 @@
 import Foundation
 import SwiftUI
 
-@MainActor
+
 class CatalogViewModel: ObservableObject {
     
     @Published var clothesByCategory: [ClotheCategory: [Clothe]] = [:]
-    @Published var messageAlert: String = ""
     @Published var search: String = ""
+    @Published var showAlert: Bool = false
+    @Published var messageAlert: String = ""{
+        didSet {
+            if messageAlert.isEmpty {
+                showAlert = false
+            }
+            else {
+                showAlert = true
+            }
+        }
+    }
     
     private let apiService: APIService
     
     init(apiService: APIService) {
         self.apiService = apiService
     }
-    
+   
+    @MainActor
     func fetchClothes() async {
         self.messageAlert = ""
         let result = await apiService.clothesList()
@@ -36,10 +47,5 @@ class CatalogViewModel: ObservableObject {
             return
         }
     }
-    
-    
-    
-    
-    
     
 }
