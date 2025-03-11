@@ -20,12 +20,48 @@ final class CatalogViewModelTest: XCTestCase {
         await viewModel.fetchClothes()
         
         XCTAssertEqual(viewModel.clothesByCategory.count, 4)
+        XCTAssertEqual(viewModel.clothesByCategory.values.flatMap { $0 }.count, 12)
+        
+    }
+    
+    func testFilter() async {
+        let session = MockUrlSession()
+        session.data = sampleJSON.data(using: .utf8)
+        session.urlResponse = HTTPURLResponse(url: Endpoint.clothes.api , statusCode: 200, httpVersion: nil, headerFields: nil)
+        let mockApiClient = MockApiClient(session: session)
         
         
-
+        let viewModel = CatalogViewModel(apiService: mockApiClient)
+        viewModel.search = "Sac à main"
+        await viewModel.fetchClothes()
+        
+        XCTAssertEqual(viewModel.clothesByCategory.count, 1)
+        XCTAssertEqual(viewModel.clothesByCategory.values.flatMap { $0 }.count, 1)
+        
+        viewModel.search = "zzzzzzzzzzzz"
+        await viewModel.fetchClothes()
+        
+        XCTAssertEqual(viewModel.clothesByCategory.count, 0)
+    }
+    
+    func testError() async {
+        let session = MockUrlSession()
+        session.data = invalidJson.data(using: .utf8)
+        session.urlResponse = HTTPURLResponse(url: Endpoint.clothes.api , statusCode: 200, httpVersion: nil, headerFields: nil)
+        let mockApiClient = MockApiClient(session: session)
+        
+        
+        let viewModel = CatalogViewModel(apiService: mockApiClient)
+        await viewModel.fetchClothes()
+        
+        XCTAssertEqual(viewModel.showAlert,true)
     }
     
 }
+
+let invalidJson = """
+xxxxxx
+"""
 
 let sampleJSON = """
 [

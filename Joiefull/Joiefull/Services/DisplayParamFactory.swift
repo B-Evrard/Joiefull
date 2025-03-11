@@ -7,7 +7,6 @@
 
 import UIKit
 
-
 class DisplayParamFactory {
     static var clotheRowParam: DisplayParam.Type {
         return UIDevice.current.userInterfaceIdiom == .pad ? ClotheRowParamIpad.self : ClotheRowParamPhone.self

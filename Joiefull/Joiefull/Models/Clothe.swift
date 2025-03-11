@@ -79,6 +79,12 @@ struct Picture: Decodable {
     let description: String
 }
 
+struct ClotheNote: Codable {
+    let id: Int
+    var rating: Int
+    var comment: String
+}
+
 enum ClotheCategory: String, Decodable, Comparable {
     
     case accessories = "ACCESSORIES"

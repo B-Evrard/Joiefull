@@ -8,11 +8,6 @@
 
 import Foundation
 
-struct ClotheNote: Codable {
-    let id: Int
-    var rating: Int
-    var comment: String
-}
 
 class ClotheNotesStorage {
     static let shared = ClotheNotesStorage()

@@ -32,16 +32,6 @@ struct RatingAndNoteView: View {
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(viewModel.clothe.accessibilityRatingInfos)
             
-            //            TextField("Partagez ici vos impressions sur cette pièce", text: $viewModel.clothe.comment, axis: .vertical)
-            //                .textFieldStyle(PlainTextFieldStyle())
-            //                .padding(8)
-            //                .frame(height: 100)
-            //                .background(RoundedRectangle(cornerRadius: 10)
-            //                    .stroke(Color.gray.opacity(0.5), lineWidth: 1))
-            //                
-            //                .lineLimit(5)
-            //                .font(DisplayParamFactory.clotheDetailParam.isIpad ? .body : .subheadline)
-            
             ZStack(alignment: .topLeading) {
                 
                 TextEditor(text: $viewModel.clothe.comment)

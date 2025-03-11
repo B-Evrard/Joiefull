@@ -1,13 +1,5 @@
 //
-//  ClotheRowParamPhone 2.swift
-//  Joiefull
-//
-//  Created by Bruno Evrard on 26/02/2025.
-//
-
-
-//
-//  ClotheRowParamPhone.swift
+//  ClotheRowParamIpad.swift
 //  Joiefull
 //
 //  Created by Bruno Evrard on 26/02/2025.
