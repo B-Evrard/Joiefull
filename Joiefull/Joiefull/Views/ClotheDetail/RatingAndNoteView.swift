@@ -9,6 +9,8 @@ import SwiftUI
 
 struct RatingAndNoteView: View {
     
+    @Environment(\.dynamicTypeSize) var dynamicTypeSize
+    
     let user: User
     @ObservedObject var viewModel: ClotheDetailViewModel
     @State private var isEditing: Bool = false
@@ -18,8 +20,14 @@ struct RatingAndNoteView: View {
             HStack(spacing: 10){
                 Image(User.mock.profilePicture)
                     .resizable()
-                    .frame(width: 42.91, height: 39)
+                    .scaledToFill()
+                    .accessibilityScaledFrame(
+                        dynamicTypeSize: dynamicTypeSize,
+                        width: 42.91 ,
+                        height: 39
+                    )
                     .clipShape(Circle())
+                    .clipped()
                 
                 RatingView(
                     rating: $viewModel.clothe.rating,
@@ -35,8 +43,7 @@ struct RatingAndNoteView: View {
             ZStack(alignment: .topLeading) {
                 
                 TextEditor(text: $viewModel.clothe.comment)
-                    .accessibilityScaledFrame(height: 50)
-                
+                    .accessibilityScaledFrame(dynamicTypeSize: dynamicTypeSize, height: 50)
                     .padding(8)
                     .background(RoundedRectangle(cornerRadius: 10)
                         .stroke(Color.gray.opacity(0.5), lineWidth: 1))
@@ -51,7 +58,7 @@ struct RatingAndNoteView: View {
                         .padding(.leading, 15)
                         .opacity(50)
                         .allowsHitTesting(false)
-                        .font(DisplayParamFactory.clotheDetailParam.isIpad ? .body : .subheadline)
+                        .accessibilityScaledFont(size: DisplayParamFactory.clotheDetailParam.descriptionFontSize)
                         .limitedDynamicTypeSize()
                 }
             }
@@ -61,7 +68,7 @@ struct RatingAndNoteView: View {
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(viewModel.clothe.accessibilityComment)
-        .accessibilityScaledFrame(width: DisplayParamFactory.clotheDetailParam.pictureWidth)
+        .accessibilityScaledFrame(dynamicTypeSize: dynamicTypeSize, width: DisplayParamFactory.clotheDetailParam.pictureWidth)
     }
 }
 

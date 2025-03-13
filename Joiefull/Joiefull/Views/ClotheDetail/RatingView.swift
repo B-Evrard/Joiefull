@@ -9,6 +9,8 @@ import SwiftUI
 
 struct RatingView: View {
     
+    @Environment(\.dynamicTypeSize) var dynamicTypeSize
+    
     @Binding var rating: Int
     let starNotationWidth: CGFloat
     let starNotationHeight: CGFloat
@@ -23,14 +25,14 @@ struct RatingView: View {
                     if (number > rating) {
                         Image(systemName: "star")
                             .resizable()
-                            .accessibilityScaledFrame(width: starNotationWidth, height: starNotationHeight)
+                            .accessibilityScaledFrame(dynamicTypeSize: dynamicTypeSize, width: starNotationWidth, height: starNotationHeight)
                             .foregroundStyle(Color.gray)
                             
                     }
                     else {
                         Image(systemName: "star.fill")
                             .resizable()
-                            .accessibilityScaledFrame(width: starNotationWidth, height: starNotationHeight)
+                            .accessibilityScaledFrame(dynamicTypeSize: dynamicTypeSize, width: starNotationWidth, height: starNotationHeight)
                             .foregroundStyle(Color.yellow)
                     }
                 }

@@ -26,6 +26,10 @@ final class ClotheDetailParamIpad: DisplayParam {
     static var starNotationHeight: CGFloat = 27.83
     
     static var rowHeight: CGFloat = 0
+    
+    static var infosFontSize: CGFloat = 22
+    static var heartFontSize: CGFloat = 22
+    static var descriptionFontSize: CGFloat = 18
 }
 
 

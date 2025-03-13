@@ -31,6 +31,12 @@ protocol DisplayParam {
     static var starNotationWidth: CGFloat { get }
     static var starNotationHeight: CGFloat { get }
     
+    // MARK: Fonts Size
+    static var infosFontSize: CGFloat { get }
+    static var heartFontSize: CGFloat { get }
+    static var descriptionFontSize: CGFloat { get }
+    
+    
     
 }
 

@@ -13,8 +13,7 @@ struct DescriptionView: View {
     var body: some View {
         
         Text(clothe.picture.description)
-            .font(DisplayParamFactory.clotheDetailParam.isIpad ? .body : .subheadline)
-        .limitedDynamicTypeSize()
+        .accessibilityScaledFont(size: DisplayParamFactory.clotheDetailParam.descriptionFontSize)
         .lineLimit(3)
         .truncationMode(.tail)
         .multilineTextAlignment(.leading)

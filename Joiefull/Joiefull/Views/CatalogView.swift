@@ -17,37 +17,42 @@ struct CatalogView: View {
     @State private var isShowingDetail = false
     
     var body: some View {
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            HStack(spacing: 0) {
-                NavigationStack {
-                    createCatalog()
-                }
-                .frame(width: selectedClothe != nil ? calculWidth(730): nil)
-                .frame(maxWidth: selectedClothe == nil ? .infinity : nil)
-                
-                if let clothe = selectedClothe {
+        if DisplayParamFactory.clotheRowParam.isIpad {
+            
+                HStack(spacing: 0) {
                     
                     NavigationStack {
-                        ZStack (alignment: .topLeading) {
-                            ClotheDetailView(viewModel: ClotheDetailViewModel(clothe: clothe), param: DisplayParamFactory.clotheDetailParam)
-                            Button(action: {
-                                withAnimation {
-                                    selectedClothe = nil
-                                }
-                            }) {
-                                Image(systemName: "chevron.left")
-                                    .font(.title)
-                                    .foregroundColor(.black)
-                                    .padding()
-                                    .background(Circle().fill(Color.white.opacity(0.5)))
-                                    .shadow(radius: 3)
-                            }
-                            .padding(10)
-                        }
+                        createCatalog()
+                    }
+                    .frame(width: selectedClothe != nil ? calculWidth(730): nil)
+                    .frame(maxWidth: selectedClothe == nil ? .infinity : nil)
+                    
+                    if let clothe = selectedClothe {
                         
+                        NavigationStack {
+                            ZStack (alignment: .topLeading) {
+                                ClotheDetailView(viewModel: ClotheDetailViewModel(clothe: clothe), param: DisplayParamFactory.clotheDetailParam)
+                                Button(action: {
+                                    withAnimation {
+                                        selectedClothe = nil
+                                    }
+                                }) {
+                                    Image(systemName: "chevron.left")
+                                        .font(.title)
+                                        .foregroundColor(.black)
+                                        .padding()
+                                        .background(Circle().fill(Color.white.opacity(0.5)))
+                                        .shadow(radius: 3)
+                                }
+                                .padding(10)
+                            }
+                            
+                        }
                     }
                 }
-            }
+                
+                
+            
             
         } else {
             NavigationStack {
@@ -101,7 +106,7 @@ struct CatalogView: View {
                             .accessibilityLabel("Catégories de vetements \(category.localized)" )
                         
                         ScrollView(.horizontal) {
-                            LazyHGrid(rows: [GridItem(.adaptive(minimum: DisplayParamFactory.clotheRowParam.rowHeight.scaledFont()))], spacing: 15) {
+                            LazyHGrid(rows: [GridItem(.adaptive(minimum: adjustedSize(for: DisplayParamFactory.clotheRowParam.rowHeight)))], spacing: 15) {
                                 ForEach(viewModel.clothesByCategory[category] ?? [], id: \.id) { clothe in
                                     ClotheRowView(clothe: clothe, param: DisplayParamFactory.clotheRowParam)
                                         .aspectRatio(contentMode: .fit)
@@ -114,7 +119,10 @@ struct CatalogView: View {
                             
                         }
                     }
+                    .listRowBackground(Color.clear)
                     .listRowSeparator(.hidden)
+                    
+                    
                 }
             }
             .onAppear {
@@ -129,9 +137,10 @@ struct CatalogView: View {
             .alert(viewModel.messageAlert, isPresented: $viewModel.showAlert  ) {
                 Button("OK") { }
             }
-            .background(Color.white)
+            
             .listStyle(PlainListStyle())
         }
+        .background(DisplayParamFactory.clotheRowParam.isIpad ? Color("ColorIpad") : Color.clear)
     }
     
     private func handleDeepLink(url: URL) {
@@ -149,7 +158,7 @@ struct CatalogView: View {
     private func calculWidth(_ catalogWidth: CGFloat) -> CGFloat {
         let screenWidth = UIScreen.main.bounds.width
         let detailWidth = screenWidth - CGFloat(720)
-        let diff = detailWidth.scaledFont() - detailWidth
+        let diff = adjustedSize(for: detailWidth) - detailWidth
         return catalogWidth - diff
     }
 }

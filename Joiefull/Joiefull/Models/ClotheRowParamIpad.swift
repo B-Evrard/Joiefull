@@ -26,4 +26,8 @@ final class ClotheRowParamIpad: DisplayParam {
     static var starNotationWidth: CGFloat = 0
     static var starNotationHeight: CGFloat = 0
     
+    static var infosFontSize: CGFloat = 18
+    static var heartFontSize: CGFloat = 14
+    static var descriptionFontSize: CGFloat = 18
+    
 }

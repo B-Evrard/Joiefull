@@ -8,8 +8,11 @@
 import SwiftUI
 struct PictureView: View {
     
+    @Environment(\.dynamicTypeSize) var dynamicTypeSize
+    
     let clothe: Clothe
     let displayParam : DisplayParam.Type
+    
     @State private var isShowingFullScreen = false
     
     var body: some View {
@@ -19,20 +22,29 @@ struct PictureView: View {
                 case .empty:
                     ProgressView()
                 case .success(let image):
-                      image
-                            .resizable()
-                            .scaledToFill()
-                            .accessibilityScaledFrame(width: displayParam.pictureWidth, height: displayParam.pictureHeight)
-                            .clipShape(RoundedRectangle(cornerRadius: 15))
-                            .tappable(displayParam.isDetail) {
-                                isShowingFullScreen = true
-                            }
+                    image
+                        .resizable()
+                        .scaledToFill()
+                        .accessibilityScaledFrame(
+                            dynamicTypeSize: dynamicTypeSize,
+                            width: displayParam.pictureWidth ,
+                            height: displayParam.pictureHeight
+                        )
+                        .clipShape(RoundedRectangle(cornerRadius: 15))
+                        .clipped()
+                    
+                    
                 case .failure:
                     Image(systemName: "photo")
                         .resizable()
-                        .scaledToFit()
-                        .frame(width: displayParam.pictureWidth, height: displayParam.pictureHeight)
-                        .foregroundColor(.gray)
+                        .scaledToFill()
+                        .accessibilityScaledFrame(
+                            dynamicTypeSize: dynamicTypeSize,
+                            width: displayParam.pictureWidth ,
+                            height: displayParam.pictureHeight
+                        )
+                        .clipShape(RoundedRectangle(cornerRadius: 15))
+                        .clipped()
                     
                 @unknown default:
                     EmptyView()

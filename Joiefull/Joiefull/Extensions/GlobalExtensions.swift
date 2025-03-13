@@ -21,24 +21,24 @@ extension View {
         }
     }
     
-    func accessibilityScaledFrame(width: CGFloat? = nil, height: CGFloat? = nil, alignment: Alignment = .center) -> some View {
+    func accessibilityScaledFrame(dynamicTypeSize: DynamicTypeSize, width: CGFloat? = nil, height: CGFloat? = nil, alignment: Alignment = .center ) -> some View {
         let screenWidth = UIScreen.main.bounds.width-30
-        let scaledWidth = width != nil ? width!.scaledFont() : width
+        let scaledWidth = width.map { adjustedSize(for: $0) }
         let limitedWidth = scaledWidth != nil ? min(scaledWidth!, screenWidth) : nil
-        let scaledHeight = height?.scaledFont()
-        return self.frame(width: limitedWidth, height: scaledHeight, alignment: alignment)
+        let scaledHeight = height.map { adjustedSize(for: $0) }
+        return self.frame(width: limitedWidth, height: scaledHeight, alignment: alignment).limitedDynamicTypeSize()
+    }
+    
+    func accessibilityScaledFont(size: CGFloat, semiBold: Bool = false) -> some View {
+        let font = semiBold ? "SFProText-Semibold" : "SFProText-Regular"
+        return self.font(Font.custom(font, size: size, relativeTo: .body)).limitedDynamicTypeSize()
     }
     
     func limitedDynamicTypeSize(upTo size: DynamicTypeSize = .accessibility3) -> some View {
             self.dynamicTypeSize(...size)
     }
-}
-
-// MARK: CGFloat Extensions
-extension CGFloat {
-    func scaledFont(forTextStyle style: UIFont.TextStyle = .body) -> CGFloat {
-        return UIFontMetrics.default.scaledValue(for: self, compatibleWith: nil)
-    }
+    
+    
 }
 
 // MARK: Double Extensions

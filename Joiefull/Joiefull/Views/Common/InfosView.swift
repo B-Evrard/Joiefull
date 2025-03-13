@@ -9,56 +9,42 @@
 import SwiftUI
 struct InfosView: View {
     
+    @Environment(\.dynamicTypeSize) var dynamicTypeSize
+    
     let clothe: Clothe
     let displayParam : DisplayParam.Type
-    
-    var dynamicFont: Font {
-        if displayParam.self.isIpad {
-            return displayParam.isDetail ? .title3.weight(.semibold) : .body.weight(.semibold)
-        } else {
-            return displayParam.isDetail ? .body.weight(.semibold) : .subheadline.weight(.semibold)
-        }
-    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 3) {
             HStack {
                 Text(clothe.name)
-                    .font(dynamicFont)
-                    .limitedDynamicTypeSize()
+                    .accessibilityScaledFont(size: displayParam.infosFontSize, semiBold: true)
+                    .fontWeight(.bold)
                     .lineLimit(1)
                     .truncationMode(.tail)
-
                 Spacer()
                 Image(systemName: "star.fill")
                     .resizable()
-                    .frame(width: displayParam.starWidth, height: displayParam.starHeight)
+                    .accessibilityScaledFrame(
+                        dynamicTypeSize: dynamicTypeSize,
+                        width: displayParam.starWidth ,
+                        height: displayParam.starHeight
+                    )
                     .foregroundColor(Color("OrangeJoiefull"))
                 Text(clothe.rate.formattedRate())
-                    .font(displayParam.isIpad ?
-                          (displayParam.isDetail ? .title3 : .body) :
-                            (displayParam.isDetail ? .body : .footnote)
-                    )
-                    .limitedDynamicTypeSize()
-                    
+                    .accessibilityScaledFont(size: displayParam.infosFontSize)
             }
+            
             HStack {
                 Text(clothe.price.formattedPrice())
-                    .font(displayParam.isIpad ?
-                          (displayParam.isDetail ? .title3 : .body) :
-                            (displayParam.isDetail ? .body : .footnote)
-                    )
-                    .limitedDynamicTypeSize()
+                    .accessibilityScaledFont(size: displayParam.infosFontSize)
                 Spacer()
                 Text(clothe.original_price.formattedPrice())
-                    .font(displayParam.isIpad ?
-                          (displayParam.isDetail ? .title3 : .body) :
-                            (displayParam.isDetail ? .body : .footnote)
-                    )
-                    .limitedDynamicTypeSize()
+                    .accessibilityScaledFont(size: displayParam.infosFontSize)
                     .strikethrough(true)
             }
-        }
+            
+        }.padding(.horizontal,5)
         
         
     }

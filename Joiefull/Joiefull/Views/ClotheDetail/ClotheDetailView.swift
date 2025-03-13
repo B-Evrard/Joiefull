@@ -9,9 +9,10 @@ import SwiftUI
 
 struct ClotheDetailView: View {
     
+    @Environment(\.dynamicTypeSize) var dynamicTypeSize
+    
     @ObservedObject var viewModel: ClotheDetailViewModel
     let param: DisplayParam.Type
-    @Environment(\.dynamicTypeSize) var dynamicTypeSize
     
     var body: some View {
         let isTextLarge = dynamicTypeSize > .large
@@ -40,7 +41,7 @@ struct ClotheDetailView: View {
                         clothe: viewModel.clothe ,
                         displayParam: param
                     )
-                    .accessibilityScaledFrame(width: param.pictureWidth)
+                    .accessibilityScaledFrame(dynamicTypeSize: dynamicTypeSize, width: param.pictureWidth)
                     .padding(.bottom, 10)
                 }
                 .accessibilityElement(children: .ignore)
@@ -57,7 +58,11 @@ struct ClotheDetailView: View {
                 ) {
                     Image(systemName: "square.and.arrow.up")
                         .resizable()
-                        .frame(width: 18, height: 25)
+                        .accessibilityScaledFrame(
+                            dynamicTypeSize: dynamicTypeSize,
+                            width: 18 ,
+                            height: 25
+                        )
                         .foregroundColor(Color.black)
                         .padding()
                         .background(Circle().fill(Color.white).opacity(0.5))
@@ -76,7 +81,7 @@ struct ClotheDetailView: View {
             )
             
         }
-        .accessibilityScaledFrame(width: DisplayParamFactory.clotheDetailParam.pictureWidth)
+        .accessibilityScaledFrame(dynamicTypeSize: dynamicTypeSize, width: DisplayParamFactory.clotheDetailParam.pictureWidth)
     }
 }
 

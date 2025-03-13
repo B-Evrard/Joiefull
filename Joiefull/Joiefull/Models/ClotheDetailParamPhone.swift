@@ -27,6 +27,10 @@ final class ClotheDetailParamPhone: DisplayParam {
     
     static var rowHeight: CGFloat = 0
     
+    static var infosFontSize: CGFloat = 18
+    static var heartFontSize: CGFloat = 18
+    static var descriptionFontSize: CGFloat = 14
+    
 }
 
 

@@ -10,6 +10,7 @@ import SwiftUI
 @main
 struct JoiefullApp: App {
     
+    @Environment(\.dynamicTypeSize) var dynamicTypeSize
     var body: some Scene {
         WindowGroup {
             CatalogView(viewModel: CatalogViewModel(apiService: APIClient()))
