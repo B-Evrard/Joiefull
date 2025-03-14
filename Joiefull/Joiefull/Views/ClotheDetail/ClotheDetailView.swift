@@ -22,7 +22,7 @@ struct ClotheDetailView: View {
                     ZStack (alignment: .topTrailing) {
                         VStack {
                             PictureView(
-                                clothe: viewModel.clothe,
+                                clothe: $viewModel.clothe,
                                 displayParam: param
                             )
                             .padding(.bottom, 10)

@@ -20,9 +20,17 @@ struct InfosView: View {
                 Text(clothe.name)
                     .accessibilityScaledFont(size: displayParam.infosFontSize, semiBold: true)
                     .fontWeight(.bold)
-                    .lineLimit(1)
-                    .truncationMode(.tail)
-                Spacer()
+                   .lineLimit(nil)
+                   .frame(maxWidth: .infinity, alignment: .leading)
+                //.truncationMode(.tail)
+//                    .accessibilityScaledFrame(
+//                        dynamicTypeSize: dynamicTypeSize,
+//                        width: 140,
+//                        alignment: .leading
+//                        
+//                    )
+                    //.frame(maxWidth: 147.50, alignment: .leading)
+                    Spacer()
                 Image(systemName: "star.fill")
                     .resizable()
                     .accessibilityScaledFrame(
@@ -30,7 +38,7 @@ struct InfosView: View {
                         width: displayParam.starWidth ,
                         height: displayParam.starHeight
                     )
-                    .foregroundColor(Color("OrangeJoiefull"))
+                    .foregroundColor(Color("OrangeJoieFull"))
                 Text(clothe.rate.formattedRate())
                     .accessibilityScaledFont(size: displayParam.infosFontSize)
             }

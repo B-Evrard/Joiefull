@@ -10,7 +10,7 @@ struct PictureView: View {
     
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
     
-    let clothe: Clothe
+    @Binding var clothe: Clothe
     let displayParam : DisplayParam.Type
     
     @State private var isShowingFullScreen = false
@@ -52,7 +52,7 @@ struct PictureView: View {
             }
             .overlay(
                 NotationView(
-                    clothe: ClotheDetailViewModel,
+                    clothe: $clothe,
                     displayParam: displayParam
                 ),
                 alignment: .bottomTrailing
@@ -162,7 +162,7 @@ struct PictureView: View {
         original_price: 59.99
     )
     PictureView(
-        clothe: clothe,
+        clothe: .constant(clothe),
         displayParam: DisplayParamFactory.clotheDetailParam
     )
     

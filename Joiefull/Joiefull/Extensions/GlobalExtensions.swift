@@ -38,7 +38,6 @@ extension View {
             self.dynamicTypeSize(...size)
     }
     
-    
 }
 
 // MARK: Double Extensions

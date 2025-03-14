@@ -108,9 +108,9 @@ struct CatalogView: View {
                             .accessibilityLabel("Catégories de vetements \(category.localized)" )
                         
                         ScrollView(.horizontal) {
-                            LazyHGrid(rows: [GridItem(.adaptive(minimum: adjustedSize(for: DisplayParamFactory.clotheRowParam.rowHeight)))], spacing: 15) {
-                                ForEach(viewModel.clothesByCategory[category] ?? [], id: \.id) { clothe in
-                                    ClotheRowView(clothe: clothe, param: DisplayParamFactory.clotheRowParam)
+                            LazyHGrid(rows: [GridItem(.flexible(minimum: adjustedSize(for: DisplayParamFactory.clotheRowParam.rowHeight)))], spacing: 15) {
+                                ForEach(viewModel.clothesByCategory(category), id: \.id) { clothe in
+                                    ClotheRowView(clothe: .constant(clothe), param: DisplayParamFactory.clotheRowParam)
                                         .aspectRatio(contentMode: .fit)
                                         .onTapGesture {
                                             selectedClothe = clothe

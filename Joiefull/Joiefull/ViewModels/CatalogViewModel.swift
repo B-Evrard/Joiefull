@@ -48,4 +48,8 @@ class CatalogViewModel: ObservableObject {
         }
     }
     
+    func clothesByCategory(_ category: ClotheCategory) -> [Clothe] {
+        return clothesByCategory[category] ?? []
+    }
+    
 }

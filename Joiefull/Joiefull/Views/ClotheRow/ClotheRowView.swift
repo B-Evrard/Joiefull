@@ -11,14 +11,14 @@ struct ClotheRowView: View {
     
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
     
-    let clothe: Clothe
+    @Binding var clothe: Clothe
     let param: DisplayParam.Type
     
     
     var body: some View {
         VStack {
             PictureView(
-                clothe: clothe,
+                clothe: $clothe,
                 displayParam: param
             )
             .accessibilityScaledFrame(dynamicTypeSize: dynamicTypeSize, width: param.pictureWidth)
@@ -46,5 +46,5 @@ struct ClotheRowView: View {
         original_price: 59.99
     )
     
-    ClotheRowView(clothe: clothe, param: ClotheRowParamIpad.self)
+    ClotheRowView(clothe: .constant(clothe), param: ClotheRowParamIpad.self)
 }
