@@ -41,11 +41,11 @@ class ClotheNotesStorage {
     }
 
     func getNote(for clotheID: Int) -> ClotheNote {
-        return notes[clotheID] ?? ClotheNote(id: clotheID, rating: 0, comment: "")
+        return notes[clotheID] ?? ClotheNote(id: clotheID, rating: 0, comment: "", favorite: false)
     }
 
-    func updateNote(for clotheID: Int, rating: Int, comment: String) {
-        notes[clotheID] = ClotheNote(id: clotheID, rating: rating, comment: comment)
+    func updateNote(for clotheID: Int, rating: Int, comment: String, favorite: Bool) {
+        notes[clotheID] = ClotheNote(id: clotheID, rating: rating, comment: comment, favorite: favorite)
         saveNotes()
     }
 }

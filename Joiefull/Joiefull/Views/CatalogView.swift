@@ -27,10 +27,12 @@ struct CatalogView: View {
                     .frame(width: selectedClothe != nil ? calculWidth(730): nil)
                     .frame(maxWidth: selectedClothe == nil ? .infinity : nil)
                     
+                    
                     if let clothe = selectedClothe {
                         
                         NavigationStack {
                             ZStack (alignment: .topLeading) {
+                                Color("ColorIpad").ignoresSafeArea()
                                 ClotheDetailView(viewModel: ClotheDetailViewModel(clothe: clothe), param: DisplayParamFactory.clotheDetailParam)
                                 Button(action: {
                                     withAnimation {
@@ -131,7 +133,6 @@ struct CatalogView: View {
                 }
             }
             .onOpenURL { incomingURL in
-                print("App was opened via URL: \(incomingURL)")
                 handleDeepLink(url: incomingURL)
             }
             .alert(viewModel.messageAlert, isPresented: $viewModel.showAlert  ) {

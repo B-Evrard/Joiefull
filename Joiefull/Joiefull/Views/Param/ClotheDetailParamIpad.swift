@@ -21,11 +21,12 @@ final class ClotheDetailParamIpad: DisplayParam {
     static let heartWidth: CGFloat = 21
     static let heartHeight: CGFloat = 20
     
+    static var rowHeight: CGFloat = 0
+    
     static let isDetail: Bool = true
     static var starNotationWidth: CGFloat = 27.45
     static var starNotationHeight: CGFloat = 27.83
-    
-    static var rowHeight: CGFloat = 0
+    static var commentHeight: CGFloat = 69
     
     static var infosFontSize: CGFloat = 22
     static var heartFontSize: CGFloat = 22

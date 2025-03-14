@@ -30,6 +30,7 @@ protocol DisplayParam {
     static var isDetail: Bool { get }
     static var starNotationWidth: CGFloat { get }
     static var starNotationHeight: CGFloat { get }
+    static var commentHeight: CGFloat { get }
     
     // MARK: Fonts Size
     static var infosFontSize: CGFloat { get }

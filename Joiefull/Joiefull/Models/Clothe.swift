@@ -13,19 +13,24 @@ struct Clothe: Decodable {
     let picture: Picture
     let name: String
     let category: ClotheCategory
-    let likes: Int
+    var likes: Int
     let price: Double
     let original_price: Double
     
     
     var rating: Int {
         get { ClotheNotesStorage.shared.getNote(for: id).rating }
-        set { ClotheNotesStorage.shared.updateNote(for: id, rating: newValue, comment: comment) }
+        set { ClotheNotesStorage.shared.updateNote(for: id, rating: newValue, comment: comment, favorite: favorite) }
     }
     
     var comment: String {
         get { ClotheNotesStorage.shared.getNote(for: id).comment }
-        set { ClotheNotesStorage.shared.updateNote(for: id, rating: rating, comment: newValue) }
+        set { ClotheNotesStorage.shared.updateNote(for: id, rating: rating, comment: newValue, favorite: favorite) }
+    }
+    
+    var favorite: Bool {
+        get { ClotheNotesStorage.shared.getNote(for: id).favorite }
+        set { ClotheNotesStorage.shared.updateNote(for: id, rating: rating, comment: comment, favorite: newValue) }
     }
     
     // To simulate an average note not provided by the API
@@ -83,6 +88,7 @@ struct ClotheNote: Codable {
     let id: Int
     var rating: Int
     var comment: String
+    var favorite: Bool
 }
 
 enum ClotheCategory: String, Decodable, Comparable {

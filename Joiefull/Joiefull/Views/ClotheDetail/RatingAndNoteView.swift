@@ -43,13 +43,15 @@ struct RatingAndNoteView: View {
             ZStack(alignment: .topLeading) {
                 
                 TextEditor(text: $viewModel.clothe.comment)
-                    .accessibilityScaledFrame(dynamicTypeSize: dynamicTypeSize, height: 50)
+                    .accessibilityScaledFrame(dynamicTypeSize: dynamicTypeSize, height: DisplayParamFactory.clotheDetailParam.commentHeight)
                     .padding(8)
-                    .background(RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color.gray.opacity(0.5), lineWidth: 1))
-                    .font(DisplayParamFactory.clotheDetailParam.isIpad ? .body : .subheadline)
-                    .limitedDynamicTypeSize()
-                
+                    .scrollContentBackground(.hidden)
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.gray, lineWidth:1.5)
+                        
+                    )
+                    .accessibilityScaledFont(size: DisplayParamFactory.clotheDetailParam.descriptionFontSize)
                 
                 if (viewModel.clothe.comment.isEmpty) {
                     Text("Partagez ici vos impressions sur cette pièce")
@@ -59,7 +61,6 @@ struct RatingAndNoteView: View {
                         .opacity(50)
                         .allowsHitTesting(false)
                         .accessibilityScaledFont(size: DisplayParamFactory.clotheDetailParam.descriptionFontSize)
-                        .limitedDynamicTypeSize()
                 }
             }
             .accessibilityElement(children: .ignore)
@@ -69,7 +70,9 @@ struct RatingAndNoteView: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(viewModel.clothe.accessibilityComment)
         .accessibilityScaledFrame(dynamicTypeSize: dynamicTypeSize, width: DisplayParamFactory.clotheDetailParam.pictureWidth)
+        
     }
+        
 }
 
 #Preview {

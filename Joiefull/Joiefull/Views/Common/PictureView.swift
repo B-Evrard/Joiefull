@@ -52,7 +52,7 @@ struct PictureView: View {
             }
             .overlay(
                 NotationView(
-                    likes: clothe.likes,
+                    clothe: ClotheDetailViewModel,
                     displayParam: displayParam
                 ),
                 alignment: .bottomTrailing

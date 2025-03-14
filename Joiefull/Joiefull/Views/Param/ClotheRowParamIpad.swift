@@ -25,6 +25,7 @@ final class ClotheRowParamIpad: DisplayParam {
     static let isDetail: Bool = false
     static var starNotationWidth: CGFloat = 0
     static var starNotationHeight: CGFloat = 0
+    static var commentHeight: CGFloat = 0
     
     static var infosFontSize: CGFloat = 18
     static var heartFontSize: CGFloat = 14

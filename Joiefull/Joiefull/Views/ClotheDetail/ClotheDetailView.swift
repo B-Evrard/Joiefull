@@ -15,74 +15,70 @@ struct ClotheDetailView: View {
     let param: DisplayParam.Type
     
     var body: some View {
-        let isTextLarge = dynamicTypeSize > .large
-        if isTextLarge {
+        ZStack {
             ScrollView {
-                createDetail()
+                
+                VStack {
+                    ZStack (alignment: .topTrailing) {
+                        VStack {
+                            PictureView(
+                                clothe: viewModel.clothe,
+                                displayParam: param
+                            )
+                            .padding(.bottom, 10)
+                            
+                            InfosView(
+                                clothe: viewModel.clothe ,
+                                displayParam: param
+                            )
+                            .accessibilityScaledFrame(dynamicTypeSize: dynamicTypeSize, width: param.pictureWidth)
+                            .padding(.bottom, 10)
+                        }
+                        .accessibilityElement(children: .ignore)
+                        .accessibilityLabel(viewModel.clothe.accessibilityPicture)
+                        .accessibilityHint("Toucher 2 fois pour agrandir l'image")
+                        
+                        ShareLink(
+                            item: URL(string: "joiefull://clothe/\(viewModel.clothe.id)")!,
+                            message: Text("Regarde ce vêtement !"),
+                            preview: SharePreview(
+                                viewModel.clothe.name,
+                                image: Image("Icon")
+                            )
+                        ) {
+                            Image(systemName: "square.and.arrow.up")
+                                .resizable()
+                                .accessibilityScaledFrame(
+                                    dynamicTypeSize: dynamicTypeSize,
+                                    width: 18 ,
+                                    height: 25
+                                )
+                                .foregroundColor(Color.black)
+                                .padding()
+                                .background(Circle().fill(Color.white).opacity(0.5))
+                                .shadow(radius: 3)
+                        }
+                        .padding(10)
+                        .accessibilityLabel("Partager l'article")
+                    }
+                    
+                    DescriptionView(clothe: viewModel.clothe)
+                        .padding(.bottom, 20)
+                    
+                    RatingAndNoteView(
+                        user: User.mock,
+                        viewModel: viewModel
+                    )
+                   
+                    
+                }
+                .accessibilityScaledFrame(dynamicTypeSize: dynamicTypeSize, width: param.pictureWidth+1)
+                
             }
-        } else {
-            createDetail()
         }
+        
     }
     
-    @ViewBuilder
-    func createDetail() -> some View {
-        VStack {
-            
-            ZStack (alignment: .topTrailing) {
-                VStack {
-                    PictureView(
-                        clothe: viewModel.clothe,
-                        displayParam: param
-                    )
-                    .padding(.bottom, 10)
-                    
-                    InfosView(
-                        clothe: viewModel.clothe ,
-                        displayParam: param
-                    )
-                    .accessibilityScaledFrame(dynamicTypeSize: dynamicTypeSize, width: param.pictureWidth)
-                    .padding(.bottom, 10)
-                }
-                .accessibilityElement(children: .ignore)
-                .accessibilityLabel(viewModel.clothe.accessibilityPicture)
-                .accessibilityHint("Toucher 2 fois pour agrandir l'image")
-                
-                ShareLink(
-                    item: URL(string: "joiefull://clothe/\(viewModel.clothe.id)")!,
-                    message: Text("Regarde ce vêtement !"),
-                    preview: SharePreview(
-                        viewModel.clothe.name,
-                        image: Image("Icon")
-                    )
-                ) {
-                    Image(systemName: "square.and.arrow.up")
-                        .resizable()
-                        .accessibilityScaledFrame(
-                            dynamicTypeSize: dynamicTypeSize,
-                            width: 18 ,
-                            height: 25
-                        )
-                        .foregroundColor(Color.black)
-                        .padding()
-                        .background(Circle().fill(Color.white).opacity(0.5))
-                        .shadow(radius: 3)
-                }
-                .padding(10)
-                .accessibilityLabel("Partager l'article")
-            }
-            
-            DescriptionView(clothe: viewModel.clothe)
-                .padding(.bottom, 20)
-            
-            RatingAndNoteView(
-                user: User.mock,
-                viewModel: viewModel
-            )
-            
-        }
-        .accessibilityScaledFrame(dynamicTypeSize: dynamicTypeSize, width: DisplayParamFactory.clotheDetailParam.pictureWidth)
-    }
 }
 
 #Preview {
