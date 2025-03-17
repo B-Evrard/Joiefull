@@ -9,8 +9,8 @@
 import Foundation
 
 
-class ClotheNotesStorage {
-    static let shared = ClotheNotesStorage()
+class ClotheNoteStorageService {
+    static let shared = ClotheNoteStorageService()
     private let filename = "clothe_notes.json"
 
     private var notes: [Int: ClotheNote] = [:]

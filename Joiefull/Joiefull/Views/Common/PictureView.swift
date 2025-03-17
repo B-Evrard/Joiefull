@@ -17,39 +17,14 @@ struct PictureView: View {
     
     var body: some View {
         ZStack {
-            AsyncImage(url: URL(string: clothe.picture.url)) { phase in
-                switch phase {
-                case .empty:
-                    ProgressView()
-                case .success(let image):
-                    image
-                        .resizable()
-                        .scaledToFill()
-                        .accessibilityScaledFrame(
-                            dynamicTypeSize: dynamicTypeSize,
-                            width: displayParam.pictureWidth ,
-                            height: displayParam.pictureHeight
-                        )
-                        .clipShape(RoundedRectangle(cornerRadius: 15))
-                        .clipped()
-                    
-                    
-                case .failure:
-                    Image(systemName: "photo")
-                        .resizable()
-                        .scaledToFill()
-                        .accessibilityScaledFrame(
-                            dynamicTypeSize: dynamicTypeSize,
-                            width: displayParam.pictureWidth ,
-                            height: displayParam.pictureHeight
-                        )
-                        .clipShape(RoundedRectangle(cornerRadius: 15))
-                        .clipped()
-                    
-                @unknown default:
-                    EmptyView()
-                }
-            }
+            
+            AsyncImageView(
+                url: clothe.picture.url,
+                dynamicTypeSize: dynamicTypeSize,
+                displayParam: displayParam,
+                isShowingFullScreen: $isShowingFullScreen
+                
+            )
             .overlay(
                 NotationView(
                     clothe: $clothe,
@@ -63,6 +38,39 @@ struct PictureView: View {
             FullScreenImageView(imageURL: clothe.picture.url, description: clothe.accessibilityDescription)
         }
         
+    }
+    
+    struct AsyncImageView: View {
+        let url: String
+        let dynamicTypeSize: DynamicTypeSize
+        let displayParam: DisplayParam.Type
+        @Binding  var isShowingFullScreen: Bool
+        
+        
+        var body: some View {
+            AsyncImage(url: URL(string: url))  { image in
+                image
+                    .resizable()
+                    .scaledToFill()
+                    .accessibilityScaledFrame(
+                        dynamicTypeSize: dynamicTypeSize,
+                        width: displayParam.pictureWidth,
+                        height: displayParam.pictureHeight
+                    )
+                    .clipShape(RoundedRectangle(cornerRadius: 15))
+                    .clipped()
+                    .tappable(displayParam.isDetail) {
+                        isShowingFullScreen = true
+                    }
+                
+            } placeholder: {
+                ProgressView()
+                    .frame(width: 200, height: 200)
+                    .clipShape(Circle())
+            }
+            
+            
+        }
     }
     
     struct FullScreenImageView: View {
@@ -153,17 +161,19 @@ struct PictureView: View {
 
 #Preview {
     let category: ClotheCategory = .bottoms
+    let clotheNote = ClotheNote(id: 1, rating: 0, comment: "", favorite: false)
     let clothe = Clothe(
         id: 1,
-        picture: Picture(url: "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/Cr-ez-une-interface-dynamique-et-accessible-avec-SwiftUI/main/img/bottoms/1.jpg", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"), name: "Jean pourjkhkjkjhkhkhkhkjh femme",
+        picture: Picture(url: "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/Cr-ez-une-interface-dynamique-et-accessible-avec-SwiftUI/main/img/bottoms/1.jpg", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"), name: "Jean pour femme",
         category: category,
         likes: 100,
         price: 44.99,
-        original_price: 59.99
+        original_price: 59.99,
+        clotheNote: clotheNote
     )
     PictureView(
         clothe: .constant(clothe),
-        displayParam: DisplayParamFactory.clotheDetailParam
+        displayParam: DisplayParamFactory.clotheRowParam
     )
     
 }

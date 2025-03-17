@@ -12,10 +12,11 @@ struct NotationView: View {
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
     
     @Binding var clothe: Clothe
+    @Binding var clotheNote: ClotheNote
     let displayParam : DisplayParam.Type
     var body: some View {
         HStack{
-            if displayParam.isDetail && clothe.favorite {
+            if displayParam.isDetail && clotheNote.favorite {
                 Image(systemName: "heart.fill")
                     .resizable()
                     .accessibilityScaledFrame(dynamicTypeSize: dynamicTypeSize, width: displayParam.heartWidth, height: displayParam.heartHeight)
@@ -38,8 +39,8 @@ struct NotationView: View {
         .accessibilityHidden(true)
         .onTapGesture {
             guard displayParam.isDetail else { return }
-            clothe.favorite.toggle()
-            clothe.likes += clothe.favorite ? 1 : -1
+            clotheNote.favorite.toggle()
+            clothe.likes += clotheNote.favorite ? 1 : -1
         }
     }
 }

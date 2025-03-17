@@ -30,7 +30,7 @@ struct RatingAndNoteView: View {
                     .clipped()
                 
                 RatingView(
-                    rating: $viewModel.clothe.rating,
+                    rating: $viewModel.clothe.clotheNote.rating,
                     starNotationWidth: DisplayParamFactory.clotheDetailParam.starNotationWidth ,
                     starNotationHeight: DisplayParamFactory.clotheDetailParam.starNotationHeight
                 )
@@ -42,7 +42,7 @@ struct RatingAndNoteView: View {
             
             ZStack(alignment: .topLeading) {
                 
-                TextEditor(text: $viewModel.clothe.comment)
+                TextEditor(text: $viewModel.clothe.clotheNote.comment)
                     .accessibilityScaledFrame(dynamicTypeSize: dynamicTypeSize, height: DisplayParamFactory.clotheDetailParam.commentHeight)
                     .padding(8)
                     .scrollContentBackground(.hidden)
@@ -53,7 +53,7 @@ struct RatingAndNoteView: View {
                     )
                     .accessibilityScaledFont(size: DisplayParamFactory.clotheDetailParam.descriptionFontSize)
                 
-                if (viewModel.clothe.comment.isEmpty) {
+                if (viewModel.clothe.clotheNote.comment.isEmpty) {
                     Text("Partagez ici vos impressions sur cette pièce")
                         .foregroundColor(Color(.systemGray2))
                         .padding(.top, 15)
@@ -78,13 +78,15 @@ struct RatingAndNoteView: View {
 #Preview {
     
     let category: ClotheCategory = .bottoms
+    let clotheNote = ClotheNote(id: 1, rating: 0, comment: "", favorite: false)
     let clothe = Clothe(
         id: 1,
         picture: Picture(url: "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/Cr-ez-une-interface-dynamique-et-accessible-avec-SwiftUI/main/img/bottoms/1.jpg", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"), name: "Jean pour femme",
         category: category,
         likes: 100,
         price: 44.99,
-        original_price: 59.99
+        original_price: 59.99,
+        clotheNote: clotheNote
     )
     
     let viewModel=ClotheDetailViewModel(clothe: clothe)

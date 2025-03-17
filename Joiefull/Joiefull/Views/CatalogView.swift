@@ -106,9 +106,9 @@ struct CatalogView: View {
                             .foregroundColor(.black)
                             .accessibilityElement(children: .ignore)
                             .accessibilityLabel("Catégories de vetements \(category.localized)" )
-                        
+                        let rows = [GridItem(.adaptive(minimum: adjustedSize(for: DisplayParamFactory.clotheRowParam.rowHeight), maximum: adjustedSize(for: DisplayParamFactory.clotheRowParam.rowHeight*2)))]
                         ScrollView(.horizontal) {
-                            LazyHGrid(rows: [GridItem(.flexible(minimum: adjustedSize(for: DisplayParamFactory.clotheRowParam.rowHeight)))], spacing: 15) {
+                            LazyHGrid(rows: rows, spacing: 15) {
                                 ForEach(viewModel.clothesByCategory(category), id: \.id) { clothe in
                                     ClotheRowView(clothe: .constant(clothe), param: DisplayParamFactory.clotheRowParam)
                                         .aspectRatio(contentMode: .fit)
