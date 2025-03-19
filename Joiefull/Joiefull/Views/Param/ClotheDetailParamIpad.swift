@@ -5,7 +5,7 @@
 //  Created by Bruno Evrard on 25/02/2025.
 //
 
-import Foundation
+import SwiftUI
 
 final class ClotheDetailParamIpad: DisplayParam {
     
@@ -31,6 +31,10 @@ final class ClotheDetailParamIpad: DisplayParam {
     static var infosFontSize: CGFloat = 22
     static var heartFontSize: CGFloat = 22
     static var descriptionFontSize: CGFloat = 18
+    
+    static var infosFont: Font = .title2
+    static var heartFont: Font  = .body
+    static var descriptionFont: Font  = .body
 }
 
 

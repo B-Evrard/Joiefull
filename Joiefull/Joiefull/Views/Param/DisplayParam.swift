@@ -6,7 +6,8 @@
 //
 
 
-import Foundation
+
+import SwiftUI
 
 protocol DisplayParam {
  
@@ -36,6 +37,10 @@ protocol DisplayParam {
     static var infosFontSize: CGFloat { get }
     static var heartFontSize: CGFloat { get }
     static var descriptionFontSize: CGFloat { get }
+    
+    static var infosFont: Font { get }
+    static var heartFont: Font { get }
+    static var descriptionFont: Font { get }
     
     
     

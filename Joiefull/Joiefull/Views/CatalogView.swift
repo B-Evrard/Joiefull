@@ -15,71 +15,69 @@ struct CatalogView: View {
     @State private var isShowingDetail = false
     @Environment(\.presentationMode) var presentationMode
     
-    @State private var columnVisibility = NavigationSplitViewVisibility.doubleColumn
-        
     
     var body: some View {
         if DisplayParamFactory.clotheRowParam.isIpad {
             
-//            HStack(spacing: 0) {
-//
-//                NavigationStack {
-//                    createCatalog()
-//                }
-//                .frame(width: selectedClothe != nil ? calculMaxWidthCatalog(694) : nil)
-//
-//                if let clothe = selectedClothe {
-//
-//                    NavigationStack {
-//                        ZStack (alignment: .top) {
-//                            Color("ColorIpad").ignoresSafeArea()
-//                                ClotheDetailView(
-//                                    viewModel: ClotheDetailViewModel(
-//                                        repository: ClotheRepository(),
-//                                        clotheDisplay: clothe
-//                                    ),
-//                                    param: DisplayParamFactory.clotheDetailParam
-//                                )
-//
-//
-//
-//                        }
-//
-//                    }
-//                }
-//            }
-            NavigationSplitView (columnVisibility: $columnVisibility) {
-                
-           
-                createCatalog()
-                .navigationBarHidden(true)
-                .navigationSplitViewColumnWidth(min: 694, ideal: 800, max: 1000)
-            } detail: {
+            HStack(spacing: 0) {
+
+                NavigationStack {
+                    createCatalog()
+                }
+                .frame(width: selectedClothe != nil ? calculMaxWidthCatalog(694) : nil)
+
                 if let clothe = selectedClothe {
-                    
+
                     NavigationStack {
                         ZStack (alignment: .top) {
                             Color("ColorIpad").ignoresSafeArea()
-                            ClotheDetailView(
-                                viewModel: ClotheDetailViewModel(
-                                    repository: ClotheRepository(),
-                                    clotheDisplay: clothe
-                                ),
-                                param: DisplayParamFactory.clotheDetailParam
-                            )
-                            //.navigationSplitViewColumnWidth(min: 0, ideal: 800, max: 1000)
+                                ClotheDetailView(
+                                    viewModel: ClotheDetailViewModel(
+                                        repository: ClotheRepository(),
+                                        clotheDisplay: clothe
+                                    ),
+                                    param: DisplayParamFactory.clotheDetailParam
+                                )
+
+
+
                         }
+
                     }
                 }
-                else    {
-                    Spacer()
-                    .navigationSplitViewColumnWidth(1)
-                }
-                
-                
             }
-            .navigationSplitViewStyle(.balanced)
-            
+//           NavigationSplitView (columnVisibility: $columnVisibility) {
+//                
+//           
+//                createCatalog()
+//                .navigationBarHidden(true)
+//                .navigationSplitViewColumnWidth(min: 694, ideal: 800, max: 1000)
+//            } detail: {
+//                if let clothe = selectedClothe {
+//                    
+//                    NavigationStack {
+//                        ZStack (alignment: .top) {
+//                            Color("ColorIpad").ignoresSafeArea()
+//                            ClotheDetailView(
+//                                viewModel: ClotheDetailViewModel(
+//                                    repository: ClotheRepository(),
+//                                    clotheDisplay: clothe
+//                                ),
+//                                param: DisplayParamFactory.clotheDetailParam
+//                            )
+//                            //.navigationSplitViewColumnWidth(min: 0, ideal: 800, max: 1000)
+//                        }
+//                    }
+//                }
+//                else    {
+//                    Spacer()
+//                    .navigationSplitViewColumnWidth(1)
+//                }
+//                
+//                
+//            }
+//            .navigationSplitViewStyle(.balanced)
+//            
             
         } else {
             NavigationStack {
@@ -197,6 +195,6 @@ struct CatalogView: View {
 }
 
 #Preview {
-    let viewModel = CatalogViewModel(repository: ClotheRepository()  )
-    CatalogView(viewModel: viewModel)
+    //let viewModel = CatalogViewModel(repository: ClotheRepository()  )
+    //CatalogView(viewModel: viewModel)
 }
