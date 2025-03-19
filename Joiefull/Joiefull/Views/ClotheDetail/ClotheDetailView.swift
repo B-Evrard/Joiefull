@@ -16,33 +16,30 @@ struct ClotheDetailView: View {
     
     var body: some View {
         ZStack {
-            ScrollView {
+            ScrollView (showsIndicators: false) {
                 
                 VStack {
                     ZStack (alignment: .topTrailing) {
                         VStack {
                             PictureView(
-                                clothe: $viewModel.clothe,
+                                clotheDisplay: $viewModel.clotheDisplay,
                                 displayParam: param
                             )
                             .padding(.bottom, 10)
                             
                             InfosView(
-                                clothe: viewModel.clothe ,
+                                clotheDisplay: viewModel.clotheDisplay ,
                                 displayParam: param
                             )
                             .accessibilityScaledFrame(dynamicTypeSize: dynamicTypeSize, width: param.pictureWidth)
                             .padding(.bottom, 10)
                         }
-                        .accessibilityElement(children: .ignore)
-                        .accessibilityLabel(viewModel.clothe.accessibilityPicture)
-                        .accessibilityHint("Toucher 2 fois pour agrandir l'image")
                         
                         ShareLink(
-                            item: URL(string: "joiefull://clothe/\(viewModel.clothe.id)")!,
+                            item: URL(string: "joiefull://clothe/\(viewModel.clotheDisplay.clothe.id)")!,
                             message: Text("Regarde ce vêtement !"),
                             preview: SharePreview(
-                                viewModel.clothe.name,
+                                viewModel.clotheDisplay.clothe.name,
                                 image: Image("Icon")
                             )
                         ) {
@@ -62,42 +59,51 @@ struct ClotheDetailView: View {
                         .accessibilityLabel("Partager l'article")
                     }
                     
-                    DescriptionView(clothe: viewModel.clothe)
+                    DescriptionView(clotheDisplay: viewModel.clotheDisplay)
                         .padding(.bottom, 20)
                     
                     RatingAndNoteView(
                         user: User.mock,
                         viewModel: viewModel
                     )
-                   
+                    
                     
                 }
                 .accessibilityScaledFrame(dynamicTypeSize: dynamicTypeSize, width: param.pictureWidth+1)
                 
             }
         }
-        
+        .onAppear() {
+            Task {
+                await viewModel.readClotheNote()
+            }
+        }
+        .onDisappear() {
+            Task {
+                print("Sauvegarde des notes")
+                await viewModel.saveClotheNote()
+            }
+            
+        }
     }
-    
 }
 
-#Preview {
-    
-    let category: ClotheCategory = .bottoms
-    let clotheNote = ClotheNote(id: 1, rating: 0, comment: "", favorite: false)
-    let clothe = Clothe(
-        id: 1,
-        picture: Picture(url: "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/Cr-ez-une-interface-dynamique-et-accessible-avec-SwiftUI/main/img/bottoms/1.jpg", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"), name: "Jean pour femme",
-        category: category,
-        likes: 100,
-        price: 44.99,
-        original_price: 59.99,
-        clotheNote: clotheNote
-    )
-    
-    let viewModel=ClotheDetailViewModel(clothe: clothe)
-    
-    ClotheDetailView(viewModel: viewModel,param: DisplayParamFactory.clotheDetailParam)
-}
+//#Preview {
+//
+////    let category: ClotheCategory = .bottoms
+////    let clotheNote = ClotheNote(id: 1, rating: 0, comment: "", favorite: false)
+////    let clothe = Clothe(
+////        id: 1,
+////        picture: Picture(url: "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/Cr-ez-une-interface-dynamique-et-accessible-avec-SwiftUI/main/img/bottoms/1.jpg", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"), name: "Jean pour femme",
+////        category: category,
+////        likes: 100,
+////        price: 44.99,
+////        original_price: 59.99
+////    )
+//
+//    //let viewModel=ClotheDetailViewModel(clothe: clothe)
+//
+//    //ClotheDetailView(viewModel: viewModel,param: DisplayParamFactory.clotheDetailParam)
+//}
 
 

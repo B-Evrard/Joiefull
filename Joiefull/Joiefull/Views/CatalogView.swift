@@ -9,51 +9,76 @@ import SwiftUI
 
 struct CatalogView: View {
     
-    @Environment(\.sizeCategory) var sizeCategory
-    
+    @Environment(\.dynamicTypeSize) var dynamicTypeSize
     @ObservedObject var viewModel: CatalogViewModel
-    
-    @State private var selectedClothe: Clothe?
+    @State private var selectedClothe: ClotheDisplay?
     @State private var isShowingDetail = false
+    @Environment(\.presentationMode) var presentationMode
+    
+    @State private var columnVisibility = NavigationSplitViewVisibility.doubleColumn
+        
     
     var body: some View {
         if DisplayParamFactory.clotheRowParam.isIpad {
             
-                HStack(spacing: 0) {
+//            HStack(spacing: 0) {
+//
+//                NavigationStack {
+//                    createCatalog()
+//                }
+//                .frame(width: selectedClothe != nil ? calculMaxWidthCatalog(694) : nil)
+//
+//                if let clothe = selectedClothe {
+//
+//                    NavigationStack {
+//                        ZStack (alignment: .top) {
+//                            Color("ColorIpad").ignoresSafeArea()
+//                                ClotheDetailView(
+//                                    viewModel: ClotheDetailViewModel(
+//                                        repository: ClotheRepository(),
+//                                        clotheDisplay: clothe
+//                                    ),
+//                                    param: DisplayParamFactory.clotheDetailParam
+//                                )
+//
+//
+//
+//                        }
+//
+//                    }
+//                }
+//            }
+            NavigationSplitView (columnVisibility: $columnVisibility) {
+                
+           
+                createCatalog()
+                .navigationBarHidden(true)
+                .navigationSplitViewColumnWidth(min: 694, ideal: 800, max: 1000)
+            } detail: {
+                if let clothe = selectedClothe {
                     
                     NavigationStack {
-                        createCatalog()
-                    }
-                    .frame(width: selectedClothe != nil ? calculWidth(730): nil)
-                    .frame(maxWidth: selectedClothe == nil ? .infinity : nil)
-                    
-                    
-                    if let clothe = selectedClothe {
-                        
-                        NavigationStack {
-                            ZStack (alignment: .topLeading) {
-                                Color("ColorIpad").ignoresSafeArea()
-                                ClotheDetailView(viewModel: ClotheDetailViewModel(clothe: clothe), param: DisplayParamFactory.clotheDetailParam)
-                                Button(action: {
-                                    withAnimation {
-                                        selectedClothe = nil
-                                    }
-                                }) {
-                                    Image(systemName: "chevron.left")
-                                        .font(.title)
-                                        .foregroundColor(.black)
-                                        .padding()
-                                        .background(Circle().fill(Color.white.opacity(0.5)))
-                                        .shadow(radius: 3)
-                                }
-                                .padding(10)
-                            }
-                            
+                        ZStack (alignment: .top) {
+                            Color("ColorIpad").ignoresSafeArea()
+                            ClotheDetailView(
+                                viewModel: ClotheDetailViewModel(
+                                    repository: ClotheRepository(),
+                                    clotheDisplay: clothe
+                                ),
+                                param: DisplayParamFactory.clotheDetailParam
+                            )
+                            //.navigationSplitViewColumnWidth(min: 0, ideal: 800, max: 1000)
                         }
                     }
                 }
+                else    {
+                    Spacer()
+                    .navigationSplitViewColumnWidth(1)
+                }
                 
                 
+            }
+            .navigationSplitViewStyle(.balanced)
             
             
         } else {
@@ -61,11 +86,15 @@ struct CatalogView: View {
                 createCatalog()
                     .navigationDestination(isPresented: $isShowingDetail) {
                         if let clothe = selectedClothe {
-                            ClotheDetailView(viewModel: ClotheDetailViewModel(clothe: clothe), param: DisplayParamFactory.clotheDetailParam)
+                            ClotheDetailView(
+                                viewModel: ClotheDetailViewModel(
+                                    repository: ClotheRepository(),
+                                    clotheDisplay: clothe
+                                ),
+                                param: DisplayParamFactory.clotheDetailParam
+                            )
                         }
                     }
-                
-                
             }
         }
     }
@@ -98,33 +127,43 @@ struct CatalogView: View {
             .accessibilityHint(.init("Tapez votre recherche ici"))
             .padding()
             List {
-                ForEach(viewModel.clothesByCategory.keys.sorted(), id: \.self) { category in
+                ForEach(viewModel.clothesCategory.keys.sorted(), id: \.self) { category in
                     VStack(alignment: .leading, spacing: 8) {
-                        Text(category.localized)
-                            .font(.title2.weight(.semibold))
-                            .limitedDynamicTypeSize()
-                            .foregroundColor(.black)
-                            .accessibilityElement(children: .ignore)
-                            .accessibilityLabel("Catégories de vetements \(category.localized)" )
+                        HStack {
+                            Text(category.localized)
+                                .font(.title2.weight(.semibold))
+                                .limitedDynamicTypeSize()
+                                .foregroundColor(.black)
+                                .accessibilityElement(children: .ignore)
+                                .accessibilityLabel("Catégories de vetements \(category.localized)" )
+                            Spacer()
+                            
+                        }
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            if DisplayParamFactory.clotheRowParam.isIpad {
+                                selectedClothe = nil
+                            }
+                        }
+                        
+                          
                         let rows = [GridItem(.adaptive(minimum: adjustedSize(for: DisplayParamFactory.clotheRowParam.rowHeight), maximum: adjustedSize(for: DisplayParamFactory.clotheRowParam.rowHeight*2)))]
                         ScrollView(.horizontal) {
+                            
                             LazyHGrid(rows: rows, spacing: 15) {
-                                ForEach(viewModel.clothesByCategory(category), id: \.id) { clothe in
-                                    ClotheRowView(clothe: .constant(clothe), param: DisplayParamFactory.clotheRowParam)
+                                ForEach(viewModel.clothesByCategory(category), id: \.clothe.id) { clotheDisplay in
+                                    ClotheRowView(clotheDisplay: .constant(clotheDisplay), param: DisplayParamFactory.clotheRowParam)
                                         .aspectRatio(contentMode: .fit)
                                         .onTapGesture {
-                                            selectedClothe = clothe
+                                            selectedClothe = clotheDisplay
                                             isShowingDetail = true
                                         }
                                 }
                             }
-                            
                         }
                     }
                     .listRowBackground(Color.clear)
                     .listRowSeparator(.hidden)
-                    
-                    
                 }
             }
             .onAppear {
@@ -138,7 +177,6 @@ struct CatalogView: View {
             .alert(viewModel.messageAlert, isPresented: $viewModel.showAlert  ) {
                 Button("OK") { }
             }
-            
             .listStyle(PlainListStyle())
         }
         .background(DisplayParamFactory.clotheRowParam.isIpad ? Color("ColorIpad") : Color.clear)
@@ -150,21 +188,15 @@ struct CatalogView: View {
               let idString = url.pathComponents.last,
               let id = Int(idString) else { return }
         
-        if let clothe = viewModel.clothesByCategory.values.flatMap({ $0 }).first(where: { $0.id == id }) {
+        if let clothe = viewModel.clothesCategory.values.flatMap({ $0 }).first(where: { $0.id == id }) {
             selectedClothe = clothe
             isShowingDetail = true
         }
     }
     
-    private func calculWidth(_ catalogWidth: CGFloat) -> CGFloat {
-        let screenWidth = UIScreen.main.bounds.width
-        let detailWidth = screenWidth - CGFloat(720)
-        let diff = adjustedSize(for: detailWidth) - detailWidth
-        return catalogWidth - diff
-    }
 }
 
 #Preview {
-    let viewModel = CatalogViewModel(apiService: APIClient())
+    let viewModel = CatalogViewModel(repository: ClotheRepository()  )
     CatalogView(viewModel: viewModel)
 }

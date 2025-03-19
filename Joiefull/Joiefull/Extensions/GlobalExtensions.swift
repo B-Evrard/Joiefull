@@ -24,9 +24,17 @@ extension View {
     func accessibilityScaledFrame(dynamicTypeSize: DynamicTypeSize, width: CGFloat? = nil, height: CGFloat? = nil, alignment: Alignment = .center ) -> some View {
         let screenWidth = UIScreen.main.bounds.width-30
         let scaledWidth = width.map { adjustedSize(for: $0) }
-        let limitedWidth = scaledWidth != nil ? min(scaledWidth!, screenWidth) : nil
+        var limitedWidth = scaledWidth
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            let maxWidth = calculMaxWidthDetail(694)
+            limitedWidth = scaledWidth != nil ? min(scaledWidth!, maxWidth) : nil
+        }
+        else {
+            limitedWidth = scaledWidth != nil ? min(scaledWidth!, screenWidth) : nil
+        }
+       
         let scaledHeight = height.map { adjustedSize(for: $0) }
-        return self.frame(width: limitedWidth, height: scaledHeight, alignment: alignment).limitedDynamicTypeSize()
+        return self.frame(width: limitedWidth, height: scaledHeight, alignment: alignment)
     }
     
     func accessibilityScaledFont(size: CGFloat, semiBold: Bool = false) -> some View {
@@ -34,8 +42,8 @@ extension View {
         return self.font(Font.custom(font, size: size, relativeTo: .body)).limitedDynamicTypeSize()
     }
     
-    func limitedDynamicTypeSize(upTo size: DynamicTypeSize = .accessibility3) -> some View {
-            self.dynamicTypeSize(...size)
+    func limitedDynamicTypeSize(upTo size: DynamicTypeSize = .accessibility2) -> some View {
+        self.dynamicTypeSize(...size)
     }
     
 }

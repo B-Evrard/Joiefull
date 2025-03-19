@@ -17,32 +17,6 @@ struct Clothe: Decodable {
     let price: Double
     let original_price: Double
     
-    var clotheNote: ClotheNote? = nil
-    
-    enum CodingKeys: String, CodingKey {
-        case id, picture, name, category, likes, price, original_price
-    }
-    
-//    var rating: Int
-//    var comment: String
-//    var favorite: Bool
-    
-    
-//    var rating: Int {
-//        get { ClotheNotesStorage.shared.getNote(for: id).rating }
-//        set { ClotheNotesStorage.shared.updateNote(for: id, rating: newValue, comment: comment, favorite: favorite) }
-//    }
-//    
-//    var comment: String {
-//        get { ClotheNotesStorage.shared.getNote(for: id).comment }
-//        set { ClotheNotesStorage.shared.updateNote(for: id, rating: rating, comment: newValue, favorite: favorite) }
-//    }
-//    
-//    var favorite: Bool {
-//        get { ClotheNotesStorage.shared.getNote(for: id).favorite }
-//        set { ClotheNotesStorage.shared.updateNote(for: id, rating: rating, comment: comment, favorite: newValue) }
-//    }
-    
     // To simulate an average note not provided by the API
     var rate: Double {
         get {
@@ -55,40 +29,6 @@ struct Clothe: Decodable {
             }
         }
     }
-    
-    
-    // MARK: - Accessibility
-    var accessibilityPicture: String {
-        return "\(name) mis en favori \(likes) fois avec une moyenne de \(rate.formattedRate()). Son prix est de \(price.formattedPrice()) " +
-        "et sont ancien prix est de \(original_price.formattedPrice())"
-    }
-    
-    var accessibilityDescription: String {
-        return "\(picture.description)"
-    }
-    
-    var accessibilityRatingInfos: String {
-        var message = "Vous n'avez pas encore noté cette pièce"
-        if let clotheNote = clotheNote {
-            if (clotheNote.rating > 0) {
-                message = "Vous avez noté cette pièce \(String(describing: clotheNote.rating)) sur 5"
-            }
-            
-        }
-        return message
-    }
-    
-    var accessibilityComment: String {
-        var message = "Partagez ici vos impressions sur cette pièce"
-        if let clotheNote = clotheNote {
-            if (!clotheNote.comment.isEmpty) {
-                message = clotheNote.comment
-            }
-            
-        }
-        return message
-    }
-
         
 }
 
@@ -103,6 +43,14 @@ struct ClotheNote: Codable {
     var rating: Int
     var comment: String
     var favorite: Bool
+    
+    var accessibilityRatingInfos: String {
+        return rating > 0 ? "Vous avez noté cette pièce \(rating) sur 5" : "Vous n'avez pas encore noté cette pièce"
+    }
+    
+    var accessibilityComment: String {
+        return comment.isEmpty ? "Partagez ici vos impressions sur cette pièce" : "Votre commentaire : \(comment)"
+    }
 }
 
 enum ClotheCategory: String, Decodable, Comparable {

@@ -11,7 +11,8 @@ import SwiftUI
 
 class CatalogViewModel: ObservableObject {
     
-    @Published var clothesByCategory: [ClotheCategory: [Clothe]] = [:]
+    
+    @Published var clothesCategory: [ClotheCategory: [ClotheDisplay]] = [:]
     @Published var search: String = ""
     @Published var showAlert: Bool = false
     @Published var messageAlert: String = ""{
@@ -25,22 +26,26 @@ class CatalogViewModel: ObservableObject {
         }
     }
     
-    private let apiService: APIService
+    private let repository: ClotheRepository
     
-    init(apiService: APIService) {
-        self.apiService = apiService
+    init(repository: ClotheRepository) {
+        self.repository = repository
     }
    
     @MainActor
     func fetchClothes() async {
         self.messageAlert = ""
-        let result = await apiService.clothesList()
+        let result = await repository.getClothesFromAPI()
         switch result {
         case .success(let clothes):
             let clothesFilter = search.isEmpty ? clothes : clothes.filter {
                 $0.name.lowercased().contains(self.search.lowercased())
             }
-            self.clothesByCategory = Dictionary(grouping: clothesFilter) { $0.category }
+            let clothesDisplay = clothesFilter.map { clothe in
+                return clothe.toDisplayModel(clotheNote: nil as ClotheNote?)
+            }
+            
+            self.clothesCategory = Dictionary(grouping: clothesDisplay) { $0.clothe.category }
             return
         case .failure(let error):
             messageAlert = error.message
@@ -48,8 +53,8 @@ class CatalogViewModel: ObservableObject {
         }
     }
     
-    func clothesByCategory(_ category: ClotheCategory) -> [Clothe] {
-        return clothesByCategory[category] ?? []
+    func clothesByCategory(_ category: ClotheCategory) -> [ClotheDisplay] {
+        return clothesCategory[category] ?? []
     }
     
 }

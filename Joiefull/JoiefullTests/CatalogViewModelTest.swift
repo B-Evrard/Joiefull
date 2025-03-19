@@ -14,13 +14,15 @@ final class CatalogViewModelTest: XCTestCase {
         session.data = sampleJSON.data(using: .utf8)
         session.urlResponse = HTTPURLResponse(url: Endpoint.clothes.api , statusCode: 200, httpVersion: nil, headerFields: nil)
         let mockApiClient = MockApiClient(session: session)
-        
-        
-        let viewModel = CatalogViewModel(apiService: mockApiClient)
+        let mockStorage = ClotheNoteStorageService(filename: "test.clothe_notes.json")
+        let repository = ClotheRepository(apiService: mockApiClient, localStorage: mockStorage)
+        let viewModel = CatalogViewModel(repository: repository)
         await viewModel.fetchClothes()
         
-        XCTAssertEqual(viewModel.clothesByCategory.count, 4)
-        XCTAssertEqual(viewModel.clothesByCategory.values.flatMap { $0 }.count, 12)
+        XCTAssertEqual(viewModel.clothesCategory.count, 4)
+        XCTAssertEqual(viewModel.clothesCategory.values.flatMap { $0 }.count, 12)
+        
+        mockStorage.clearAllNotes()
         
     }
     
@@ -29,32 +31,39 @@ final class CatalogViewModelTest: XCTestCase {
         session.data = sampleJSON.data(using: .utf8)
         session.urlResponse = HTTPURLResponse(url: Endpoint.clothes.api , statusCode: 200, httpVersion: nil, headerFields: nil)
         let mockApiClient = MockApiClient(session: session)
+        let mockStorage = ClotheNoteStorageService(filename: "test.clothe_notes.json")
+        let repository = ClotheRepository(apiService: mockApiClient, localStorage: mockStorage )
+        let viewModel = CatalogViewModel(repository: repository)
         
-        
-        let viewModel = CatalogViewModel(apiService: mockApiClient)
         viewModel.search = "Sac à main"
         await viewModel.fetchClothes()
         
-        XCTAssertEqual(viewModel.clothesByCategory.count, 1)
-        XCTAssertEqual(viewModel.clothesByCategory.values.flatMap { $0 }.count, 1)
+        XCTAssertEqual(viewModel.clothesCategory.count, 1)
+        XCTAssertEqual(viewModel.clothesCategory.values.flatMap { $0 }.count, 1)
         
         viewModel.search = "zzzzzzzzzzzz"
         await viewModel.fetchClothes()
         
-        XCTAssertEqual(viewModel.clothesByCategory.count, 0)
+        XCTAssertEqual(viewModel.clothesCategory.count, 0)
+        
+        mockStorage.clearAllNotes()
     }
     
     func testError() async {
         let session = MockUrlSession()
         session.data = invalidJson.data(using: .utf8)
         session.urlResponse = HTTPURLResponse(url: Endpoint.clothes.api , statusCode: 200, httpVersion: nil, headerFields: nil)
+     
         let mockApiClient = MockApiClient(session: session)
+        let mockStorage = ClotheNoteStorageService(filename: "test.clothe_notes.json")
+        let repository = ClotheRepository(apiService: mockApiClient, localStorage: mockStorage )
+        let viewModel = CatalogViewModel(repository: repository)
         
-        
-        let viewModel = CatalogViewModel(apiService: mockApiClient)
         await viewModel.fetchClothes()
         
         XCTAssertEqual(viewModel.showAlert,true)
+        
+        mockStorage.clearAllNotes()
     }
     
 }

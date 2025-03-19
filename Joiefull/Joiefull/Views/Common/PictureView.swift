@@ -10,7 +10,7 @@ struct PictureView: View {
     
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
     
-    @Binding var clothe: Clothe
+    @Binding var clotheDisplay: ClotheDisplay
     let displayParam : DisplayParam.Type
     
     @State private var isShowingFullScreen = false
@@ -19,15 +19,17 @@ struct PictureView: View {
         ZStack {
             
             AsyncImageView(
-                url: clothe.picture.url,
+                url: clotheDisplay.clothe.picture.url,
                 dynamicTypeSize: dynamicTypeSize,
                 displayParam: displayParam,
                 isShowingFullScreen: $isShowingFullScreen
-                
             )
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(clotheDisplay.accessibilityPicture)
+            .accessibilityHint(displayParam.isDetail ? "Toucher 2 fois pour agrandir l'image" : "Toucher 2 fois rapidement pour afficher le détail")
             .overlay(
                 NotationView(
-                    clothe: $clothe,
+                    clotheDisplay: $clotheDisplay,
                     displayParam: displayParam
                 ),
                 alignment: .bottomTrailing
@@ -35,8 +37,9 @@ struct PictureView: View {
             
         }
         .sheet(isPresented: $isShowingFullScreen) {
-            FullScreenImageView(imageURL: clothe.picture.url, description: clothe.accessibilityDescription)
+            FullScreenImageView(imageURL: clotheDisplay.clothe.picture.url, description: clotheDisplay.accessibilityDescription)
         }
+        
         
     }
     
@@ -161,19 +164,17 @@ struct PictureView: View {
 
 #Preview {
     let category: ClotheCategory = .bottoms
-    let clotheNote = ClotheNote(id: 1, rating: 0, comment: "", favorite: false)
     let clothe = Clothe(
-        id: 1,
-        picture: Picture(url: "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/Cr-ez-une-interface-dynamique-et-accessible-avec-SwiftUI/main/img/bottoms/1.jpg", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"), name: "Jean pour femme",
+        id: 10,
+        picture: Picture(url: "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/Cr-ez-une-interface-dynamique-et-accessible-avec-SwiftUI/main/img/bottoms/1.jpg", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"),
+        name: "Jean pour femme",
         category: category,
-        likes: 100,
-        price: 44.99,
-        original_price: 59.99,
-        clotheNote: clotheNote
+        likes: 10,
+        price: 10.50,
+        original_price: 15
     )
-    PictureView(
-        clothe: .constant(clothe),
-        displayParam: DisplayParamFactory.clotheRowParam
-    )
+    let clotheDisplay = clothe.toDisplayModel(clotheNote: nil)
+    PictureView(clotheDisplay: .constant(clotheDisplay), displayParam: DisplayParamFactory.clotheRowParam)
     
 }
+

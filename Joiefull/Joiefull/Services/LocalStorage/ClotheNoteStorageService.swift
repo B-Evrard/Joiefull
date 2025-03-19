@@ -9,13 +9,14 @@
 import Foundation
 
 
-class ClotheNoteStorageService {
+class ClotheNoteStorageService: ClotheNoteStorage {
     static let shared = ClotheNoteStorageService()
-    private let filename = "clothe_notes.json"
+    private let filename: String
 
-    private var notes: [Int: ClotheNote] = [:]
+    var notes: [Int: ClotheNote] = [:]
 
-    init() {
+    init(filename: String = "clothe_notes.json") {
+        self.filename = filename
         loadNotes()
     }
 
@@ -33,7 +34,7 @@ class ClotheNoteStorageService {
         }
     }
 
-    private func saveNotes() {
+    func saveNotes() {
         let fileURL = getFileURL()
         if let encoded = try? JSONEncoder().encode(notes) {
             try? encoded.write(to: fileURL)

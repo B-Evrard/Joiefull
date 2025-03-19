@@ -11,9 +11,14 @@ import SwiftUI
 struct JoiefullApp: App {
     
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
+    
+    private var clotheRepository = ClotheRepository()
+    
     var body: some Scene {
         WindowGroup {
-            CatalogView(viewModel: CatalogViewModel(apiService: APIClient()))
+            CatalogView(
+                viewModel: CatalogViewModel(repository: clotheRepository)
+            )
         }
     }
 }

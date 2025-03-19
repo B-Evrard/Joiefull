@@ -7,12 +7,24 @@
 
 import Foundation
 
+@MainActor
 class ClotheDetailViewModel: ObservableObject {
     
-    @Published var clothe: Clothe
+    @Published var clotheDisplay: ClotheDisplay
+    private let repository: ClotheRepository
     
-    init(clothe: Clothe) {
-        self.clothe = clothe
+    init(repository: ClotheRepository, clotheDisplay: ClotheDisplay) {
+        self.repository = repository
+        self.clotheDisplay = clotheDisplay
     }
+    
+    func readClotheNote() async {
+        clotheDisplay.clotheNote = await repository.getClotheNote(id: clotheDisplay.id)
+    }
+    
+    func saveClotheNote() async {
+        await repository.updateClotheNote(clotheDisplay.clotheNote)
+    }
+    
         
 }

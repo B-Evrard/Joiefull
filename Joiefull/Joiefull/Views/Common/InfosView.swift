@@ -11,26 +11,18 @@ struct InfosView: View {
     
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
     
-    let clothe: Clothe
+    let clotheDisplay: ClotheDisplay
     let displayParam : DisplayParam.Type
     
     var body: some View {
         VStack(alignment: .leading, spacing: 3) {
             HStack {
-                Text(clothe.name)
+                Text(clotheDisplay.clothe.name)
                     .accessibilityScaledFont(size: displayParam.infosFontSize, semiBold: true)
                     .fontWeight(.bold)
                    .lineLimit(nil)
                    .frame(maxWidth: .infinity, alignment: .leading)
-                //.truncationMode(.tail)
-//                    .accessibilityScaledFrame(
-//                        dynamicTypeSize: dynamicTypeSize,
-//                        width: 140,
-//                        alignment: .leading
-//                        
-//                    )
-                    //.frame(maxWidth: 147.50, alignment: .leading)
-                    Spacer()
+                Spacer()
                 Image(systemName: "star.fill")
                     .resizable()
                     .accessibilityScaledFrame(
@@ -39,20 +31,22 @@ struct InfosView: View {
                         height: displayParam.starHeight
                     )
                     .foregroundColor(Color("OrangeJoieFull"))
-                Text(clothe.rate.formattedRate())
+                Text(clotheDisplay.clothe.rate.formattedRate())
                     .accessibilityScaledFont(size: displayParam.infosFontSize)
             }
             
             HStack {
-                Text(clothe.price.formattedPrice())
+                Text(clotheDisplay.clothe.price.formattedPrice())
                     .accessibilityScaledFont(size: displayParam.infosFontSize)
                 Spacer()
-                Text(clothe.original_price.formattedPrice())
+                Text(clotheDisplay.clothe.original_price.formattedPrice())
                     .accessibilityScaledFont(size: displayParam.infosFontSize)
                     .strikethrough(true)
             }
             
-        }.padding(.horizontal,5)
+        }
+        .padding(.horizontal,5)
+        .accessibilityHidden(true)
         
         
     }
@@ -60,18 +54,17 @@ struct InfosView: View {
 
 #Preview {
     
-    let category: ClotheCategory = .bottoms
-    let clotheNote = ClotheNote(id: 1, rating: 0, comment: "", favorite: false)
-    let clothe = Clothe(
-        id: 1,
-        picture: Picture(url: "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/Cr-ez-une-interface-dynamique-et-accessible-avec-SwiftUI/main/img/bottoms/1.jpg", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"), name: "Jean pour femme",
-        category: category,
-        likes: 100,
-        price: 44.99,
-        original_price: 59.99,
-        clotheNote: clotheNote
-    )
-    
-    InfosView(clothe: clothe, displayParam: DisplayParamFactory.clotheDetailParam)
+//    let category: ClotheCategory = .bottoms
+//    let clotheNote = ClotheNote(id: 1, rating: 0, comment: "", favorite: false)
+//    let clothe = Clothe(
+//        id: 1,
+//        picture: Picture(url: "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/Cr-ez-une-interface-dynamique-et-accessible-avec-SwiftUI/main/img/bottoms/1.jpg", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"), name: "Jean pour femme",
+//        category: category,
+//        likes: 100,
+//        price: 44.99,
+//        original_price: 59.99
+//    )
+//    
+    //InfosView(clothe: clothe, displayParam: DisplayParamFactory.clotheDetailParam)
 }
     

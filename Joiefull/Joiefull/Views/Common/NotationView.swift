@@ -11,12 +11,12 @@ struct NotationView: View {
     
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
     
-    @Binding var clothe: Clothe
-    @Binding var clotheNote: ClotheNote
-    let displayParam : DisplayParam.Type
+    @Binding var clotheDisplay: ClotheDisplay
+    var displayParam : DisplayParam.Type
+    
     var body: some View {
         HStack{
-            if displayParam.isDetail && clotheNote.favorite {
+            if (displayParam.isDetail && clotheDisplay.clotheNote.favorite) {
                 Image(systemName: "heart.fill")
                     .resizable()
                     .accessibilityScaledFrame(dynamicTypeSize: dynamicTypeSize, width: displayParam.heartWidth, height: displayParam.heartHeight)
@@ -27,7 +27,7 @@ struct NotationView: View {
                     .accessibilityScaledFrame(dynamicTypeSize: dynamicTypeSize, width: displayParam.heartWidth, height: displayParam.heartHeight)
             }
             
-            Text("\(clothe.likes)")
+            Text("\(clotheDisplay.clothe.likes)")
                 .accessibilityScaledFont(size: displayParam.heartFontSize)
                 .foregroundColor(.black)
         }
@@ -36,13 +36,30 @@ struct NotationView: View {
         .cornerRadius(50)
         .offset(x: -10, y: -10)
         .accessibilityElement(children: .combine)
-        .accessibilityHidden(true)
+        .accessibilityHidden(displayParam.isDetail ? false : true)
+        .accessibilityLabel("test de label")
+        .accessibilityHint("Toucher 1 fois pour mettre en favori")
         .onTapGesture {
             guard displayParam.isDetail else { return }
-            clotheNote.favorite.toggle()
-            clothe.likes += clotheNote.favorite ? 1 : -1
+            clotheDisplay.clotheNote.favorite.toggle()
+            clotheDisplay.clothe.likes += clotheDisplay.clotheNote.favorite ? 1 : -1
         }
     }
 }
 
+#Preview {
+    let category: ClotheCategory = .bottoms
+    let clothe = Clothe(
+        id: 10,
+        picture: Picture(url: "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/Cr-ez-une-interface-dynamique-et-accessible-avec-SwiftUI/main/img/bottoms/1.jpg", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"),
+        name: "Jean pour femme",
+        category: category,
+        likes: 10,
+        price: 10.50,
+        original_price: 15
+    )
+    let clotheDisplay = clothe.toDisplayModel(clotheNote: nil)
+    NotationView(clotheDisplay: .constant(clotheDisplay), displayParam: DisplayParamFactory.clotheRowParam)
+    
+}
 

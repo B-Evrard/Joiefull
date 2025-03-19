@@ -8,17 +8,17 @@
 import SwiftUI
 struct DescriptionView: View {
     
-    let clothe: Clothe
+    let clotheDisplay: ClotheDisplay
     
     var body: some View {
         
-        Text(clothe.picture.description)
+        Text(clotheDisplay.clothe.picture.description)
         .accessibilityScaledFont(size: DisplayParamFactory.clotheDetailParam.descriptionFontSize)
         .lineLimit(3)
         .truncationMode(.tail)
         .multilineTextAlignment(.leading)
         .frame(maxWidth: .infinity, alignment: .leading)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(clothe.accessibilityDescription)
+        .accessibilityLabel(clotheDisplay.accessibilityDescription)
     }
 }
