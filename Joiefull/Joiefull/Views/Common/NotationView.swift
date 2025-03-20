@@ -15,24 +15,29 @@ struct NotationView: View {
     var displayParam : DisplayParam.Type
     
     var body: some View {
-        HStack{
+        VStack(alignment: .leading, spacing: 0) {
+            
+        }
+        HStack(alignment: .center) {
+            
             if (displayParam.isDetail && clotheDisplay.clotheNote.favorite) {
                 Image(systemName: "heart.fill")
                     .resizable()
-                    .accessibilityScaledFrame(dynamicTypeSize: dynamicTypeSize, width: displayParam.heartWidth, height: displayParam.heartHeight)
+                    .frame(width: displayParam.heartWidth * dynamicTypeSize.scaleFactor, height: displayParam.heartHeight * dynamicTypeSize.scaleFactor)
                     .foregroundColor(Color("OrangeJoieFull"))
             } else {
                 Image(systemName: "heart")
                     .resizable()
-                    .accessibilityScaledFrame(dynamicTypeSize: dynamicTypeSize, width: displayParam.heartWidth, height: displayParam.heartHeight)
+                    .frame(width: displayParam.heartWidth * dynamicTypeSize.scaleFactor, height: displayParam.heartHeight * dynamicTypeSize.scaleFactor)
             }
             
             Text("\(clotheDisplay.clothe.likes)")
-                .accessibilityScaledFont(size: displayParam.heartFontSize)
+                .font(displayParam.heartFont)
                 .foregroundColor(.black)
         }
-        .accessibilityScaledFrame(dynamicTypeSize: dynamicTypeSize, width: displayParam.notationWidth, height: displayParam.notationHeight)
-        .background(Color.white)
+        .padding(.horizontal, 30)
+        .padding(.vertical, 10)
+        .background(Color.red)
         .cornerRadius(50)
         .offset(x: -10, y: -10)
         .accessibilityElement(children: .combine)
@@ -45,6 +50,8 @@ struct NotationView: View {
             clotheDisplay.clothe.likes += clotheDisplay.clotheNote.favorite ? 1 : -1
         }
     }
+    
+    
 }
 
 #Preview {

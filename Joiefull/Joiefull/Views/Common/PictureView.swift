@@ -16,51 +16,16 @@ struct PictureView: View {
     @State private var isShowingFullScreen = false
     
     var body: some View {
-        ZStack {
-            
-            AsyncImageView(
-                url: clotheDisplay.clothe.picture.url,
-                dynamicTypeSize: dynamicTypeSize,
-                displayParam: displayParam,
-                isShowingFullScreen: $isShowingFullScreen
-            )
-            .accessibilityElement(children: .ignore)
-            .accessibilityLabel(clotheDisplay.accessibilityPicture)
-            .accessibilityHint(displayParam.isDetail ? "Toucher 2 fois pour agrandir l'image" : "Toucher 2 fois rapidement pour afficher le détail")
-            .overlay(
-                NotationView(
-                    clotheDisplay: $clotheDisplay,
-                    displayParam: displayParam
-                ),
-                alignment: .bottomTrailing
-            )
-            
-        }
-        .sheet(isPresented: $isShowingFullScreen) {
-            FullScreenImageView(imageURL: clotheDisplay.clothe.picture.url, description: clotheDisplay.accessibilityDescription)
-        }
-        
-        
-    }
-    
-    struct AsyncImageView: View {
-        let url: String
-        let dynamicTypeSize: DynamicTypeSize
-        let displayParam: DisplayParam.Type
-        @Binding  var isShowingFullScreen: Bool
-        
-        
-        var body: some View {
-            AsyncImage(url: URL(string: url))  { image in
+        VStack {
+            AsyncImage(url: URL(string: clotheDisplay.clothe.picture.url) ) { image in
                 image
                     .resizable()
                     .scaledToFill()
-                    .accessibilityScaledFrame(
-                        dynamicTypeSize: dynamicTypeSize,
-                        width: displayParam.pictureWidth,
-                        height: displayParam.pictureHeight
+                    .frame(
+                        width: displayParam.pictureWidth * dynamicTypeSize.scaleFactor,
+                        height: displayParam.pictureHeight * dynamicTypeSize.scaleFactor
                     )
-                    .clipShape(RoundedRectangle(cornerRadius: 15))
+                    .clipShape(RoundedRectangle(cornerRadius: 20))
                     .clipped()
                     .tappable(displayParam.isDetail) {
                         isShowingFullScreen = true
@@ -71,8 +36,18 @@ struct PictureView: View {
                     .frame(width: 200, height: 200)
                     .clipShape(Circle())
             }
-            
-            
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(clotheDisplay.accessibilityPicture)
+            .accessibilityHint(displayParam.isDetail ? "Toucher 2 fois pour agrandir l'image" : "Toucher 2 fois rapidement pour afficher le détail")
+            .overlay(alignment: .bottomTrailing) {
+                NotationView(
+                    clotheDisplay: $clotheDisplay,
+                    displayParam: displayParam
+                )
+            }
+        }
+        .sheet(isPresented: $isShowingFullScreen) {
+            FullScreenImageView(imageURL: clotheDisplay.clothe.picture.url, description: clotheDisplay.accessibilityDescription)
         }
     }
     
@@ -174,7 +149,7 @@ struct PictureView: View {
         original_price: 15
     )
     let clotheDisplay = clothe.toDisplayModel(clotheNote: nil)
-    PictureView(clotheDisplay: .constant(clotheDisplay), displayParam: DisplayParamFactory.clotheRowParam)
+    PictureView(clotheDisplay: .constant(clotheDisplay), displayParam: DisplayParamFactory.clotheDetailParam)
     
 }
 

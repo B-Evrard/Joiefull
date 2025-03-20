@@ -10,7 +10,7 @@ import SwiftUI
 final class ClotheDetailParamPhone: DisplayParam {
     
     static let isIpad: Bool = false
-    static let pictureWidth: CGFloat = 361
+    static let pictureWidth: CGFloat = 300
     static let pictureHeight: CGFloat = 431
     
     static let starWidth: CGFloat = 17.6

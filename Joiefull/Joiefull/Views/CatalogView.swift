@@ -20,64 +20,30 @@ struct CatalogView: View {
         if DisplayParamFactory.clotheRowParam.isIpad {
             
             HStack(spacing: 0) {
-
+                
                 NavigationStack {
                     createCatalog()
                 }
                 .frame(width: selectedClothe != nil ? calculMaxWidthCatalog(694) : nil)
-
+                
                 if let clothe = selectedClothe {
-
+                    
                     NavigationStack {
                         ZStack (alignment: .top) {
                             Color("ColorIpad").ignoresSafeArea()
-                                ClotheDetailView(
-                                    viewModel: ClotheDetailViewModel(
-                                        repository: ClotheRepository(),
-                                        clotheDisplay: clothe
-                                    ),
-                                    param: DisplayParamFactory.clotheDetailParam
-                                )
-
-
-
+                            ClotheDetailView(
+                                viewModel: ClotheDetailViewModel(
+                                    repository: ClotheRepository(),
+                                    clotheDisplay: clothe
+                                ),
+                                param: DisplayParamFactory.clotheDetailParam
+                            )
                         }
-
+                        
                     }
                 }
             }
-//           NavigationSplitView (columnVisibility: $columnVisibility) {
-//                
-//           
-//                createCatalog()
-//                .navigationBarHidden(true)
-//                .navigationSplitViewColumnWidth(min: 694, ideal: 800, max: 1000)
-//            } detail: {
-//                if let clothe = selectedClothe {
-//                    
-//                    NavigationStack {
-//                        ZStack (alignment: .top) {
-//                            Color("ColorIpad").ignoresSafeArea()
-//                            ClotheDetailView(
-//                                viewModel: ClotheDetailViewModel(
-//                                    repository: ClotheRepository(),
-//                                    clotheDisplay: clothe
-//                                ),
-//                                param: DisplayParamFactory.clotheDetailParam
-//                            )
-//                            //.navigationSplitViewColumnWidth(min: 0, ideal: 800, max: 1000)
-//                        }
-//                    }
-//                }
-//                else    {
-//                    Spacer()
-//                    .navigationSplitViewColumnWidth(1)
-//                }
-//                
-//                
-//            }
-//            .navigationSplitViewStyle(.balanced)
-//            
+            
             
         } else {
             NavigationStack {
@@ -144,13 +110,13 @@ struct CatalogView: View {
                             }
                         }
                         
-                          
+                        
                         let rows = [GridItem(.adaptive(minimum: adjustedSize(for: DisplayParamFactory.clotheRowParam.rowHeight), maximum: adjustedSize(for: DisplayParamFactory.clotheRowParam.rowHeight*2)))]
                         ScrollView(.horizontal) {
                             
                             LazyHGrid(rows: rows, spacing: 15) {
                                 ForEach(viewModel.clothesByCategory(category), id: \.clothe.id) { clotheDisplay in
-                                    ClotheRowView(clotheDisplay: .constant(clotheDisplay), param: DisplayParamFactory.clotheRowParam)
+                                    ClotheRowView(clotheDisplay: .constant(clotheDisplay), displayParam: DisplayParamFactory.clotheRowParam)
                                         .aspectRatio(contentMode: .fit)
                                         .onTapGesture {
                                             selectedClothe = clotheDisplay
@@ -195,6 +161,6 @@ struct CatalogView: View {
 }
 
 #Preview {
-    //let viewModel = CatalogViewModel(repository: ClotheRepository()  )
-    //CatalogView(viewModel: viewModel)
+    let viewModel = CatalogViewModel(repository: ClotheRepository()  )
+    CatalogView(viewModel: viewModel)
 }

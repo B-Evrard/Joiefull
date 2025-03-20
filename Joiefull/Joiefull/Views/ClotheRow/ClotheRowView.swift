@@ -12,37 +12,37 @@ struct ClotheRowView: View {
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
     
     @Binding var clotheDisplay: ClotheDisplay
-    let param: DisplayParam.Type
+    let displayParam: DisplayParam.Type
     
     var body: some View {
         VStack {
             PictureView(
                 clotheDisplay: $clotheDisplay,
-                displayParam: param
+                displayParam: displayParam
             )
-            .accessibilityScaledFrame(dynamicTypeSize: dynamicTypeSize, width: param.pictureWidth)
+            .frame(width: displayParam.pictureWidth)
             InfosView(
                 clotheDisplay: clotheDisplay,
-                displayParam: param
+                displayParam: displayParam
             )
+            
         }
-        .accessibilityScaledFrame(dynamicTypeSize: dynamicTypeSize, width: param.pictureWidth, height: param.rowHeight)
+        //.frame(width: displayParam.pictureWidth, height: displayParam.rowHeight)
     }
 }
 
 
 #Preview {
-//    let category: ClotheCategory = .bottoms
-//    let clotheNote = ClotheNote(id: 1, rating: 0, comment: "", favorite: false)
-//    let clothe = Clothe(
-//        id: 1,
-//        picture: Picture(url: "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/Cr-ez-une-interface-dynamique-et-accessible-avec-SwiftUI/main/img/bottoms/1.jpg", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"), name: "Jean pour femme",
-//        category: category,
-//        likes: 100,
-//        price: 44.99,
-//        original_price: 59.99
-//        
-//    )
-    
-    //ClotheRowView(clothe: .constant(clothe), clotheNote: .constant(clotheNote), param: ClotheRowParamIpad.self)
+    let category: ClotheCategory = .bottoms
+    let clothe = Clothe(
+        id: 10,
+        picture: Picture(url: "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/Cr-ez-une-interface-dynamique-et-accessible-avec-SwiftUI/main/img/bottoms/1.jpg", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"),
+        name: "Jean pour femme",
+        category: category,
+        likes: 10,
+        price: 10.50,
+        original_price: 15
+    )
+    let clotheDisplay = clothe.toDisplayModel(clotheNote: nil)
+    ClotheRowView(clotheDisplay: .constant(clotheDisplay), displayParam: DisplayParamFactory.clotheRowParam)
 }

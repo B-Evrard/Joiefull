@@ -1,25 +1,27 @@
 //
-//  descriptionView.swift
+//  test.swift
 //  Joiefull
 //
-//  Created by Bruno Evrard on 24/02/2025.
+//  Created by Bruno Evrard on 20/03/2025.
 //
 
 import SwiftUI
-struct DescriptionView: View {
-    
+
+struct test: View {
     let clotheDisplay: ClotheDisplay
-    
     var body: some View {
+        HStack {
+            Image(systemName: "heart.fill")
+                .resizable()
+                .frame(width: 25 , height: 25 )
+            Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+                
+        }
+        .background(Color.red)
+        .cornerRadius(50)
         
-        Text(clotheDisplay.clothe.picture.description)
-        .font(DisplayParamFactory.clotheDetailParam.descriptionFont)
-        .lineLimit(3)
-        //.truncationMode(.tail)
-        .multilineTextAlignment(.leading)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(clotheDisplay.accessibilityDescription)
+        DescriptionView(clotheDisplay: clotheDisplay)
+        
     }
 }
 
@@ -35,6 +37,7 @@ struct DescriptionView: View {
         original_price: 15
     )
     let clotheDisplay = clothe.toDisplayModel(clotheNote: nil)
-    DescriptionView(clotheDisplay: clotheDisplay)
-}
+    test(clotheDisplay: clotheDisplay)
 
+    //test()
+}

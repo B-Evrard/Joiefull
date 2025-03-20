@@ -15,18 +15,14 @@ struct RatingAndNoteView: View {
     @ObservedObject var viewModel: ClotheDetailViewModel
     @State private var isEditing: Bool = false
     var body: some View {
-        
         VStack (spacing: 20) {
-            
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 10){
                     Image(User.mock.profilePicture)
                         .resizable()
                         .scaledToFill()
-                        .accessibilityScaledFrame(
-                            dynamicTypeSize: dynamicTypeSize,
-                            width: 42.91 ,
-                            height: 39
+                        .frame(width: 42.91 ,
+                               height: 39
                         )
                         .clipShape(Circle())
                         .clipped()
@@ -43,9 +39,8 @@ struct RatingAndNoteView: View {
                 .accessibilityLabel(viewModel.clotheDisplay.clotheNote.accessibilityRatingInfos)
             }
             ZStack(alignment: .topLeading) {
-                
                 TextEditor(text: $viewModel.clotheDisplay.clotheNote.comment)
-                    .accessibilityScaledFrame(dynamicTypeSize: dynamicTypeSize, height: DisplayParamFactory.clotheDetailParam.commentHeight)
+                    .frame(height: DisplayParamFactory.clotheDetailParam.commentHeight)
                     .padding(8)
                     .scrollContentBackground(.hidden)
                     .background(
@@ -53,8 +48,8 @@ struct RatingAndNoteView: View {
                             .stroke(Color.gray, lineWidth:1.5)
                         
                     )
-                    .accessibilityScaledFont(size: DisplayParamFactory.clotheDetailParam.descriptionFontSize)
-                    
+                    .font(DisplayParamFactory.clotheDetailParam.descriptionFont)
+                
                 
                 if (viewModel.clotheDisplay.clotheNote.comment.isEmpty) {
                     Text("Partagez ici vos impressions sur cette pièce")
@@ -63,20 +58,30 @@ struct RatingAndNoteView: View {
                         .padding(.leading, 15)
                         .opacity(50)
                         .allowsHitTesting(false)
-                        .accessibilityScaledFont(size: DisplayParamFactory.clotheDetailParam.descriptionFontSize)
+                        .font(DisplayParamFactory.clotheDetailParam.descriptionFont)
                 }
             }
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(viewModel.clotheDisplay.clotheNote.accessibilityComment)
         }
-        
-        .accessibilityScaledFrame(dynamicTypeSize: dynamicTypeSize, width: DisplayParamFactory.clotheDetailParam.pictureWidth)
     }
-    
 }
 
 #Preview {
+    let category: ClotheCategory = .bottoms
+    let clotheNote = ClotheNote(id: 1, rating: 0, comment: "", favorite: false)
+    let clothe = Clothe(
+        id: 1,
+        picture: Picture(url: "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/Cr-ez-une-interface-dynamique-et-accessible-avec-SwiftUI/main/img/bottoms/1.jpg", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"), name: "Jean pour femme",
+        category: category,
+        likes: 100,
+        price: 44.99,
+        original_price: 59.99
+    )
     
+    let viewModel=ClotheDetailViewModel(repository: ClotheRepository(), clotheDisplay: clothe.toDisplayModel(clotheNote: nil) )
+    
+    RatingAndNoteView(user: User.mock,viewModel: viewModel)
     
 }
 
