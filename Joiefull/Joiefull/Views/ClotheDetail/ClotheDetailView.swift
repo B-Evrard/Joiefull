@@ -43,12 +43,6 @@ struct ClotheDetailView: View {
                 }
                 .padding(.bottom, 10)
                 
-                InfosView(
-                    clotheDisplay: viewModel.clotheDisplay ,
-                    displayParam: param
-                )
-                .padding(.bottom, 10)
-                
                 DescriptionView(clotheDisplay: viewModel.clotheDisplay)
                     .padding(.bottom, 10)
                 
@@ -56,6 +50,7 @@ struct ClotheDetailView: View {
                     user: User.mock,
                     viewModel: viewModel
                 )
+                
                 
             }
             .onAppear() {
@@ -69,7 +64,7 @@ struct ClotheDetailView: View {
                     await viewModel.saveClotheNote()
                 }
             }
-            .padding(.horizontal, 30)
+            .padding(.horizontal, 15)
             
         }
     }
@@ -83,7 +78,7 @@ struct ClotheDetailView: View {
     let clotheNote = ClotheNote(id: 1, rating: 0, comment: "", favorite: false)
     let clothe = Clothe(
         id: 1,
-        picture: Picture(url: "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/Cr-ez-une-interface-dynamique-et-accessible-avec-SwiftUI/main/img/bottoms/1.jpg", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"), name: "Jean pour femme",
+        picture: Picture(url: "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/Cr-ez-une-interface-dynamique-et-accessible-avec-SwiftUI/main/img/bottoms/1.jpg", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut "), name: "Jean pour femme",
         category: category,
         likes: 100,
         price: 44.99,

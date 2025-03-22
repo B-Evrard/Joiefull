@@ -15,27 +15,40 @@ struct NotationView: View {
     var displayParam : DisplayParam.Type
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            
-        }
+    
         HStack(alignment: .center) {
             
             if (displayParam.isDetail && clotheDisplay.clotheNote.favorite) {
                 Image(systemName: "heart.fill")
                     .resizable()
-                    .frame(width: displayParam.heartWidth * dynamicTypeSize.scaleFactor, height: displayParam.heartHeight * dynamicTypeSize.scaleFactor)
+                    .frame(
+                        width: displayParam.isDetail ? displayParam.heartWidth : displayParam.heartWidth * dynamicTypeSize.scaleFactor,
+                        height: displayParam.isDetail ? displayParam.heartHeight : displayParam.heartHeight * dynamicTypeSize.scaleFactor
+                    )
                     .foregroundColor(Color("OrangeJoieFull"))
             } else {
                 Image(systemName: "heart")
                     .resizable()
-                    .frame(width: displayParam.heartWidth * dynamicTypeSize.scaleFactor, height: displayParam.heartHeight * dynamicTypeSize.scaleFactor)
+                    .frame(
+                        width: displayParam.isDetail ? displayParam.heartWidth : displayParam.heartWidth * dynamicTypeSize.scaleFactor,
+                        height: displayParam.isDetail ? displayParam.heartHeight : displayParam.heartHeight * dynamicTypeSize.scaleFactor
+                    )
             }
             
-            Text("\(clotheDisplay.clothe.likes)")
-                .font(displayParam.heartFont)
-                .foregroundColor(.black)
+            if (displayParam.isDetail) {
+                Text("\(clotheDisplay.clothe.likes)")
+                    .font(displayParam.heartFont)
+                    .foregroundColor(.black)
+                    .dynamicTypeSize(.large)
+            }
+            else {
+                Text("\(clotheDisplay.clothe.likes)")
+                    .font(displayParam.heartFont)
+                    .foregroundColor(.black)
+            }
+            
         }
-        .padding(.horizontal, 30)
+        .padding(.horizontal, 15)
         .padding(.vertical, 10)
         .background(Color.red)
         .cornerRadius(50)
@@ -66,7 +79,7 @@ struct NotationView: View {
         original_price: 15
     )
     let clotheDisplay = clothe.toDisplayModel(clotheNote: nil)
-    NotationView(clotheDisplay: .constant(clotheDisplay), displayParam: DisplayParamFactory.clotheRowParam)
+    NotationView(clotheDisplay: .constant(clotheDisplay), displayParam: DisplayParamFactory.clotheDetailParam)
     
 }
 

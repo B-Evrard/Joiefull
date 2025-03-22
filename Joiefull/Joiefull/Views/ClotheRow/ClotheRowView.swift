@@ -20,14 +20,7 @@ struct ClotheRowView: View {
                 clotheDisplay: $clotheDisplay,
                 displayParam: displayParam
             )
-            .frame(width: displayParam.pictureWidth)
-            InfosView(
-                clotheDisplay: clotheDisplay,
-                displayParam: displayParam
-            )
-            
         }
-        //.frame(width: displayParam.pictureWidth, height: displayParam.rowHeight)
     }
 }
 

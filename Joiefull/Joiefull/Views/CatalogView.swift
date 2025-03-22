@@ -89,10 +89,11 @@ struct CatalogView: View {
             .accessibilityElement(children: .ignore)
             .accessibilityLabel("Zone de recherche des vêtements" )
             .accessibilityHint(.init("Tapez votre recherche ici"))
-            .padding()
+            .padding(.horizontal,27)
+            
             List {
                 ForEach(viewModel.clothesCategory.keys.sorted(), id: \.self) { category in
-                    VStack(alignment: .leading, spacing: 8) {
+                    VStack(alignment: .leading) {
                         HStack {
                             Text(category.localized)
                                 .font(.title2.weight(.semibold))
@@ -100,34 +101,30 @@ struct CatalogView: View {
                                 .foregroundColor(.black)
                                 .accessibilityElement(children: .ignore)
                                 .accessibilityLabel("Catégories de vetements \(category.localized)" )
-                            Spacer()
-                            
                         }
+                        .padding(.horizontal,5)
                         .contentShape(Rectangle())
                         .onTapGesture {
                             if DisplayParamFactory.clotheRowParam.isIpad {
                                 selectedClothe = nil
                             }
                         }
-                        
-                        
-                        let rows = [GridItem(.adaptive(minimum: adjustedSize(for: DisplayParamFactory.clotheRowParam.rowHeight), maximum: adjustedSize(for: DisplayParamFactory.clotheRowParam.rowHeight*2)))]
                         ScrollView(.horizontal) {
-                            
-                            LazyHGrid(rows: rows, spacing: 15) {
+                            HStack {
                                 ForEach(viewModel.clothesByCategory(category), id: \.clothe.id) { clotheDisplay in
                                     ClotheRowView(clotheDisplay: .constant(clotheDisplay), displayParam: DisplayParamFactory.clotheRowParam)
-                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 210 * dynamicTypeSize.scaleFactor)
+                                    .aspectRatio(contentMode: .fit)
                                         .onTapGesture {
                                             selectedClothe = clotheDisplay
                                             isShowingDetail = true
                                         }
+                                    
                                 }
                             }
+                            
                         }
-                    }
-                    .listRowBackground(Color.clear)
-                    .listRowSeparator(.hidden)
+                    }.listRowSeparator(.hidden)
                 }
             }
             .onAppear {
@@ -157,6 +154,8 @@ struct CatalogView: View {
             isShowingDetail = true
         }
     }
+    
+    
     
 }
 

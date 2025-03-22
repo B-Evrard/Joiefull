@@ -22,8 +22,8 @@ struct PictureView: View {
                     .resizable()
                     .scaledToFill()
                     .frame(
-                        width: displayParam.pictureWidth * dynamicTypeSize.scaleFactor,
-                        height: displayParam.pictureHeight * dynamicTypeSize.scaleFactor
+                        width: displayParam.isDetail ? displayParam.pictureWidth : displayParam.pictureWidth * dynamicTypeSize.scaleFactor,
+                        height: displayParam.isDetail ? displayParam.pictureHeight :displayParam.pictureHeight * dynamicTypeSize.scaleFactor
                     )
                     .clipShape(RoundedRectangle(cornerRadius: 20))
                     .clipped()
@@ -45,10 +45,42 @@ struct PictureView: View {
                     displayParam: displayParam
                 )
             }
+            
+            HStack {
+                Text(clotheDisplay.clothe.name)
+                    .font(displayParam.infosFont)
+                    .lineLimit(1)
+                    .truncationMode(.tail)
+                    .minimumScaleFactor(0.8)
+                Spacer()
+                Image(systemName: "star.fill")
+                    .resizable()
+                    .frame(
+                        width: displayParam.heartWidth * dynamicTypeSize.scaleFactor,
+                        height: displayParam.heartWidth * dynamicTypeSize.scaleFactor
+                    )
+                    .foregroundColor(Color("OrangeJoieFull"))
+                Text(clotheDisplay.clothe.rate.formattedRate())
+                    .font(displayParam.infosFont)
+            }
+            .padding(.horizontal,5)
+            
+            HStack {
+                Text(clotheDisplay.clothe.price.formattedPrice())
+                    .font(displayParam.infosFont)
+                Spacer()
+                Text(clotheDisplay.clothe.original_price.formattedPrice())
+                    .font(displayParam.infosFont)
+                    .strikethrough(true)
+            }
+            .padding(.horizontal,5)
+            
         }
         .sheet(isPresented: $isShowingFullScreen) {
             FullScreenImageView(imageURL: clotheDisplay.clothe.picture.url, description: clotheDisplay.accessibilityDescription)
         }
+        .frame(width : displayParam.isDetail ? displayParam.pictureWidth : displayParam.pictureWidth * dynamicTypeSize.scaleFactor)
+        
     }
     
     struct FullScreenImageView: View {
@@ -149,7 +181,7 @@ struct PictureView: View {
         original_price: 15
     )
     let clotheDisplay = clothe.toDisplayModel(clotheNote: nil)
-    PictureView(clotheDisplay: .constant(clotheDisplay), displayParam: DisplayParamFactory.clotheDetailParam)
+    PictureView(clotheDisplay: .constant(clotheDisplay), displayParam: DisplayParamFactory.clotheRowParam)
     
 }
 
