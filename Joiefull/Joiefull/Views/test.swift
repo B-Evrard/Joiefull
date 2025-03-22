@@ -20,7 +20,10 @@ struct test: View {
         .background(Color.red)
         .cornerRadius(50)
         
-        DescriptionView(clotheDisplay: clotheDisplay)
+        Text("Phrase de test")
+            .limitedDynamicTypeSize()
+        
+        //DescriptionView(clotheDisplay: clotheDisplay)
         
     }
 }

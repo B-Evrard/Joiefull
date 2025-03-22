@@ -22,8 +22,8 @@ struct PictureView: View {
                     .resizable()
                     .scaledToFill()
                     .frame(
-                        width: displayParam.isDetail ? displayParam.pictureWidth : displayParam.pictureWidth * dynamicTypeSize.scaleFactor,
-                        height: displayParam.isDetail ? displayParam.pictureHeight :displayParam.pictureHeight * dynamicTypeSize.scaleFactor
+                        width: (displayParam.isDetail && !displayParam.isIpad) ? displayParam.pictureWidth : displayParam.pictureWidth * dynamicTypeSize.scaleFactor,
+                        height: (displayParam.isDetail && !displayParam.isIpad) ? displayParam.pictureHeight :displayParam.pictureHeight * dynamicTypeSize.scaleFactor
                     )
                     .clipShape(RoundedRectangle(cornerRadius: 20))
                     .clipped()
@@ -49,6 +49,7 @@ struct PictureView: View {
             HStack {
                 Text(clotheDisplay.clothe.name)
                     .font(displayParam.infosFont)
+                    .limitedDynamicTypeSize()
                     .lineLimit(1)
                     .truncationMode(.tail)
                     .minimumScaleFactor(0.8)
@@ -62,15 +63,18 @@ struct PictureView: View {
                     .foregroundColor(Color("OrangeJoieFull"))
                 Text(clotheDisplay.clothe.rate.formattedRate())
                     .font(displayParam.infosFont)
+                    .limitedDynamicTypeSize()
             }
             .padding(.horizontal,5)
             
             HStack {
                 Text(clotheDisplay.clothe.price.formattedPrice())
                     .font(displayParam.infosFont)
+                    .limitedDynamicTypeSize()
                 Spacer()
                 Text(clotheDisplay.clothe.original_price.formattedPrice())
                     .font(displayParam.infosFont)
+                    .limitedDynamicTypeSize()
                     .strikethrough(true)
             }
             .padding(.horizontal,5)
@@ -79,7 +83,7 @@ struct PictureView: View {
         .sheet(isPresented: $isShowingFullScreen) {
             FullScreenImageView(imageURL: clotheDisplay.clothe.picture.url, description: clotheDisplay.accessibilityDescription)
         }
-        .frame(width : displayParam.isDetail ? displayParam.pictureWidth : displayParam.pictureWidth * dynamicTypeSize.scaleFactor)
+        .frame(width : (displayParam.isDetail && !displayParam.isIpad) ? displayParam.pictureWidth : displayParam.pictureWidth * dynamicTypeSize.scaleFactor)
         
     }
     

@@ -45,6 +45,7 @@ struct ClotheDetailView: View {
                 
                 DescriptionView(clotheDisplay: viewModel.clotheDisplay)
                     .padding(.bottom, 10)
+                    .padding(.horizontal, 15)
                 
                 RatingAndNoteView(
                     user: User.mock,

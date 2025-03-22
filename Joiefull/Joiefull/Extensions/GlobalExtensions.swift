@@ -5,7 +5,6 @@
 //  Created by Bruno Evrard on 17/02/2025.
 //
 
-import Foundation
 import SwiftUI
 
 // MARK: Views Extensions
@@ -20,30 +19,9 @@ extension View {
             self
         }
     }
-    
-//    func accessibilityScaledFrame(dynamicTypeSize: DynamicTypeSize, width: CGFloat? = nil, height: CGFloat? = nil, alignment: Alignment = .center ) -> some View {
-//        let screenWidth = UIScreen.main.bounds.width-30
-//        let scaledWidth = width.map { adjustedSize(for: $0) }
-//        var limitedWidth = scaledWidth
-//        if UIDevice.current.userInterfaceIdiom == .pad {
-//            let maxWidth = calculMaxWidthDetail(694)
-//            limitedWidth = scaledWidth != nil ? min(scaledWidth!, maxWidth) : nil
-//        }
-//        else {
-//            limitedWidth = scaledWidth != nil ? min(scaledWidth!, screenWidth) : nil
-//        }
-//       
-//        let scaledHeight = height.map { adjustedSize(for: $0) }
-//        return self.frame(width: limitedWidth, height: scaledHeight, alignment: alignment)
-//    }
-    
-//    func accessibilityScaledFont(size: CGFloat, semiBold: Bool = false) -> some View {
-//        let font = semiBold ? "SFProText-Semibold" : "SFProText-Regular"
-//        return self.font(Font.custom(font, size: size, relativeTo: .body)).limitedDynamicTypeSize()
-//    }
-//    
+
     func limitedDynamicTypeSize(upTo size: DynamicTypeSize = .accessibility2) -> some View {
-        self.dynamicTypeSize(...size)
+        self.dynamicTypeSize(...DynamicTypeSize.accessibility2)
     }
     
 }
@@ -69,7 +47,7 @@ extension Double {
     }
 }
 
-
+// MARK: DynamicTypeSize Extensions
 extension DynamicTypeSize {
     
     var scaleFactor: CGFloat {
@@ -94,11 +72,11 @@ extension DynamicTypeSize {
             case .accessibility2:
                 return 1.8
             case .accessibility3:
-                return 2.0
+                return 1.8 //2.0
             case .accessibility4:
-                return 2.2
+                return 1.8 //2.2
             case .accessibility5:
-                return 2.4
+                return 1.8 //2.4
             @unknown default:
                 return 1.0
             }

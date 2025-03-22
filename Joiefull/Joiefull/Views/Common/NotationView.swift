@@ -22,20 +22,20 @@ struct NotationView: View {
                 Image(systemName: "heart.fill")
                     .resizable()
                     .frame(
-                        width: displayParam.isDetail ? displayParam.heartWidth : displayParam.heartWidth * dynamicTypeSize.scaleFactor,
-                        height: displayParam.isDetail ? displayParam.heartHeight : displayParam.heartHeight * dynamicTypeSize.scaleFactor
+                        width: (displayParam.isDetail && !displayParam.isIpad)  ? displayParam.heartWidth : displayParam.heartWidth * dynamicTypeSize.scaleFactor,
+                        height: (displayParam.isDetail && !displayParam.isIpad)  ? displayParam.heartHeight : displayParam.heartHeight * dynamicTypeSize.scaleFactor
                     )
                     .foregroundColor(Color("OrangeJoieFull"))
             } else {
                 Image(systemName: "heart")
                     .resizable()
                     .frame(
-                        width: displayParam.isDetail ? displayParam.heartWidth : displayParam.heartWidth * dynamicTypeSize.scaleFactor,
-                        height: displayParam.isDetail ? displayParam.heartHeight : displayParam.heartHeight * dynamicTypeSize.scaleFactor
+                        width: (displayParam.isDetail && !displayParam.isIpad) ? displayParam.heartWidth : displayParam.heartWidth * dynamicTypeSize.scaleFactor,
+                        height: (displayParam.isDetail && !displayParam.isIpad)  ? displayParam.heartHeight : displayParam.heartHeight * dynamicTypeSize.scaleFactor
                     )
             }
             
-            if (displayParam.isDetail) {
+            if (displayParam.isDetail && !displayParam.isIpad)  {
                 Text("\(clotheDisplay.clothe.likes)")
                     .font(displayParam.heartFont)
                     .foregroundColor(.black)
@@ -45,6 +45,7 @@ struct NotationView: View {
                 Text("\(clotheDisplay.clothe.likes)")
                     .font(displayParam.heartFont)
                     .foregroundColor(.black)
+                    .limitedDynamicTypeSize()
             }
             
         }

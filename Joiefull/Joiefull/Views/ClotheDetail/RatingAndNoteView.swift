@@ -36,7 +36,7 @@ struct RatingAndNoteView: View {
                     Spacer()
                 }
                 .accessibilityElement(children: .ignore)
-                .accessibilityLabel(viewModel.clotheDisplay.clotheNote.accessibilityRatingInfos)
+                .accessibilityLabel(viewModel.clotheDisplay.accessibilityRatingInfos)
             }
             ZStack(alignment: .topLeading) {
                 TextEditor(text: $viewModel.clotheDisplay.clotheNote.comment)
@@ -49,6 +49,7 @@ struct RatingAndNoteView: View {
                         
                     )
                     .font(DisplayParamFactory.clotheDetailParam.descriptionFont)
+                    .limitedDynamicTypeSize()
                 
                 
                 if (viewModel.clotheDisplay.clotheNote.comment.isEmpty) {
@@ -59,10 +60,11 @@ struct RatingAndNoteView: View {
                         .opacity(50)
                         .allowsHitTesting(false)
                         .font(DisplayParamFactory.clotheDetailParam.descriptionFont)
+                        .limitedDynamicTypeSize()
                 }
             }
             .accessibilityElement(children: .ignore)
-            .accessibilityLabel(viewModel.clotheDisplay.clotheNote.accessibilityComment)
+            .accessibilityLabel(viewModel.clotheDisplay.accessibilityComment)
         }
     }
 }

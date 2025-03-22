@@ -21,5 +21,13 @@ struct ClotheDisplay: Identifiable {
     var accessibilityDescription: String {
         return "\(clothe.picture.description)"
     }
+    
+    var accessibilityRatingInfos: String {
+        return clotheNote.rating > 0 ? "Vous avez noté cette pièce \(clotheNote.rating) sur 5" : "Vous n'avez pas encore noté cette pièce"
+    }
+    
+    var accessibilityComment: String {
+        return clotheNote.comment.isEmpty ? "Partagez ici vos impressions sur cette pièce" : "Votre commentaire : \(clotheNote.comment)"
+    }
 }
 

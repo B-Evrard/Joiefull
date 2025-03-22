@@ -6,28 +6,16 @@
 //
 
 import Foundation
-import UIKit
+import SwiftUI
 
-func adjustedSize(for initialSize: CGFloat) -> CGFloat {
-    let scaleFactor = UIFontMetrics.default.scaledValue(for: initialSize)
-    return scaleFactor
-}
-
-func calculMaxWidthCatalog(_ catalogWidth: CGFloat) -> CGFloat {
+func calculMaxWidthCatalog(catalogWidth: CGFloat, dynamicTypeSize: DynamicTypeSize) -> CGFloat {
     let screenWidth = UIScreen.main.bounds.width
-    return screenWidth - calculMaxWidthDetail(catalogWidth)
+    let minCatalogWidth: CGFloat = screenWidth / 3
+    let detailWidth: CGFloat = screenWidth - catalogWidth
+    let detailAdjusted: CGFloat = detailWidth * dynamicTypeSize.scaleFactor
+    let catalogAdjusted: CGFloat = screenWidth - detailAdjusted
+    return max(catalogAdjusted, minCatalogWidth)
 }
-
-func calculMaxWidthDetail(_ catalogWidth: CGFloat) -> CGFloat {
-    let screenWidth = UIScreen.main.bounds.width
-    let maxDetail = screenWidth * 0.72
-    let detailWidth = screenWidth - catalogWidth
-    var adjustedDetail = adjustedSize(for: detailWidth)
-    if (adjustedDetail > maxDetail)
-    {
-        adjustedDetail = maxDetail
-    }
-    return adjustedDetail
-}
+ 
 
 

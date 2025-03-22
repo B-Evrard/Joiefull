@@ -9,16 +9,12 @@ import SwiftUI
 
 struct ClotheRowView: View {
     
-    @Environment(\.dynamicTypeSize) var dynamicTypeSize
-    
     @Binding var clotheDisplay: ClotheDisplay
-    let displayParam: DisplayParam.Type
-    
     var body: some View {
         VStack {
             PictureView(
                 clotheDisplay: $clotheDisplay,
-                displayParam: displayParam
+                displayParam: DisplayParamFactory.clotheRowParam
             )
         }
     }
@@ -37,5 +33,5 @@ struct ClotheRowView: View {
         original_price: 15
     )
     let clotheDisplay = clothe.toDisplayModel(clotheNote: nil)
-    ClotheRowView(clotheDisplay: .constant(clotheDisplay), displayParam: DisplayParamFactory.clotheRowParam)
+    ClotheRowView(clotheDisplay: .constant(clotheDisplay))
 }

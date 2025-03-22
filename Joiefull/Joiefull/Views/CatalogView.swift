@@ -24,7 +24,7 @@ struct CatalogView: View {
                 NavigationStack {
                     createCatalog()
                 }
-                .frame(width: selectedClothe != nil ? calculMaxWidthCatalog(694) : nil)
+                .frame(width: selectedClothe != nil ? calculMaxWidthCatalog(catalogWidth: 694, dynamicTypeSize: dynamicTypeSize) : nil)
                 
                 if let clothe = selectedClothe {
                     
@@ -112,8 +112,10 @@ struct CatalogView: View {
                         ScrollView(.horizontal) {
                             HStack {
                                 ForEach(viewModel.clothesByCategory(category), id: \.clothe.id) { clotheDisplay in
-                                    ClotheRowView(clotheDisplay: .constant(clotheDisplay), displayParam: DisplayParamFactory.clotheRowParam)
-                                        .frame(width: 210 * dynamicTypeSize.scaleFactor)
+                                    ClotheRowView(clotheDisplay: .constant(clotheDisplay))
+                                        .frame(
+                                            width:  DisplayParamFactory.clotheRowParam.pictureWidth * dynamicTypeSize.scaleFactor
+                                        )
                                     .aspectRatio(contentMode: .fit)
                                         .onTapGesture {
                                             selectedClothe = clotheDisplay
@@ -124,7 +126,9 @@ struct CatalogView: View {
                             }
                             
                         }
-                    }.listRowSeparator(.hidden)
+                    }
+                    .listRowSeparator(.hidden)
+                    .listRowBackground(Color.clear)
                 }
             }
             .onAppear {

@@ -43,14 +43,6 @@ struct ClotheNote: Codable {
     var rating: Int
     var comment: String
     var favorite: Bool
-    
-    var accessibilityRatingInfos: String {
-        return rating > 0 ? "Vous avez noté cette pièce \(rating) sur 5" : "Vous n'avez pas encore noté cette pièce"
-    }
-    
-    var accessibilityComment: String {
-        return comment.isEmpty ? "Partagez ici vos impressions sur cette pièce" : "Votre commentaire : \(comment)"
-    }
 }
 
 enum ClotheCategory: String, Decodable, Comparable {
