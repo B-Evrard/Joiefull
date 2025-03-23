@@ -21,8 +21,8 @@ struct RatingAndNoteView: View {
                     Image(User.mock.profilePicture)
                         .resizable()
                         .scaledToFill()
-                        .frame(width: 42.91 ,
-                               height: 39
+                        .frame(width: 42.91 * dynamicTypeSize.scaleFactor ,
+                               height: 39 * dynamicTypeSize.scaleFactor
                         )
                         .clipShape(Circle())
                         .clipped()

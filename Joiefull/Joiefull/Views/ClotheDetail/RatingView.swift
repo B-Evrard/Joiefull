@@ -25,14 +25,14 @@ struct RatingView: View {
                     if (number > clotheNote.rating) {
                         Image(systemName: "star")
                             .resizable()
-                            .frame(width: starNotationWidth, height: starNotationHeight)
+                            .frame(width: starNotationWidth * dynamicTypeSize.scaleFactor, height: starNotationHeight * dynamicTypeSize.scaleFactor)
                             .foregroundStyle(Color.gray)
                         
                     }
                     else {
                         Image(systemName: "star.fill")
                             .resizable()
-                            .frame(width: starNotationWidth, height: starNotationHeight)
+                            .frame(width: starNotationWidth * dynamicTypeSize.scaleFactor, height: starNotationHeight * dynamicTypeSize.scaleFactor)
                             .foregroundStyle(Color.yellow)
                     }
                 }

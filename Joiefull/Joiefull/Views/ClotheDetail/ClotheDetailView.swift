@@ -51,8 +51,6 @@ struct ClotheDetailView: View {
                     user: User.mock,
                     viewModel: viewModel
                 )
-                
-                
             }
             .onAppear() {
                 Task {
@@ -66,7 +64,6 @@ struct ClotheDetailView: View {
                 }
             }
             .padding(.horizontal, 15)
-            
         }
     }
     
