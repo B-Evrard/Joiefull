@@ -84,9 +84,5 @@ extension DynamicTypeSize {
         else    {
             return 1.0
         }
-        
-        
     }
-    
-    
 }

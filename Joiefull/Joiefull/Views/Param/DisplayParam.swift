@@ -16,16 +16,9 @@ protocol DisplayParam {
     
     static var pictureWidth: CGFloat { get }
     static var pictureHeight: CGFloat { get }
-    static var starWidth: CGFloat { get }
-    static var starHeight: CGFloat { get }
-    
-    static var notationWidth: CGFloat { get }
-    static var notationHeight: CGFloat { get }
+
     static var heartWidth: CGFloat { get }
     static var heartHeight: CGFloat { get }
-    
-    // MARK: Row
-    static var rowHeight: CGFloat { get }
     
     // MARK: Detail
     static var isDetail: Bool { get }
@@ -33,17 +26,10 @@ protocol DisplayParam {
     static var starNotationHeight: CGFloat { get }
     static var commentHeight: CGFloat { get }
     
-    // MARK: Fonts Size
-    static var infosFontSize: CGFloat { get }
-    static var heartFontSize: CGFloat { get }
-    static var descriptionFontSize: CGFloat { get }
-    
+    // MARK: Fonts 
     static var infosFont: Font { get }
     static var heartFont: Font { get }
     static var descriptionFont: Font { get }
-    
-    
-    
 }
 
 

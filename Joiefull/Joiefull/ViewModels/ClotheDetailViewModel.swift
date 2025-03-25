@@ -20,12 +20,10 @@ class ClotheDetailViewModel: ObservableObject {
     }
     
     func readClotheNote() async {
-        print ("readClotheNote \(clotheDisplay.clotheNote.id)")
         clotheDisplay.clotheNote = await repository.getClotheNote(id: clotheDisplay.id)
     }
     
     func saveClotheNote() async {
-        print ("saveClotheNote \(clotheDisplay.clotheNote.id)")
         await repository.updateClotheNote(clotheDisplay.clotheNote)
     }
     

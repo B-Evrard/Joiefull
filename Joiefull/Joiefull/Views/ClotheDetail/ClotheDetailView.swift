@@ -9,11 +9,8 @@ import SwiftUI
 
 struct ClotheDetailView: View {
     
-    @Environment(\.dynamicTypeSize) var dynamicTypeSize
-    
     @ObservedObject var viewModel: ClotheDetailViewModel
     let param: DisplayParam.Type
-    //var onClose: () -> Void
     
     var body: some View {
         ScrollView  {
@@ -58,12 +55,6 @@ struct ClotheDetailView: View {
                     await viewModel.readClotheNote()
                 }
             }
-//            .onChange(of: viewModel.clotheDisplay.clotheNote) {
-//                Task {
-//                    await viewModel.saveClotheNote()
-//                }
-//            }
-                        
             .onDisappear() {
                 Task {
                     await viewModel.saveClotheNote()
@@ -78,7 +69,6 @@ struct ClotheDetailView: View {
 #Preview {
     
     let category: ClotheCategory = .bottoms
-    let clotheNote = ClotheNote(id: 1, rating: 0, comment: "", favorite: false)
     let clothe = Clothe(
         id: 1,
         picture: Picture(url: "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/Cr-ez-une-interface-dynamique-et-accessible-avec-SwiftUI/main/img/bottoms/1.jpg", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut "), name: "Jean pour femme",
@@ -87,10 +77,8 @@ struct ClotheDetailView: View {
         price: 44.99,
         original_price: 59.99
     )
-    
     let viewModel=ClotheDetailViewModel(repository: ClotheRepository(), clotheDisplay: clothe.toDisplayModel(clotheNote: nil) )
-    
-    //ClotheDetailView(viewModel: viewModel,param: DisplayParamFactory.clotheDetailParam)
+    ClotheDetailView(viewModel: viewModel,param: DisplayParamFactory.clotheDetailParam)
 }
 
 

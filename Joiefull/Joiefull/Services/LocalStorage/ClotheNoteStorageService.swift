@@ -20,6 +20,15 @@ class ClotheNoteStorageService: ClotheNoteStorage {
         loadNotes()
     }
 
+    func getNote(for clotheID: Int) -> ClotheNote {
+        return notes[clotheID] ?? ClotheNote(id: clotheID, rating: 0, comment: "", favorite: false)
+    }
+
+    func updateNote(for clotheID: Int, rating: Int, comment: String, favorite: Bool) {
+        notes[clotheID] = ClotheNote(id: clotheID, rating: rating, comment: comment, favorite: favorite)
+        saveNotes()
+    }
+    
     private func getFileURL() -> URL {
         let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         return documentDirectory.appendingPathComponent(filename)
@@ -34,19 +43,12 @@ class ClotheNoteStorageService: ClotheNoteStorage {
         }
     }
 
-    private func saveNotes() {
+    func saveNotes() {
         let fileURL = getFileURL()
         if let encoded = try? JSONEncoder().encode(notes) {
             try? encoded.write(to: fileURL)
         }
     }
 
-    func getNote(for clotheID: Int) -> ClotheNote {
-        return notes[clotheID] ?? ClotheNote(id: clotheID, rating: 0, comment: "", favorite: false)
-    }
-
-    func updateNote(for clotheID: Int, rating: Int, comment: String, favorite: Bool) {
-        notes[clotheID] = ClotheNote(id: clotheID, rating: rating, comment: comment, favorite: favorite)
-        saveNotes()
-    }
+    
 }

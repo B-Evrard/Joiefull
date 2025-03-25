@@ -25,7 +25,7 @@ struct CatalogView: View {
                 NavigationStack {
                     createCatalog()
                 }
-                .frame(width: selectedClothe != nil ? calculMaxWidthCatalog(catalogWidth: 694, dynamicTypeSize: dynamicTypeSize) : nil)
+                .frame(width: selectedClothe != nil ? maxWidthCatalog(catalogWidth: 694, dynamicTypeSize: dynamicTypeSize) : nil)
                 
                 if let clothe = selectedClothe {
                     
@@ -114,7 +114,7 @@ struct CatalogView: View {
                         }
                         ScrollView(.horizontal) {
                             HStack {
-                                ForEach(viewModel.clothesByCategory(category), id: \.clothe.id) { clotheDisplay in
+                                ForEach(viewModel.clothesCategory[category] ?? [], id: \.clothe.id) { clotheDisplay in
                                     ClotheRowView(clotheDisplay: .constant(clotheDisplay))
                                         .frame(
                                             width:  DisplayParamFactory.clotheRowParam.pictureWidth * dynamicTypeSize.scaleFactor
@@ -150,6 +150,14 @@ struct CatalogView: View {
         .background(DisplayParamFactory.clotheRowParam.isIpad ? Color("ColorIpad") : Color.clear)
     }
     
+    private func maxWidthCatalog(catalogWidth: CGFloat, dynamicTypeSize: DynamicTypeSize) -> CGFloat {
+        let screenWidth = UIScreen.main.bounds.width
+        let detailWidth = 430 * dynamicTypeSize.scaleFactor
+        let cataloggWith = screenWidth - detailWidth
+        return cataloggWith
+    }
+
+    
     private func handleDeepLink(url: URL) {
         guard url.scheme == "joiefull",
               url.host == "clothe",
@@ -161,9 +169,6 @@ struct CatalogView: View {
             isShowingDetail = true
         }
     }
-    
-    
-    
 }
 
 #Preview {

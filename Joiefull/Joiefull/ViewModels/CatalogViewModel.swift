@@ -31,7 +31,7 @@ class CatalogViewModel: ObservableObject {
     init(repository: ClotheRepository) {
         self.repository = repository
     }
-   
+    
     @MainActor
     func fetchClothes() async {
         self.messageAlert = ""
@@ -51,10 +51,6 @@ class CatalogViewModel: ObservableObject {
             messageAlert = error.message
             return
         }
-    }
-    
-    func clothesByCategory(_ category: ClotheCategory) -> [ClotheDisplay] {
-        return clothesCategory[category] ?? []
     }
     
 }

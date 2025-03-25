@@ -48,8 +48,6 @@ final class ClotheDetailViewModelTest: XCTestCase {
         
         mockStorage.clearAllNotes()
         
-        //ClotheNote(id: 1, rating: 4, comment: "Test comment", favorite: true)
-        
     }
     
     @MainActor

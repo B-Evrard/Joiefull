@@ -16,7 +16,6 @@ struct DescriptionView: View {
         .font(DisplayParamFactory.clotheDetailParam.descriptionFont)
         .limitedDynamicTypeSize()
         .lineLimit(3)
-        //.truncationMode(.tail)
         .multilineTextAlignment(.leading)
         .frame(maxWidth: .infinity, alignment: .leading)
         .accessibilityElement(children: .ignore)

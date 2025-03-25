@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ClotheRepository: ObservableObject{
+class ClotheRepository {
     
     private let apiService: APIService
     private let localStorage: ClotheNoteStorage
@@ -28,7 +28,6 @@ class ClotheRepository: ObservableObject{
     }
     
     func updateClotheNote(_ clotheNote: ClotheNote) async {
-        print ("updateClotheNote")
         localStorage.updateNote(for: clotheNote.id, rating: clotheNote.rating, comment: clotheNote.comment, favorite: clotheNote.favorite)
     }
 }
