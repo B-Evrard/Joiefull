@@ -33,6 +33,8 @@ struct NotationView: View {
                         width: (displayParam.isDetail && !displayParam.isIpad) ? displayParam.heartWidth : displayParam.heartWidth * dynamicTypeSize.scaleFactor,
                         height: (displayParam.isDetail && !displayParam.isIpad)  ? displayParam.heartHeight : displayParam.heartHeight * dynamicTypeSize.scaleFactor
                     )
+                    .foregroundColor(.black)
+                
             }
             
             if (displayParam.isDetail && !displayParam.isIpad)  {

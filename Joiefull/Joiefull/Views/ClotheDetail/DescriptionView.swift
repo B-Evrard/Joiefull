@@ -13,6 +13,7 @@ struct DescriptionView: View {
     var body: some View {
         
         Text(clotheDisplay.clothe.picture.description)
+        .foregroundColor(.primary)
         .font(DisplayParamFactory.clotheDetailParam.descriptionFont)
         .limitedDynamicTypeSize()
         .lineLimit(3)

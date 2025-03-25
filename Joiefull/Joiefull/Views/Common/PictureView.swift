@@ -47,6 +47,7 @@ struct PictureView: View {
             HStack {
                 Text(clotheDisplay.clothe.name)
                     .font(displayParam.infosFont)
+                    .bold()
                     .limitedDynamicTypeSize()
                     .lineLimit(isExpanded ? nil : 1)
                     .truncationMode(.tail)
