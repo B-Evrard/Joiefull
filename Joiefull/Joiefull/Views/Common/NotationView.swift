@@ -51,7 +51,7 @@ struct NotationView: View {
         }
         .padding(.horizontal, 15)
         .padding(.vertical, 10)
-        .background(Color.red)
+        .background(Color.white)
         .cornerRadius(50)
         .offset(x: -10, y: -10)
         .accessibilityElement(children: .combine)

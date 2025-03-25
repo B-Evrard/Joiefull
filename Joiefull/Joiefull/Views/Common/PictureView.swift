@@ -14,6 +14,7 @@ struct PictureView: View {
     let displayParam : DisplayParam.Type
     
     @State private var isShowingFullScreen = false
+    @State private var isExpanded = false
     
     var body: some View {
         VStack {
@@ -36,9 +37,6 @@ struct PictureView: View {
                     .frame(width: 200, height: 200)
                     .clipShape(Circle())
             }
-            .accessibilityElement(children: .ignore)
-            .accessibilityLabel(clotheDisplay.accessibilityPicture)
-            .accessibilityHint(displayParam.isDetail ? "Toucher 2 fois pour agrandir l'image" : "Toucher 2 fois rapidement pour afficher le détail")
             .overlay(alignment: .bottomTrailing) {
                 NotationView(
                     clotheDisplay: $clotheDisplay,
@@ -50,9 +48,13 @@ struct PictureView: View {
                 Text(clotheDisplay.clothe.name)
                     .font(displayParam.infosFont)
                     .limitedDynamicTypeSize()
-                    .lineLimit(1)
+                    .lineLimit(isExpanded ? nil : 1)
                     .truncationMode(.tail)
-                    .minimumScaleFactor(0.8)
+                    .animation(.easeInOut, value: isExpanded)
+                    .onTapGesture {
+                        isExpanded.toggle()
+                    }
+                
                 Spacer()
                 Image(systemName: "star.fill")
                     .resizable()
@@ -67,6 +69,7 @@ struct PictureView: View {
             }
             .padding(.horizontal,5)
             
+            
             HStack {
                 Text(clotheDisplay.clothe.price.formattedPrice())
                     .font(displayParam.infosFont)
@@ -79,11 +82,15 @@ struct PictureView: View {
             }
             .padding(.horizontal,5)
             
+            
         }
         .sheet(isPresented: $isShowingFullScreen) {
             FullScreenImageView(imageURL: clotheDisplay.clothe.picture.url, description: clotheDisplay.accessibilityDescription)
         }
         .frame(width : (displayParam.isDetail && !displayParam.isIpad) ? displayParam.pictureWidth : displayParam.pictureWidth * dynamicTypeSize.scaleFactor)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(clotheDisplay.accessibilityPicture)
+        .accessibilityHint(displayParam.isDetail ? "Toucher 2 fois pour agrandir l'image" : "Toucher 2 fois rapidement pour afficher le détail")
         
     }
     

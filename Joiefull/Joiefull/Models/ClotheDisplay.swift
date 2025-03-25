@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct ClotheDisplay: Identifiable {
+struct ClotheDisplay  {
+    
     var id: Int
     var clothe: Clothe
     var clotheNote: ClotheNote

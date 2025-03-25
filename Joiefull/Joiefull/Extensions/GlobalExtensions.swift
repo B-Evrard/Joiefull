@@ -82,7 +82,6 @@ extension DynamicTypeSize {
             }
         }
         else    {
-            print ("NOP")
             return 1.0
         }
         

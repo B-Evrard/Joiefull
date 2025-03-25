@@ -16,6 +16,7 @@ struct CatalogView: View {
     @Environment(\.presentationMode) var presentationMode
     
     
+    
     var body: some View {
         if DisplayParamFactory.clotheRowParam.isIpad {
             
@@ -38,6 +39,7 @@ struct CatalogView: View {
                                 ),
                                 param: DisplayParamFactory.clotheDetailParam
                             )
+                            .id(clothe.clothe.id)
                         }
                         
                     }
@@ -94,13 +96,14 @@ struct CatalogView: View {
             List {
                 ForEach(viewModel.clothesCategory.keys.sorted(), id: \.self) { category in
                     VStack(alignment: .leading) {
-                        HStack {
+                        HStack  {
                             Text(category.localized)
                                 .font(.title2.weight(.semibold))
                                 .limitedDynamicTypeSize()
                                 .foregroundColor(.black)
                                 .accessibilityElement(children: .ignore)
                                 .accessibilityLabel("Catégories de vetements \(category.localized)" )
+                            Spacer()
                         }
                         .padding(.horizontal,5)
                         .contentShape(Rectangle())
@@ -116,7 +119,7 @@ struct CatalogView: View {
                                         .frame(
                                             width:  DisplayParamFactory.clotheRowParam.pictureWidth * dynamicTypeSize.scaleFactor
                                         )
-                                    .aspectRatio(contentMode: .fit)
+                                        .aspectRatio(contentMode: .fit)
                                         .onTapGesture {
                                             selectedClothe = clotheDisplay
                                             isShowingDetail = true

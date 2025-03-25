@@ -38,7 +38,7 @@ struct Picture: Decodable {
     let description: String
 }
 
-struct ClotheNote: Codable {
+struct ClotheNote: Codable, Equatable {
     let id: Int
     var rating: Int
     var comment: String

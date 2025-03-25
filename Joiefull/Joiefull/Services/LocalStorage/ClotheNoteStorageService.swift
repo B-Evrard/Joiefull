@@ -34,7 +34,7 @@ class ClotheNoteStorageService: ClotheNoteStorage {
         }
     }
 
-    func saveNotes() {
+    private func saveNotes() {
         let fileURL = getFileURL()
         if let encoded = try? JSONEncoder().encode(notes) {
             try? encoded.write(to: fileURL)

@@ -13,6 +13,7 @@ struct ClotheDetailView: View {
     
     @ObservedObject var viewModel: ClotheDetailViewModel
     let param: DisplayParam.Type
+    //var onClose: () -> Void
     
     var body: some View {
         ScrollView  {
@@ -45,7 +46,7 @@ struct ClotheDetailView: View {
                 
                 DescriptionView(clotheDisplay: viewModel.clotheDisplay)
                     .padding(.bottom, 10)
-                    .padding(.horizontal, 15)
+                    
                 
                 RatingAndNoteView(
                     user: User.mock,
@@ -57,16 +58,20 @@ struct ClotheDetailView: View {
                     await viewModel.readClotheNote()
                 }
             }
+//            .onChange(of: viewModel.clotheDisplay.clotheNote) {
+//                Task {
+//                    await viewModel.saveClotheNote()
+//                }
+//            }
+                        
             .onDisappear() {
                 Task {
-                    print("Sauvegarde des notes")
                     await viewModel.saveClotheNote()
                 }
             }
             .padding(.horizontal, 15)
         }
     }
-    
     
 }
 
@@ -85,7 +90,7 @@ struct ClotheDetailView: View {
     
     let viewModel=ClotheDetailViewModel(repository: ClotheRepository(), clotheDisplay: clothe.toDisplayModel(clotheNote: nil) )
     
-    ClotheDetailView(viewModel: viewModel,param: DisplayParamFactory.clotheDetailParam)
+    //ClotheDetailView(viewModel: viewModel,param: DisplayParamFactory.clotheDetailParam)
 }
 
 

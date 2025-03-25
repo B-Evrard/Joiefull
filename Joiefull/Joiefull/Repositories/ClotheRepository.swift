@@ -28,6 +28,7 @@ class ClotheRepository: ObservableObject{
     }
     
     func updateClotheNote(_ clotheNote: ClotheNote) async {
+        print ("updateClotheNote")
         localStorage.updateNote(for: clotheNote.id, rating: clotheNote.rating, comment: clotheNote.comment, favorite: clotheNote.favorite)
     }
 }
