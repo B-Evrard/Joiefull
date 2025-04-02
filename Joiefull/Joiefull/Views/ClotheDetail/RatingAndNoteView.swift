@@ -12,7 +12,8 @@ struct RatingAndNoteView: View {
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
     
     let user: User
-    @ObservedObject var viewModel: ClotheDetailViewModel
+    @Binding var clotheDisplay: ClotheDisplay
+    //@ObservedObject var viewModel: ClotheDetailViewModel
     @State private var isEditing: Bool = false
     var body: some View {
         VStack (spacing: 20) {
@@ -28,7 +29,7 @@ struct RatingAndNoteView: View {
                         .clipped()
                     
                     RatingView(
-                        clotheNote: $viewModel.clotheDisplay.clotheNote,
+                        clotheNote: $clotheDisplay.clotheNote,
                         starNotationWidth: DisplayParamFactory.clotheDetailParam.starNotationWidth ,
                         starNotationHeight: DisplayParamFactory.clotheDetailParam.starNotationHeight
                     )
@@ -36,10 +37,10 @@ struct RatingAndNoteView: View {
                     Spacer()
                 }
                 .accessibilityElement(children: .ignore)
-                .accessibilityLabel(viewModel.clotheDisplay.accessibilityRatingInfos)
+                .accessibilityLabel(clotheDisplay.accessibilityRatingInfos)
             }
             ZStack(alignment: .topLeading) {
-                TextEditor(text: $viewModel.clotheDisplay.clotheNote.comment)
+                TextEditor(text: $clotheDisplay.clotheNote.comment)
                     .frame(height: DisplayParamFactory.clotheDetailParam.commentHeight)
                     .padding(8)
                     .scrollContentBackground(.hidden)
@@ -52,7 +53,7 @@ struct RatingAndNoteView: View {
                     .limitedDynamicTypeSize()
                 
                 
-                if (viewModel.clotheDisplay.clotheNote.comment.isEmpty) {
+                if (clotheDisplay.clotheNote.comment.isEmpty) {
                     Text("Partagez ici vos impressions sur cette pièce")
                         .foregroundColor(Color(.systemGray2))
                         .padding(.top, 15)
@@ -64,7 +65,7 @@ struct RatingAndNoteView: View {
                 }
             }
             .accessibilityElement(children: .ignore)
-            .accessibilityLabel(viewModel.clotheDisplay.accessibilityComment)
+            .accessibilityLabel(clotheDisplay.accessibilityComment)
         }
     }
 }
@@ -82,7 +83,7 @@ struct RatingAndNoteView: View {
     
     let viewModel=ClotheDetailViewModel(repository: ClotheRepository(), clotheDisplay: clothe.toDisplayModel(clotheNote: nil) )
     
-    RatingAndNoteView(user: User.mock,viewModel: viewModel)
+    //RatingAndNoteView(user: User.mock,viewModel: viewModel)
     
 }
 

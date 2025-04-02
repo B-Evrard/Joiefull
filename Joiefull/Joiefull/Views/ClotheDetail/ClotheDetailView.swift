@@ -47,7 +47,7 @@ struct ClotheDetailView: View {
                 
                 RatingAndNoteView(
                     user: User.mock,
-                    viewModel: viewModel
+                    clotheDisplay: $viewModel.clotheDisplay
                 )
             }
             .onAppear() {
